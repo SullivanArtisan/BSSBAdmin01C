@@ -25,8 +25,20 @@ Route::get('/after_login', function () {
     return view('after_login');
 })->middleware(['auth'])->name('after_login');
 
+Route::get('/home_page', function () {
+    return view('home_page2');
+})->middleware(['auth'])->name('home_page');
+
+Route::get('/home_page1', function () {
+    return view('home_page');
+})->middleware(['auth'])->name('home_page1');
+
 Route::get('/register', function () {
     return view('register');
 })->name('register');
+
+Route::get('/system_user_main2', function () {
+    return view('system_user_main2');
+})->middleware(['auth'])->name('system_user_main2');
 
 require __DIR__.'/auth.php';
