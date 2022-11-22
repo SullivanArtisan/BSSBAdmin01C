@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,19 +27,35 @@ Route::get('/after_login', function () {
 })->middleware(['auth'])->name('after_login');
 
 Route::get('/home_page', function () {
-    return view('home_page2');
+	session_start();
+    return view('home_page');
 })->middleware(['auth'])->name('home_page');
 
-Route::get('/home_page1', function () {
-    return view('home_page');
+Route::get('/home_page_old', function () {
+    return view('home_page_old');
 })->middleware(['auth'])->name('home_page1');
 
 Route::get('/register', function () {
     return view('register');
 })->name('register');
 
-Route::get('/system_user_main2', function () {
-    return view('system_user_main2');
-})->middleware(['auth'])->name('system_user_main2');
+Route::get('/system_user_main', function () {
+    return view('system_user_main');
+})->middleware(['auth'])->name('system_user_main');
 
+Route::get('system_user_selected', function (Request $request) {
+    return view('system_user_selected');
+})->middleware(['auth'])->name('system_user_selected');
+
+Route::get('/system_user_add', function () {
+    return view('system_user_add');
+})->middleware(['auth'])->name('system_user_add');
+
+Route::get('/system_user_add_result', function () {
+    return view('system_user_add_result');
+})->middleware(['auth'])->name('system_user_add_result');
+
+Route::post('/system_user_add_result', [UserController::class, 'store']);
+ 
+//$url = route('profile', ['id' => 1]);
 require __DIR__.'/auth.php';
