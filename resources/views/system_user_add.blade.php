@@ -1,4 +1,5 @@
 <?php
+	use App\Models\User;
 	use App\Models\UserSysDetail;
 ?>
 
@@ -14,7 +15,7 @@
 
 @section('function_page')
 	<div>
-		<h2 class="text-muted pl-2">Add a New System User</h2>
+		<h2 class="text-muted pl-2 mb-2">Add a New System User</h2>
 	</div>
     <div>
 		@if ($errors->any())
@@ -56,7 +57,23 @@
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Security Level:</label></div>
+						<!--
                         <div class="col"><input class="form-range form-control" type="range" name="security_level_id"></div>
+						-->
+						<div class="col">
+							<input list="security_level" name="security_level" id="secLevelInput" class="form-control mt-1 my-text-height">
+							<datalist id="security_level">
+							<option value="Full Security">
+							<option value="Admin">
+							<option value="Operations Supervisor">
+							<option value="Dispatch-Coordinator">
+							<option value="Chassis">
+							<option value="TIDEWATER-USERS">
+							<option value="Accounting">
+							<option value="Safety">
+							<option value="Gatehouse">
+							</datalist>
+						</div>
                         <div class="col"><label class="col-form-label">Startup Num Lock On:&nbsp;</label></div>
                         <div class="col"><input type="checkbox" style="margin-top:3%" name="startup_num_lock_on"></div>
                     </div>
@@ -70,7 +87,17 @@
                         <div class="col"><label class="col-form-label">Next Docket Number:&nbsp;&nbsp;</label></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="next_docket_number"></div>
                         <div class="col"><label class="col-form-label">Ops Code:&nbsp;</label></div>
+						<!--
                         <div class="col"><input class="form-range form-control" type="range" name="ops_code"></div>
+						-->
+						<div class="col">
+							<input list="ops_code" name="ops_code" id="opsCodeInput" class="form-control mt-1 my-text-height">
+							<datalist id="ops_code">
+							<option value="Local">
+							<option value="Highway">
+							<option value="Admin">
+							</datalist>
+						</div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Address:&nbsp;</label></div>
@@ -126,7 +153,7 @@
                         <div class="col"><label class="col-form-label"></label></div>
                         <div class="col"><input class="form-control mt-1" type="hidden"></div>
                     </div>
-                    <div class="row">
+                    <div class="row my-3">
                         <div class="w-25"></div>
                         <div class="col">
 							<div class="row">
@@ -153,4 +180,14 @@
         $usrDtails->save();
 		*/
 	?>
+	<script>
+		var opsCodeInput = document.getElementById('opsCodeInput'); 			// give an id to your input and set it as variable
+		opsCodeInput.value ='Local'; 											// set default value instead of html attribute
+		opsCodeInput.onfocus = function() { opsCodeInput.value ='';} 			// on focus - clear input
+		//opsCodeInput.onblur = function() { opsCodeInput.value ='Local';} 		// on leave restore it.
+		var secLevelInput = document.getElementById('secLevelInput'); 			// give an id to your input and set it as variable
+		secLevelInput.value ='Chassis'; 										// set default value instead of html attribute
+		secLevelInput.onfocus = function() { secLevelInput.value ='';}			// on focus - clear input
+		//secLevelInput.onblur = function() { secLevelInput.value ='Chassis';	// on leave restore it.
+	</script>
 @endsection

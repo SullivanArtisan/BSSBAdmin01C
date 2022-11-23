@@ -7,11 +7,11 @@
 
 @section('function_page')
     <div>
-        <div class="row">
-            <div class="col col-sm-auto">
+        <div class="row m-4">
+            <div>
 				<h2 class="text-muted pl-2">System Users</h2>
             </div>
-            <div class="col my-auto">
+            <div class="col my-auto ml-5">
 				<button class="btn btn-secondary me-2" type="button"><a href="{{route('system_user_add')}}">Add</a></button>
 				<button class="btn btn-secondary" type="button">Search</button>
 			</div>

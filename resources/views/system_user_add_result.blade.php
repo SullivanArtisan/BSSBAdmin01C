@@ -20,8 +20,4 @@
 		{{ session('status') }}
 	</div>
 	@endif
-	
-	<?php
-		echo "Huge Success!";
-	?>
 @endsection
