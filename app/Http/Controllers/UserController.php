@@ -40,7 +40,7 @@ class UserController extends Controller
         $saved = $user->save();
 		
 		if(!$saved) {
-			return redirect('system_user_add_result')->with('status', 'Data Has NOT Been inserted.');
+			return redirect('system_user_result')->with('status', 'Data Has NOT Been inserted.');
 		} else {
 			$targetUser = User::where('email', $request->email)->get();
 			
@@ -61,9 +61,9 @@ class UserController extends Controller
 			$saved = $userDetails->save();
 
 			if(!$saved) {
-				return redirect('system_user_add_result')->with('status', 'Data has NOT been inserted.');
+				return redirect('system_user_result')->with('status', 'Data has NOT been inserted.');
 			} else {
-				return redirect('system_user_add_result')->with('status', 'The new user, '.$targetUser[0]->name.', hs been inserted successfully.');
+				return redirect('system_user_result')->with('status', 'The new user, '.$targetUser[0]->name.', hs been inserted successfully.');
 			}
 		}
     }

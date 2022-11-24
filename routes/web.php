@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Models\User;
+use App\Models\UserSysDetail;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,11 +53,20 @@ Route::get('/system_user_add', function () {
     return view('system_user_add');
 })->middleware(['auth'])->name('system_user_add');
 
-Route::get('/system_user_add_result', function () {
-    return view('system_user_add_result');
-})->middleware(['auth'])->name('system_user_add_result');
+Route::get('/system_user_delete', function () {
+	$id = $_GET['id'];
+	$user = User::where('id', $id)->first();
+	$userName = $user->name;
+	UserSysDetail::where('user_id', $id)->delete();
+	User::where('id', $id)->delete();
+    return redirect('system_user_result')->with('status', 'The user, '.$userName.', hs been deleted successfully.');				
+})->middleware(['auth'])->name('system_user_delete');
 
-Route::post('/system_user_add_result', [UserController::class, 'store']);
+Route::get('/system_user_result', function () {
+    return view('system_user_result');
+})->middleware(['auth'])->name('system_user_result');
+
+Route::post('/system_user_result', [UserController::class, 'store']);
  
 //$url = route('profile', ['id' => 1]);
 require __DIR__.'/auth.php';

@@ -9,7 +9,7 @@
     <div>
         <div class="row">
             <div class="col col-sm-auto">
-				<h2 class="text-muted pl-2">Result of Adding a System User</h2>
+				<h2 class="text-muted pl-2">Result of the System User Operation</h2>
             </div>
             <div class="col"></div>
         </div>

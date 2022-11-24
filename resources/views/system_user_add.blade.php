@@ -29,7 +29,7 @@
 		@endif
         <div class="row">
             <div class="col">
-                <form method="post" action="{{url('system_user_add_result')}}">
+                <form method="post" action="{{url('system_user_result')}}">
 					@csrf
                     <div class="row">
                         <div class="col"><label class="col-form-label">Name:&nbsp;</label></div>
