@@ -57,9 +57,13 @@ Route::get('/system_user_delete', function () {
 	$id = $_GET['id'];
 	$user = User::where('id', $id)->first();
 	$userName = $user->name;
-	UserSysDetail::where('user_id', $id)->delete();
-	User::where('id', $id)->delete();
-    return redirect('system_user_result')->with('status', 'The user, '.$userName.', hs been deleted successfully.');				
+	$res=UserSysDetail::where('user_id', $id)->delete();
+	if (!$res) {
+		return redirect('system_user_result')->with('status', 'The user, <span style="font-weight:bold;font-style:italic;color:red">'.$userName.'</span>, cannot be deleted for some reason.');	
+	} else {
+		User::where('id', $id)->delete();
+		return redirect('system_user_result')->with('status', 'The user, <span style="font-weight:bold;font-style:italic;color:blue">'.$userName.'</span>, hs been deleted successfully.');	
+	}
 })->middleware(['auth'])->name('system_user_delete');
 
 Route::get('/system_user_result', function () {

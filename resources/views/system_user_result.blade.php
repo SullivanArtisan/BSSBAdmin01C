@@ -17,7 +17,10 @@
 	
 	@if(session('status'))
 	<div class="alert alert-success">
-		{{ session('status') }}
+		<?php
+			$text = session('status');
+			echo $text;
+		?>
 	</div>
 	@endif
 @endsection
