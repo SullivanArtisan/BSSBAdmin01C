@@ -12,13 +12,15 @@
 				<h2 class="text-muted pl-2">System Users</h2>
             </div>
             <div class="col my-auto ml-5">
-				<button class="btn btn-secondary me-2" type="button"><a href="{{route('system_user_add')}}">Add</a></button>
+				<button class="btn btn-secondary mr-4" type="button"><a href="{{route('system_user_add')}}">Add</a></button>
 				<button class="btn btn-secondary" type="button">Search</button>
 			</div>
             <div class="col"></div>
         </div>
     </div>
 	<?php
+		use App\Models\UserSysDetail;
+		
 		$users = \App\Models\User::all();
 		
 		/*
@@ -45,12 +47,83 @@
 		{{echo $outContents;}}
 		*/
 		
-		$outContents = "<div class=\"list-group\">";
+		// Title Line
+		$outContents = "<div class=\"container mw-100\">";
+        $outContents .= "<div class=\"row bg-info text-white fw-bold\">";
+			$outContents .= "<div class=\"col-2 align-middle\">";
+				$outContents .= "Name";
+			$outContents .= "</div>";
+			$outContents .= "<div class=\"col-3\">";
+				$outContents .= "Email";
+			$outContents .= "</div>";
+			$outContents .= "<div class=\"col-2\">";
+				$outContents .= "Security Level";
+			$outContents .= "</div>";
+			$outContents .= "<div class=\"col-1\">";
+				$outContents .= "Docket Prefix";
+			$outContents .= "</div>";
+			$outContents .= "<div class=\"col-1\">";
+				$outContents .= "Next Docket #";
+			$outContents .= "</div>";
+			$outContents .= "<div class=\"col-1\">";
+				$outContents .= "Ops Code";
+			$outContents .= "</div>";
+			$outContents .= "<div class=\"col-1\">";
+				$outContents .= "Current Office";
+			$outContents .= "</div>";
+			$outContents .= "<div class=\"col-1\">";
+				$outContents .= "Default Office";
+			$outContents .= "</div>";
+		$outContents .= "</div><hr class=\"m-1\"/>";
 		{{echo $outContents;}}
+		
+		// Body Lines
 		foreach ($users as $user) {
-			$outContents = "<a href=\"system_user_selected?id=$user->id\" class=\"list-group-item list-group-item-action\" aria-current=\"true\">";
-			$outContents .= $user->name;
-			$outContents .= "</a>";
+			$userDetails = UserSysDetail::where('user_id', $user->id)->first();
+            $outContents = "<div class=\"row\">";
+                $outContents .= "<div class=\"col-2\">";
+					$outContents .= "<a href=\"system_user_selected?id=$user->id\">";
+					$outContents .= $user->name;
+					$outContents .= "</a>";
+				$outContents .= "</div>";
+                $outContents .= "<div class=\"col-3\">";
+					$outContents .= "<a href=\"system_user_selected?id=$user->id\">";
+					$outContents .= $user->email;
+					$outContents .= "</a>";
+				$outContents .= "</div>";
+                $outContents .= "<div class=\"col-2\">";
+					$outContents .= "<a href=\"system_user_selected?id=$user->id\">";
+					$outContents .= $user->security_level;
+					$outContents .= "</a>";
+				$outContents .= "</div>";
+                $outContents .= "<div class=\"col-1\">";
+					$outContents .= "<a href=\"system_user_selected?id=$user->id\">";
+					$outContents .= $user->docket_prefix;
+					$outContents .= "</a>";
+				$outContents .= "</div>";
+				if ($userDetails) {
+					$outContents .= "<div class=\"col-1\">";
+						$outContents .= "<a href=\"system_user_selected?id=$user->id\">";
+						$outContents .= $user->next_docket_number;
+						$outContents .= "</a>";
+					$outContents .= "</div>";
+					$outContents .= "<div class=\"col-1\">";
+						$outContents .= "<a href=\"system_user_selected?id=$user->id\">";
+						$outContents .= $userDetails->ops_code;
+						$outContents .= "</a>";
+					$outContents .= "</div>";
+					$outContents .= "<div class=\"col-1\">";
+						$outContents .= "<a href=\"system_user_selected?id=$user->id\">";
+						$outContents .= $userDetails->current_office;
+						$outContents .= "</a>";
+					$outContents .= "</div>";
+					$outContents .= "<div class=\"col-1\">";
+						$outContents .= "<a href=\"system_user_selected?id=$user->id\">";
+						$outContents .= $userDetails->default_office;
+						$outContents .= "</a>";
+					$outContents .= "</div>";
+				}
+			$outContents .= "</div><hr class=\"m-1\"/>";
 			{{ 					
 				echo $outContents;;
 			}}
