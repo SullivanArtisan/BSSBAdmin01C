@@ -17,6 +17,11 @@
 
 
 @section('function_page')
+	<?php
+		$id = $_GET['id'];
+		$user = User::where('id', $id)->first();
+		$userDetails = UserSysDetail::where('user_id', $id)->first();
+	?>
 	<div>
         <div class="row m-4">
             <div>
@@ -40,31 +45,19 @@
 		@endif
         <div class="row">
             <div class="col">
-                <form method="post" action="{{url('system_user_result')}}">
+                <form method="post" action="{{url('system_user_update')}}">
 					@csrf
                     <div class="row">
                         <div class="col"><label class="col-form-label">Name:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="name"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="name" value="{{$user->name}}"></div>
                         <div class="col"><label class="col-form-label">Current Office:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="current_office"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="current_office" value="{{$userDetails->current_office}}"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Email:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1v" type="email" name="email"></div>
+                        <div class="col"><input class="form-control mt-1v" type="email" name="email" value="{{$user->email}}"></div>
                         <div class="col"><label class="col-form-label">Default Office:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="default_office"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><label class="col-form-label">Password:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="password" name="password"></div>
-                        <div class="col"><label class="col-form-label">Can Change Office:&nbsp;</label></div>
-                        <div class="col"><input type="checkbox" style="margin-top:3%" name="can_change_office"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><label class="col-form-label">Confirm Password:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="password" name="password_confirmation"></div>
-                        <div class="col"><label class="col-form-label">Startup Caps Lock On:&nbsp;</label></div>
-                        <div class="col"><input type="checkbox" style="margin-top:3%" name="startup_caps_lock_on"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="default_office" value="{{$userDetails->default_office}}"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Security Level:</label></div>
@@ -72,7 +65,7 @@
                         <div class="col"><input class="form-range form-control" type="range" name="security_level_id"></div>
 						-->
 						<div class="col">
-							<input list="security_level" name="security_level" id="secLevelInput" class="form-control mt-1 my-text-height">
+							<input list="security_level" name="security_level" id="secLevelInput" class="form-control mt-1 my-text-height" value="{{$user->security_level}}">
 							<datalist id="security_level">
 							<option value="Full Security">
 							<option value="Admin">
@@ -85,24 +78,36 @@
 							<option value="Gatehouse">
 							</datalist>
 						</div>
-                        <div class="col"><label class="col-form-label">Startup Num Lock On:&nbsp;</label></div>
-                        <div class="col"><input type="checkbox" style="margin-top:3%" name="startup_num_lock_on"></div>
+                        <div class="col"><label class="col-form-label">Can Change Office:&nbsp;</label></div>
+                        <div class="col"><input type="checkbox" style="margin-top:3%" name="can_change_office" <?php if($userDetails->can_change_office) {echo "checked";}?>></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Docket Prefix:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="docket_prefix"></div>
-                        <div class="col"><label class="col-form-label">Startup Insert On:&nbsp;</label></div>
-                        <div class="col"><input type="checkbox" style="margin-top:3%" name="startup_insert_on"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="docket_prefix" value="{{$user->docket_prefix}}"></div>
+                        <div class="col"><label class="col-form-label">Startup Caps Lock On:&nbsp;</label></div>
+                        <div class="col"><input type="checkbox" style="margin-top:3%" name="startup_caps_lock_on" <?php if($userDetails->startup_caps_lock_on) {echo "checked";}?>></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Next Docket Number:&nbsp;&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="next_docket_number"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="next_docket_number" value="{{$user->next_docket_number}}"></div>
+                        <div class="col"><label class="col-form-label">Startup Num Lock On:&nbsp;</label></div>
+                        <div class="col"><input type="checkbox" style="margin-top:3%" name="startup_num_lock_on" <?php if($userDetails->startup_num_lock_on) {echo "checked";}?>></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><label class="col-form-label">Address:&nbsp;</label></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="address" value="{{$user->address}}"></div>
+                        <div class="col"><label class="col-form-label">Startup Insert On:&nbsp;</label></div>
+                        <div class="col"><input type="checkbox" style="margin-top:3%" name="startup_insert_on" <?php if($userDetails->startup_insert_on) {echo "checked";}?>></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><label class="col-form-label">Town:&nbsp;</label></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="town" value="{{$user->town}}"></div>
                         <div class="col"><label class="col-form-label">Ops Code:&nbsp;</label></div>
 						<!--
                         <div class="col"><input class="form-range form-control" type="range" name="ops_code"></div>
 						-->
 						<div class="col">
-							<input list="ops_code" name="ops_code" id="opsCodeInput" class="form-control mt-1 my-text-height">
+							<input list="ops_code" name="ops_code" id="opsCodeInput" class="form-control mt-1 my-text-height" value="{{$userDetails->ops_code}}">
 							<datalist id="ops_code">
 							<option value="Local">
 							<option value="Highway">
@@ -111,59 +116,57 @@
 						</div>
                     </div>
                     <div class="row">
-                        <div class="col"><label class="col-form-label">Address:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="address"></div>
-                        <div class="col"><label class="col-form-label">Show Mobile Data Messages:&nbsp;</label></div>
-                        <div class="col"><input type="checkbox" style="margin-top:3%" name="show_mobile_data_messages"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><label class="col-form-label">Town:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="town"></div>
-                        <div class="col"><label class="col-form-label">Show Internet Bookings:&nbsp;</label></div>
-                        <div class="col"><input type="checkbox" style="margin-top:3%" name="show_internet_bookings"></div>
-                    </div>
-                    <div class="row">
                         <div class="col"><label class="col-form-label">County:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="county"></div>
-                        <div class="col"><label class="col-form-label">Show Incoming Control Emails:&nbsp;</label></div>
-                        <div class="col"><input type="checkbox" style="margin-top:3%" name="show_incoming_control_emails"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="county" value="{{$user->county}}"></div>
+                        <div class="col"><label class="col-form-label">Show Mobile Data Messages:&nbsp;</label></div>
+                        <div class="col"><input type="checkbox" style="margin-top:3%" name="show_mobile_data_messages" <?php if($userDetails->show_mobile_data_messages) {echo "checked";}?>></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Postcode:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="postcode"></div>
-                        <div class="col"><label class="col-form-label">Picture File:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="picture_file"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="postcode" value="{{$user->postcode}}"></div>
+                        <div class="col"><label class="col-form-label">Show Internet Bookings:&nbsp;</label></div>
+                        <div class="col"><input type="checkbox" style="margin-top:3%" name="show_internet_bookings" <?php if($userDetails->show_internet_bookings) {echo "checked";}?>></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Country:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="country"></div>
-                        <div class="col"><label class="col-form-label"></label></div>
-                        <div class="col"><input class="form-control mt-1" type="hidden"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="country" value="{{$user->country}}"></div>
+                        <div class="col"><label class="col-form-label">Show Incoming Control Emails:&nbsp;</label></div>
+                        <div class="col"><input type="checkbox" style="margin-top:3%" name="show_incoming_control_emails" <?php if($userDetails->show_incoming_control_emails) {echo "checked";}?>></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Work Tel Number:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="work_phone"></div>
-                        <div class="col"><label class="col-form-label"></label></div>
-                        <div class="col"><input class="form-control mt-1" type="hidden"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="work_phone" value="{{$user->work_phone}}"></div>
+                        <div class="col"><label class="col-form-label">Picture File:&nbsp;</label></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="picture_file" value="{{$userDetails->picture_file}}"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Home Tel Number:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="home_phone"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="home_phone" value="{{$user->home_phone}}"></div>
                         <div class="col"><label class="col-form-label"></label></div>
                         <div class="col"><input class="form-control mt-1" type="hidden"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Mobile Tel Number:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="mobile_phone"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="mobile_phone" value="{{$user->mobile_phone}}"></div>
                         <div class="col"><label class="col-form-label"></label></div>
                         <div class="col"><input class="form-control mt-1" type="hidden"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Email2:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="email" name="email2"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="email" name="email2" value="{{$user->email2}}"></div>
                         <div class="col"><label class="col-form-label"></label></div>
                         <div class="col"><input class="form-control mt-1" type="hidden"></div>
                     </div>
+					<!--
+                    <div class="row">
+                        <div class="col"><label class="col-form-label"></label></div>
+                        <div class="col"><input class="form-control mt-1" type="hidden"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><label class="col-form-label"></label></div>
+                        <div class="col"><input class="form-control mt-1" type="hidden"></div>
+                    </div>
+					-->
                     <div class="row my-3">
                         <div class="w-25"></div>
                         <div class="col">
@@ -193,11 +196,11 @@
 	?>
 	<script>
 		var opsCodeInput = document.getElementById('opsCodeInput'); 			// give an id to your input and set it as variable
-		opsCodeInput.value ='Local'; 											// set default value instead of html attribute
+		//opsCodeInput.value ='Local'; 											// set default value instead of html attribute
 		opsCodeInput.onfocus = function() { opsCodeInput.value ='';} 			// on focus - clear input
 		//opsCodeInput.onblur = function() { opsCodeInput.value ='Local';} 		// on leave restore it.
 		var secLevelInput = document.getElementById('secLevelInput'); 			// give an id to your input and set it as variable
-		secLevelInput.value ='Chassis'; 										// set default value instead of html attribute
+		//secLevelInput.value ='Chassis'; 										// set default value instead of html attribute
 		secLevelInput.onfocus = function() { secLevelInput.value ='';}			// on focus - clear input
 		//secLevelInput.onblur = function() { secLevelInput.value ='Chassis';	// on leave restore it.
 	</script>

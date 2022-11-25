@@ -71,6 +71,8 @@ Route::get('/system_user_result', function () {
 })->middleware(['auth'])->name('system_user_result');
 
 Route::post('/system_user_result', [UserController::class, 'store']);
+
+Route::post('/system_user_update', [UserController::class, 'update']);
  
 //$url = route('profile', ['id' => 1]);
 require __DIR__.'/auth.php';
