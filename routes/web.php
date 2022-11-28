@@ -49,6 +49,14 @@ Route::get('system_user_selected', function (Request $request) {
     return view('system_user_selected');
 })->middleware(['auth'])->name('system_user_selected');
 
+Route::get('system_user_name_selected', function (Request $request) {
+    return view('system_user_name_selected');
+})->middleware(['auth'])->name('system_user_name_selected');
+
+Route::get('system_user_email_selected', function (Request $request) {
+    return view('system_user_email_selected');
+})->middleware(['auth'])->name('system_user_email_selected');
+
 Route::get('/system_user_add', function () {
     return view('system_user_add');
 })->middleware(['auth'])->name('system_user_add');

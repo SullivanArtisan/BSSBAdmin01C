@@ -8,7 +8,7 @@
     <div>
         <div class="row m-4">
             <div>
-				<h2 class="text-muted pl-2">System Users</h2>
+				<h2 class="text-muted pl-2">System Users Searched Results (by User Name)</h2>
             </div>
             <div class="col my-auto ml-5">
 				<button class="btn btn-secondary mr-4" type="button"><a href="{{route('system_user_add')}}">Add</a></button>
@@ -20,7 +20,7 @@
 				<div class="input-group">
 				  <input type="text" class="form-control" aria-label="Text input with dropdown button" id="user_search_input">
 				  <div class="input-group-append">
-					<button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
+					<button class="btn btn-outline-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
 					<div class="dropdown-menu">
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResultById()\" style=\"cursor: pointer;\">by User Id</button>");</script>
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResultByName()\" style=\"cursor: pointer;\">by User Name</button>");</script>
@@ -36,31 +36,10 @@
 	<?php
 		use App\Models\UserSysDetail;
 		
-		$users = \App\Models\User::all();
-		
-		/*
-		$outContents = "<ul class=\"list-group\">";
-		$outContents .= "<li class=\"list-group-item\">";
-		$outContents .= "<input class=\"form-check-input me-1\" type=\"radio\" value=\"\" aria-label=\"...\">";
-		$outContents .= "First button";
-		$outContents .= "</li>";
-		$outContents .= "<li class=\"list-group-item\">";
-		$outContents .= "<input class=\"form-check-input me-1\" type=\"radio\" value=\"\" aria-label=\"...\">";
-		$outContents .= "Second button";
-		$outContents .= "</li>";
-		$outContents .= "</ul>";
-		*/
-		/*
-		$outContents = "<div class=\"list-group\">";
-		$outContents .= "<a href=\"home_page\" class=\"list-group-item list-group-item-action\" aria-current=\"true\">";
-		$outContents .= "Item 1";
-		$outContents .= "</a>";
-		$outContents .= "<a href=\"home_page\" class=\"list-group-item list-group-item-action\">";
-		$outContents .= "Item 2";
-		$outContents .= "</a>";
-		$outContents .= "</div>";
-		{{echo $outContents;}}
-		*/
+		$url_components = parse_url($_SERVER['REQUEST_URI']);
+		parse_str($url_components['query'], $params);
+		$name_parm = $params['name'];
+		$users = \App\Models\User::where('name', $name_parm)->get();
 		
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";
