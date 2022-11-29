@@ -12,9 +12,6 @@
             </div>
             <div class="col my-auto ml-5">
 				<button class="btn btn-secondary mr-4" type="button"><a href="{{route('system_user_add')}}">Add</a></button>
-				<!--
-				<button class="btn btn-secondary" type="button"">Search</button>
-				-->
 			</div>
             <div class="col">
 				<div class="input-group">
@@ -22,11 +19,9 @@
 				  <div class="input-group-append">
 					<button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
 					<div class="dropdown-menu">
-					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResultById()\" style=\"cursor: pointer;\">by User Id</button>");</script>
-					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResultByName()\" style=\"cursor: pointer;\">by User Name</button>");</script>
-					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResultByEmail()\" style=\"cursor: pointer;\">by User Email</button>");</script>
-					  <a class="dropdown-item" href="#">Another action</a>
-					  <a class="dropdown-item" href="#">Something else here</a>
+					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('id')\" style=\"cursor: pointer;\">by User Id</button>");</script>
+					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('name')\" style=\"cursor: pointer;\">by User Name</button>");</script>
+					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('email')\" style=\"cursor: pointer;\">by User Email</button>");</script>
 					</div>
 				  </div>
 				</div>			
@@ -149,29 +144,18 @@
 @endsection
 
 <script>
-	function GetSearchResultById() {
+	function GetSearchResult(search_by) {
 		user_search_value = document.getElementById('user_search_input').value;
 		if (user_search_value) {
-			let url = "{{ route('system_user_selected', ':id') }}";
-			url = url.replace(':id', 'id='+user_search_value);
-			document.location.href=url;
-		}
-	}
-	
-	function GetSearchResultByName() {
-		user_search_value = document.getElementById('user_search_input').value;
-		if (user_search_value) {
-			let url = "{{ route('system_user_name_selected', ':name') }}";
-			url = url.replace(':name', 'name='+user_search_value);
-			document.location.href=url;
-		}
-	}
-	
-	function GetSearchResultByEmail() {
-		user_search_value = document.getElementById('user_search_input').value;
-		if (user_search_value) {
-			let url = "{{ route('system_user_email_selected', ':email') }}";
-			url = url.replace(':email', 'email='+user_search_value);
+			url = '';
+			if (search_by == 'id') {
+				url = "{{ route('system_user_selected', ':id') }}";
+			} else if (search_by == 'name') {
+				url = "{{ route('system_user_name_selected', ':name') }}";
+			} else if (search_by == 'email') {
+				url = "{{ route('system_user_email_selected', ':email') }}";
+			}
+			url = url.replace(':'+search_by, search_by+'='+user_search_value);
 			document.location.href=url;
 		}
 	}

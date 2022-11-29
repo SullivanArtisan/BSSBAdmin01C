@@ -1,8 +1,17 @@
 @extends('layouts.home_page_base')
 
 @section('goback')
-	<a class="text-primary" href="{{route('home_page')}}" style="margin-right: 10px;">Back</a>
+	<a class="text-primary" href="{{route('system_user_main')}}" style="margin-right: 10px;">Back</a>
 @show
+
+<?php
+	use App\Models\UserSysDetail;
+	
+	$url_components = parse_url($_SERVER['REQUEST_URI']);
+	parse_str($url_components['query'], $params);
+	$key = array_keys($params)[0];
+	$value_parm = $params[$key];
+?>
 
 @section('function_page')
     <div>
@@ -12,9 +21,6 @@
             </div>
             <div class="col my-auto ml-5">
 				<button class="btn btn-secondary mr-4" type="button"><a href="{{route('system_user_add')}}">Add</a></button>
-				<!--
-				<button class="btn btn-secondary" type="button"">Search</button>
-				-->
 			</div>
             <div class="col">
 				<div class="input-group">
@@ -22,11 +28,9 @@
 				  <div class="input-group-append">
 					<button class="btn btn-outline-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
 					<div class="dropdown-menu">
-					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResultById()\" style=\"cursor: pointer;\">by User Id</button>");</script>
-					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResultByName()\" style=\"cursor: pointer;\">by User Name</button>");</script>
-					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResultByEmail()\" style=\"cursor: pointer;\">by User Email</button>");</script>
-					  <a class="dropdown-item" href="#">Another action</a>
-					  <a class="dropdown-item" href="#">Something else here</a>
+					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('id')\" style=\"cursor: pointer;\">by User Id</button>");</script>
+					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('name')\" style=\"cursor: pointer;\">by User Name</button>");</script>
+					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('email')\" style=\"cursor: pointer;\">by User Email</button>");</script>
 					</div>
 				  </div>
 				</div>			
@@ -34,12 +38,7 @@
         </div>
     </div>
 	<?php
-		use App\Models\UserSysDetail;
-		
-		$url_components = parse_url($_SERVER['REQUEST_URI']);
-		parse_str($url_components['query'], $params);
-		$name_parm = $params['name'];
-		$users = \App\Models\User::where('name', $name_parm)->get();
+		$users = \App\Models\User::where('name', $value_parm)->get();
 		
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";
@@ -128,29 +127,23 @@
 @endsection
 
 <script>
-	function GetSearchResultById() {
+	function GetSearchResult(search_by) {
 		user_search_value = document.getElementById('user_search_input').value;
-		if (user_search_value) {
-			let url = "{{ route('system_user_selected', ':id') }}";
-			url = url.replace(':id', 'id='+user_search_value);
-			document.location.href=url;
+		if (search_by) {
+			var key = search_by;
+		} else {
+			var key = @json($key);
 		}
-	}
-	
-	function GetSearchResultByName() {
-		user_search_value = document.getElementById('user_search_input').value;
 		if (user_search_value) {
-			let url = "{{ route('system_user_name_selected', ':name') }}";
-			url = url.replace(':name', 'name='+user_search_value);
-			document.location.href=url;
-		}
-	}
-	
-	function GetSearchResultByEmail() {
-		user_search_value = document.getElementById('user_search_input').value;
-		if (user_search_value) {
-			let url = "{{ route('system_user_email_selected', ':email') }}";
-			url = url.replace(':email', 'email='+user_search_value);
+			url = '';
+			if (key == 'id') {
+				url = "{{ route('system_user_selected', ':id') }}";
+			} else if (key == 'name') {
+				url = "{{ route('system_user_name_selected', ':name') }}";
+			} else if (key == 'email') {
+				url = "{{ route('system_user_email_selected', ':email') }}";
+			}
+			url = url.replace(':'+key, key+'='+user_search_value);
 			document.location.href=url;
 		}
 	}
