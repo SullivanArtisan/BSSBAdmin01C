@@ -31,7 +31,7 @@
 	<?php
 		use App\Models\UserSysDetail;
 		
-		$users = \App\Models\User::all();
+		$users = \App\Models\User::paginate(10);
 		
 		/*
 		$outContents = "<ul class=\"list-group\">";
@@ -140,7 +140,11 @@
 		}
 		$outContents = "</div>";
 		{{echo $outContents;}}
-	?>
+		
+		{{echo "<div class=\"col-1\"><row><p>&nbsp</p></row><row>"; }}
+		{{echo  $users->links(); }}
+		{{echo "</row></div>"; }}
+?>
 @endsection
 
 <script>
