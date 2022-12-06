@@ -1,6 +1,7 @@
 <?php
 	use App\Models\User;
 	use App\Models\UserSysDetail;
+	use Illuminate\Support\Facades\Session;
 ?>
 
 @extends('layouts.home_page_base')
@@ -12,8 +13,11 @@
 	<a class="text-primary" href="{{route('system_user_main')}}" style="margin-right: 10px;">Back</a>
 @show
 
-
 @section('function_page')
+	<?php
+		$picPath = Session::get('uploadPath');
+		Session::forget(['uploadPath']);
+	?>
 	<div>
 		<h2 class="text-muted pl-2 mb-2">Add a New System User</h2>
 	</div>
@@ -121,7 +125,12 @@
                         <div class="col"><label class="col-form-label">Postcode:&nbsp;</label></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="postcode"></div>
                         <div class="col"><label class="col-form-label">Picture File:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="picture_file"></div>
+						<div class="col">
+							<div class="row">
+								<div class="col-9 pr-0"><input class="form-control mt-1 my-text-height" type="text" id="picture_file" name="picture_file"></div>
+								<div class="col-3 pl-2"><button class="btn btn-secondary btn-sm mt-1" type="button"><a href="{{route('system_user_pic_upload')}}">Upload</a></button></div>
+							</div>
+						</div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Country:&nbsp;</label></div>
@@ -189,5 +198,8 @@
 		secLevelInput.value ='Chassis'; 										// set default value instead of html attribute
 		secLevelInput.onfocus = function() { secLevelInput.value ='';}			// on focus - clear input
 		//secLevelInput.onblur = function() { secLevelInput.value ='Chassis';	// on leave restore it.
+		
+		var picPath = {!! json_encode($picPath) !!};
+		document.getElementById('picture_file').value = picPath;
 	</script>
 @endsection

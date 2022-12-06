@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FileUploadController;
 use App\Models\User;
 use App\Models\UserSysDetail;
 
@@ -81,6 +82,12 @@ Route::get('/system_user_result', function () {
 Route::post('/system_user_result', [UserController::class, 'store']);
 
 Route::post('/system_user_update', [UserController::class, 'update']);
- 
+
+Route::get('/system_user_pic_upload', function () {
+    return view('system_user_pic_upload');
+})->middleware(['auth'])->name('system_user_pic_upload');
+
+Route::post('/uploadfile',[FileUploadController::class, 'showUploadFile'])->middleware(['auth'])->name('uploadfile'); 
+
 //$url = route('profile', ['id' => 1]);
 require __DIR__.'/auth.php';
