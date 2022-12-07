@@ -154,8 +154,18 @@
 						<div class="row">
 							<div class="col"><label class="col-form-label">Work Tel Number:&nbsp;</label></div>
 							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="work_phone" value="{{$user->work_phone}}"></div>
-							<div class="col"><label class="col-form-label">Picture File:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="picture_file" value="{{$userDetails->picture_file}}"></div>
+							<div class="col" id="pic_holder"><label class="col-form-label">Picture File:&nbsp;</label></div>
+							<?php
+								$origin_pic_path_array = explode("/", $userDetails->picture_file);
+								$wanted_pic_path = url('')."/";
+								for ($i=1; $i<sizeof($origin_pic_path_array); $i++) {
+									$wanted_pic_path .= $origin_pic_path_array[$i];
+									if($i != sizeof($origin_pic_path_array)-1) {
+										$wanted_pic_path .= "/";
+									}
+								}
+							?>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="text" id="picture_file" name="picture_file" value="{{$userDetails->picture_file}}" onmouseover="showImage('picture_file', '{{$wanted_pic_path}}')" onmouseout="hideImage('picture_file')"></div>
 						</div>
 						<div class="row">
 							<div class="col"><label class="col-form-label">Home Tel Number:&nbsp;</label></div>
@@ -228,6 +238,37 @@
 				if(!confirm("Are you sure to delete this user?"))
 				event.preventDefault();
 			}
+			
+			function showImage(elemId, imgSrc) {
+			  const elem = document.getElementById(elemId);
+			  if (elem.value) {	
+				  // console.log("elemId is: " + elemId);
+				  // console.log("imgSrc is: " + imgSrc);
+				  const popImage = new Image();
+				  // popImage.src = "https://static5.cargurus.com/images/site/2009/10/24/14/42/2004_suzuki_vitara_4_dr_lx_4wd_suv-pic-8731393806365188898-640x480.jpeg";
+				  popImage.src = "https://test.nueco.ca/NuEco/1670434551_1670285560_image2.jpeg";
+				  popImage.style.position = "absolute";
+				  popImage.style.zIndex = "1";
+				  popImage.style.width = "200px";
+				  popImage.style.height = "250px";
+				  elem.appendChild(popImage);
+				  document.getElementById("pic_holder").appendChild(popImage);
+			  }
+			}	
+			
+			function hideImage(elemId) {
+			  const elem = document.getElementById(elemId);
+			  if (elem.value) {	
+				  // console.log("elemId is: " + elemId);
+				  while (elem.childElementCount > 0) {
+					elem.removeChild(elem.lastChild);
+				  }
+				  while (document.getElementById("pic_holder").childElementCount > 0) {
+					document.getElementById("pic_holder").removeChild(document.getElementById("pic_holder").lastChild);
+					break;
+				  }
+			  }
+			}			
 		</script>
 	@endsection
 }
