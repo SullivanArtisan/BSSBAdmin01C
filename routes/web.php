@@ -89,5 +89,9 @@ Route::get('/system_user_pic_upload', function () {
 
 Route::post('/uploadfile',[FileUploadController::class, 'showUploadFile'])->middleware(['auth'])->name('uploadfile'); 
 
+Route::get('/dev_notes', function () {
+    return view('dev_notes');
+})->name('dev_notes');
+
 //$url = route('profile', ['id' => 1]);
 require __DIR__.'/auth.php';

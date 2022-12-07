@@ -37,7 +37,7 @@
 								<div class="col-lg-6">
 									<div class="p-5">
 										<div class="text-center">
-											<h4 class="text-dark mb-4"><a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Welcome!</a></h4>
+											<h4 class="text-dark mb-4"><a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Welcome!</a><span style="color:white">NNNNNNNN</span><button style="border:none; outline:none; background:none;"><a href="{{ route('dev_notes') }}" style="color:white">N</a></button></h4>
 										</div>
 										<!-- 
 										<form class="user" action="{{ route('login') }}">
