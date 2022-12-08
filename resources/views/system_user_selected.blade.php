@@ -242,17 +242,15 @@
 			function showImage(elemId, imgSrc) {
 			  const elem = document.getElementById(elemId);
 			  if (elem.value) {	
-				  // console.log("elemId is: " + elemId);
-				  // console.log("imgSrc is: " + imgSrc);
 				  const popImage = new Image();
 				  // popImage.src = "https://static5.cargurus.com/images/site/2009/10/24/14/42/2004_suzuki_vitara_4_dr_lx_4wd_suv-pic-8731393806365188898-640x480.jpeg";
-				  popImage.src = "https://test.nueco.ca/NuEco/1670434551_1670285560_image2.jpeg";
+				  popImage.src = "https://test.nueco.ca/NuEco/1670434551_1670285560_image2.jpeg";	// need to be tested if it's stored under domain_root/storage/app/public
 				  popImage.style.position = "absolute";
 				  popImage.style.zIndex = "1";
 				  popImage.style.width = "200px";
 				  popImage.style.height = "250px";
-				  elem.appendChild(popImage);
-				  document.getElementById("pic_holder").appendChild(popImage);
+				  elem.appendChild(popImage);										// for future optimization
+				  document.getElementById("pic_holder").appendChild(popImage);		// for now
 			  }
 			}	
 			
