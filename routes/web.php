@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\MailController;
 use App\Models\User;
 use App\Models\UserSysDetail;
 
@@ -92,6 +93,12 @@ Route::post('/uploadfile',[FileUploadController::class, 'showUploadFile'])->midd
 Route::get('/dev_notes', function () {
     return view('dev_notes');
 })->name('dev_notes');
+
+Route::get('sendbasicemail', [MailController::class, 'basic_email']);
+
+Route::get('sendhtmlemail', [MailController::class, 'html_email']);
+
+Route::get('sendattachmentemail', [MailController::class, 'attachment_email']);
 
 //$url = route('profile', ['id' => 1]);
 require __DIR__.'/auth.php';

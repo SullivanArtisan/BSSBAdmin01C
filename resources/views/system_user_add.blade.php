@@ -135,8 +135,8 @@
                     <div class="row">
                         <div class="col"><label class="col-form-label">Country:&nbsp;</label></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" id="country" name="country"></div>
-                        <div class="col"><label class="col-form-label"></label></div>
-                        <div class="col"><input class="form-control mt-1" type="hidden"></div>
+                        <div class="col"><label class="col-form-label">Email this User for the New Password:&nbsp</label></div>
+                        <div class="col"><input type="checkbox" checked="true" style="margin-top:3%" id="email_password" name="email_password"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Work Tel Number:&nbsp;</label></div>
@@ -284,6 +284,13 @@
 		var nu_country = Cookies.get('nu_country');
 		if (nu_country)
 			document.getElementById("country").value = Cookies.get('nu_country');  
+		if (null == Cookies.get('nu_email_password'))
+			document.getElementById("email_password").checked = true;  	// default is checked
+		else if (1 == Cookies.get('nu_email_password')) {
+			document.getElementById("email_password").checked = true;  
+		} else {
+			document.getElementById("email_password").checked = false;  
+		}
 		var nu_work_phone = Cookies.get('nu_work_phone');
 		if (nu_work_phone)
 			document.getElementById("work_phone").value = Cookies.get('nu_work_phone');  
@@ -318,6 +325,7 @@
 		Cookies.remove('nu_show_incoming_control_emails');
 		Cookies.remove('nu_postcode');
 		Cookies.remove('nu_country');
+		Cookies.remove('nu_email_password');
 		Cookies.remove('nu_work_phone');
 		Cookies.remove('nu_home_phone');
 		Cookies.remove('nu_mobile_phone');
@@ -376,6 +384,11 @@
 			}
 			Cookies.set('nu_postcode', document.getElementById("postcode").value);	
 			Cookies.set('nu_country', document.getElementById("country").value);	
+			if (document.getElementById("email_password").checked) 	{
+				Cookies.set('nu_email_password', 1)
+			} else {
+				Cookies.set('nu_email_password', 0)
+			}
 			Cookies.set('nu_work_phone', document.getElementById("work_phone").value);	
 			Cookies.set('nu_home_phone', document.getElementById("home_phone").value);	
 			Cookies.set('nu_mobile_phone', document.getElementById("mobile_phone").value);	
