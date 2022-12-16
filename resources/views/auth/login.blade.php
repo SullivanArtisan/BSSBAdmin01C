@@ -58,7 +58,10 @@
 											<!-- <hr><a class="btn btn-primary d-block btn-google btn-user w-100 mb-2" role="button"><i class="fab fa-google"></i>&nbsp; Login with Google</a><a class="btn btn-primary d-block btn-facebook btn-user w-100" role="button"><i class="fab fa-facebook-f"></i>&nbsp; Login with Facebook</a> -->
 											<hr>
 										</form>
-										<div class="text-center"><a class="small" href="reset-password/token=">Forgot Password?</a></div>
+										@if (Route::has('password.request'))
+										<div class="text-center"><a class="small" href="{{ route('password.request') }}">Forgot Password?</a></div>
+										@endif
+
 										<!--
 										<div class="text-center"><a class="small" href="register.html">Create an Account!</a></div>
 										-->
