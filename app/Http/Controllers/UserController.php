@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserSysDetail;
+use Mail;
 
 class UserController extends Controller
 {
@@ -95,6 +96,13 @@ class UserController extends Controller
 				if(!$saved) {
 					return redirect('system_user_result')->with('status', ' <span style="color:red">Data has NOT been inserted!</span>');
 				} else {
+					if ($request->email_password == 'on') {
+						$emailBody = array('name'=>$request->name, 'status'=>'Your account has been created successfully with temporart password: '.$request->password.'. Please change it ASAP!');
+						$toAddr = $request->email;
+						Mail::send(['text'=>'mail_ok_notice'], $emailBody, function($message) use($toAddr) {
+							$message->to($toAddr, 'HarbourLink Administration')->subject('Congratulations!!');
+						});
+					}
 					return redirect('system_user_result')->with('status', 'The new user,  <span style="font-weight:bold;font-style:italic;color:blue">'.$targetUser[0]->name.'</span>, hs been inserted successfully.');
 				}
 			}

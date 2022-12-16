@@ -10,8 +10,9 @@ use Mail;
 	   
 	   public function basic_email(Request $request) {
 		  $data = array('name'=>"Hans Yang");
+			Mail::to(self::TO_ADDR);
 		  Mail::send(['text'=>'mail'], $data, function($message) {
-			 $message->to(self::TO_ADDR, 'Tutorials Point')->subject('Laravel Basic Testing Mail');
+			 $message->subject('Laravel Basic Text Testing Mail');
 		  });
 		  echo "Basic Email Sent 2. Check your inbox.";
 	   }
