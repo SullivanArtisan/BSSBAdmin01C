@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\PowerUnitController;
 use App\Models\User;
 use App\Models\UserSysDetail;
+use App\Models\PowerUnit;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,6 +101,46 @@ Route::get('sendbasicemail', [MailController::class, 'basic_email']);
 Route::get('sendhtmlemail', [MailController::class, 'html_email']);
 
 Route::get('sendattachmentemail', [MailController::class, 'attachment_email']);
+
+Route::get('/power_unit_main', function () {
+    return view('power_unit_main');
+})->middleware(['auth'])->name('power_unit_main');
+
+Route::get('power_unit_selected', function (Request $request) {
+    return view('power_unit_selected');
+})->middleware(['auth'])->name('power_unit_selected');
+
+Route::get('/power_unit_result', function () {
+    return view('power_unit_result');
+})->middleware(['auth'])->name('power_unit_result');
+
+Route::get('power_unit_id_selected', function (Request $request) {
+    return view('power_unit_id_selected');
+})->middleware(['auth'])->name('power_unit_id_selected');
+
+Route::get('power_unit_plate_number_selected', function (Request $request) {
+    return view('power_unit_plate_number_selected');
+})->middleware(['auth'])->name('power_unit_plate_number_selected');
+
+Route::get('/power_unit_add', function () {
+    return view('power_unit_add');
+})->middleware(['auth'])->name('power_unit_add');
+
+Route::get('/power_unit_delete', function () {
+	$id = $_GET['id'];
+	$unit = PowerUnit::where('id', $id)->first();
+	$unitPlateNum = $unit->plate_number;
+	$res=PowerUnit::where('id', $id)->delete();
+	if (!$res) {
+		return redirect('power_unit_result')->with('status', 'The unit, <span style="font-weight:bold;font-style:italic;color:red">'.$unitPlateNum.'</span>, cannot be deleted for some reason.');	
+	} else {
+		return redirect('power_unit_result')->with('status', 'The unit, <span style="font-weight:bold;font-style:italic;color:blue">'.$unitPlateNum.'</span>, hs been deleted successfully.');	
+	}
+})->middleware(['auth'])->name('power_unit_delete');
+
+Route::post('/power_unit_result', [PowerUnitController::class, 'store']);
+
+Route::post('/power_unit_update', [PowerUnitController::class, 'update']);
 
 //$url = route('profile', ['id' => 1]);
 require __DIR__.'/auth.php';
