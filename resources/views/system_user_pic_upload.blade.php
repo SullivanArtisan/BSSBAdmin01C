@@ -1,7 +1,17 @@
 @extends('layouts.home_page_base')
 
+<?php
+	if (isset($_GET['id'])) {
+		Session::put('--userId', $_GET['id']);
+	}
+?>
+
 @section('goback')
-	<a class="text-primary" href="{{route('system_user_add')}}" style="margin-right: 10px;">Back</a>
+	@if (Session::get('--userId'))
+		<a class="text-primary" href="{{route('system_user_selected', ['id'=>Session::get('--userId')])}}" style="margin-right: 10px;">Back</a>
+	@else
+		<a class="text-primary" href="{{route('system_user_add')}}" style="margin-right: 10px;">Back</a>
+	@endif
 @show
 
 
@@ -49,6 +59,7 @@
             </button>
         </form>
     </div>
+	<!--
     <div class="container mt-5">
 		<div class="row">
 			<div class="col-4 bg-info">
@@ -74,6 +85,7 @@
 			</div>
 		</div>
     </div>
+	-->
 <!--
 @if ($message = Session::get('success'))
 	<script>

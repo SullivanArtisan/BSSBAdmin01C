@@ -18,7 +18,7 @@ class FileUploadController extends Controller
          $filename = time().'_'.$file->getClientOriginalName();
 
          // File upload location
-         $location = '../storage/app/public';
+         $location = './pic';		// when release to product, test if it can be changed to a more appropriate path, such as: domain_root/storage/app/public; right now, it's under the public folder!
 
          // Upload file
          $file->move($location,$filename);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserSysDetail;
+use Illuminate\Support\Facades\Log;
 use Mail;
 
 class UserController extends Controller
