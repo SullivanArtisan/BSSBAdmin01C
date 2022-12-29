@@ -54,7 +54,7 @@
                         <li> <a href="#">Steamship Line DB</a> </li>
                         <li> <a href="#">Address DB</a> </li>
                         <li> <a href="{{route('system_user_main')}}">System Users</a> </li>
-                        <li> <a href="#">Zones</a> </li>
+                        <li> <a href="{{route('zone_main')}}">Zones</a> </li>
                         <li> <a href="{{route('power_unit_main')}}">Power Units</a> </li>
                         <li> <a href="#">Accessorial Charges</a> </li>
                         <li> <a href="#">Chissis List</a> </li>

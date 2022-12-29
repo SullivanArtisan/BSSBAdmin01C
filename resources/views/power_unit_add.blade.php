@@ -90,7 +90,7 @@
                         <div class="col">
 							<div class="row">
 								<button class="btn btn-secondary mx-4" type="submit">Save</button>
-								<button class="btn btn-secondary mx-3" type="button"><a href="{{route('system_user_main')}}">Cancel</a></button>
+								<button class="btn btn-secondary mx-3" type="button"><a href="{{route('power_unit_main')}}">Cancel</a></button>
 							</div>
 						</div>
                         <div class="col"></div>

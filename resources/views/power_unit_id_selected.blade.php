@@ -21,7 +21,7 @@
             </div>
             <div class="col">
 				<div class="input-group">
-				  <input type="text" class="form-control" aria-label="Text input with dropdown button" id="user_search_input">
+				  <input type="text" class="form-control" aria-label="Text input with dropdown button" id="unit_search_input">
 				  <div class="input-group-append">
 					<button class="btn btn-outline-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
 					<div class="dropdown-menu">

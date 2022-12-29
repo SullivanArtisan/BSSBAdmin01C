@@ -5,9 +5,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\PowerUnitController;
+use App\Http\Controllers\ZoneController;
 use App\Models\User;
 use App\Models\UserSysDetail;
 use App\Models\PowerUnit;
+use App\Models\Zone;
 
 /*
 |--------------------------------------------------------------------------
@@ -141,6 +143,49 @@ Route::get('/power_unit_delete', function () {
 Route::post('/power_unit_result', [PowerUnitController::class, 'store']);
 
 Route::post('/power_unit_update', [PowerUnitController::class, 'update']);
+
+Route::get('/zone_main', function () {
+    return view('zone_main');
+})->middleware(['auth'])->name('zone_main');
+
+Route::get('/zone_add', function () {
+    return view('zone_add');
+})->middleware(['auth'])->name('zone_add');
+
+Route::get('zone_selected', function (Request $request) {
+    return view('zone_selected');
+})->middleware(['auth'])->name('zone_selected');
+
+Route::get('zone_name_selected', function (Request $request) {
+    return view('zone_name_selected');
+})->middleware(['auth'])->name('zone_name_selected');
+
+Route::get('zone_group_selected', function (Request $request) {
+    return view('zone_group_selected');
+})->middleware(['auth'])->name('zone_group_selected');
+
+Route::get('zone_fsc_deduction_selected', function (Request $request) {
+    return view('zone_fsc_deduction_selected');
+})->middleware(['auth'])->name('zone_fsc_deduction_selected');
+
+Route::get('/zone_delete/{id}', function ($id) {
+	$zone = Zone::where('id', $id)->first();
+	$zoneName = $zone->zone_name;
+	$res=Zone::where('id', $id)->delete();
+	if (!$res) {
+		return redirect('zone_result')->with('status', 'The zone, <span style="font-weight:bold;font-style:italic;color:red">'.$zoneName.'</span>, cannot be deleted for some reason.');	
+	} else {
+		return redirect('zone_result')->with('status', 'The zone, <span style="font-weight:bold;font-style:italic;color:blue">'.$zoneName.'</span>, hs been deleted successfully.');	
+	}
+})->middleware(['auth'])->name('zone_delete');
+
+Route::post('/zone_update/{id}', [ZoneController::class, 'update'])->name('zone_update');
+
+Route::get('/zone_result', function () {
+    return view('zone_result');
+})->middleware(['auth'])->name('zone_result');
+
+Route::post('/zone_result', [ZoneController::class, 'store']);
 
 //$url = route('profile', ['id' => 1]);
 require __DIR__.'/auth.php';
