@@ -26,12 +26,13 @@
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3>HarbourLink</h3>
+                <h3 style="font-family: Georgia; color:LightCyan">HarbourLink</h3>
+                <h6 style="font-family: Georgia; color:LightCyan"><?php echo date("m/d/Y l");?></h6>
             </div>
 
             <ul class="list-unstyled components">
-				<div class="m-3">
-					<a href="{{route('home_page')}}">Home</a>
+				<div class="ml-2 mb-3">
+					<a href="{{route('home_page')}}"><span style='font-size:25px;'>&#127968;</span>&nbsp&nbspHome</a>
 				</div>
                 <li class="active">
                     <a href="#controlSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Control</a>
