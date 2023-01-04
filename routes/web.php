@@ -6,10 +6,12 @@ use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\PowerUnitController;
 use App\Http\Controllers\ZoneController;
+use App\Http\Controllers\TerminalController;
 use App\Models\User;
 use App\Models\UserSysDetail;
 use App\Models\PowerUnit;
 use App\Models\Zone;
+use App\Models\Terminal;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +49,7 @@ Route::get('/register', function () {
     return view('register');
 })->name('register');
 
+//////// For System Users
 Route::get('/system_user_main', function () {
     return view('system_user_main');
 })->middleware(['auth'])->name('system_user_main');
@@ -104,6 +107,7 @@ Route::get('sendhtmlemail', [MailController::class, 'html_email']);
 
 Route::get('sendattachmentemail', [MailController::class, 'attachment_email']);
 
+//////// For Power Units
 Route::get('/power_unit_main', function () {
     return view('power_unit_main');
 })->middleware(['auth'])->name('power_unit_main');
@@ -144,6 +148,7 @@ Route::post('/power_unit_result', [PowerUnitController::class, 'store']);
 
 Route::post('/power_unit_update', [PowerUnitController::class, 'update']);
 
+//////// For Zones
 Route::get('/zone_main', function () {
     return view('zone_main');
 })->middleware(['auth'])->name('zone_main');
@@ -186,6 +191,60 @@ Route::get('/zone_result', function () {
 })->middleware(['auth'])->name('zone_result');
 
 Route::post('/zone_result', [ZoneController::class, 'store']);
+
+//////// For Terminals
+Route::get('/terminal_main', function () {
+    return view('terminal_main');
+})->middleware(['auth'])->name('terminal_main');
+
+Route::get('/terminal_add', function () {
+    return view('terminal_add');
+})->middleware(['auth'])->name('terminal_add');
+
+Route::get('terminal_selected', function (Request $request) {
+    return view('terminal_selected');
+})->middleware(['auth'])->name('terminal_selected');
+
+Route::get('terminal_name_selected', function (Request $request) {
+    return view('terminal_name_selected');
+})->middleware(['auth'])->name('terminal_name_selected');
+
+Route::get('terminal_city_selected', function (Request $request) {
+    return view('terminal_city_selected');
+})->middleware(['auth'])->name('terminal_city_selected');
+
+Route::get('terminal_province_selected', function (Request $request) {
+    return view('terminal_province_selected');
+})->middleware(['auth'])->name('terminal_province_selected');
+
+Route::get('terminal_country_selected', function (Request $request) {
+    return view('terminal_country_selected');
+})->middleware(['auth'])->name('terminal_country_selected');
+
+Route::get('terminal_area_selected', function (Request $request) {
+    return view('terminal_area_selected');
+})->middleware(['auth'])->name('terminal_area_selected');
+
+Route::get('/terminal_result', function () {
+    return view('terminal_result');
+})->middleware(['auth'])->name('terminal_result');
+
+Route::post('/terminal_result', [TerminalController::class, 'store']);
+
+Route::post('/terminal_update', [TerminalController::class, 'update'])->name('terminal_update');
+
+Route::get('/terminal_delete/{id}', function ($id) {
+	$trmnl = Terminal::where('id', $id)->first();
+	$trmnlName = $trmnl->trmnl_name;
+	$res=Terminal::where('id', $id)->delete();
+	if (!$res) {
+		return redirect('terminal_result')->with('status', 'The trmnl, <span style="font-weight:bold;font-style:italic;color:red">'.$trmnlName.'</span>, cannot be deleted for some reason.');	
+	} else {
+		return redirect('terminal_result')->with('status', 'The trmnl, <span style="font-weight:bold;font-style:italic;color:blue">'.$trmnlName.'</span>, hs been deleted successfully.');	
+	}
+})->middleware(['auth'])->name('terminal_delete');
+
+
 
 //$url = route('profile', ['id' => 1]);
 require __DIR__.'/auth.php';

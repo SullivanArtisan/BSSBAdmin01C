@@ -52,7 +52,13 @@
                         <li> <a href="#">Invoicing</a> </li>
                         <li> <a href="#">Driver Pay</a> </li>
                         <li> <a href="#">Steamship Line DB</a> </li>
-                        <li> <a href="#">Address DB</a> </li>
+                        <li> <a href="#addressSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Address DB</a> </li>
+							<ul class="collapse list-unstyled mx-4" id="addressSubmenu">
+							  <li><a href="{{route('terminal_main')}}">Terminals</a></li>
+							  <li><a href="#">Company Addresses</a></li>
+							  <li><a href="#">Container Depots</a></li>
+							  <li><a href="#">Custom Locations</a></li>
+							</ul>						
                         <li> <a href="{{route('system_user_main')}}">System Users</a> </li>
                         <li> <a href="{{route('zone_main')}}">Zones</a> </li>
                         <li> <a href="{{route('power_unit_main')}}">Power Units</a> </li>
