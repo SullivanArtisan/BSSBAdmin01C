@@ -28,7 +28,7 @@
 		@endif
         <div class="row">
             <div class="col">
-                <form method="post" action="{{url('terminal_result')}}">
+                <form method="post" action="{{route('op_result.terminal_add')}}">
 					@csrf
                     <div class="row">
                         <div class="col"><label class="col-form-label">Terminal Name:&nbsp;</label></div>
@@ -94,67 +94,67 @@
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Trmnl Latitude:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1" type="number" id="trmnl_latitude" name="trmnl_latitude"></div>
+                        <div class="col"><input class="form-control mt-1" type="number" step="0.000001" id="trmnl_latitude" name="trmnl_latitude"></div>
                         <div class="col"><label class="col-form-label">Trmnl Longitude:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="number" id="trmnl_longitude" name="trmnl_longitude"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" id="trmnl_longitude" name="trmnl_longitude"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Arrived Latitude:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1" type="number" id="trmnl_arrived_latitude" name="trmnl_arrived_latitude"></div>
+                        <div class="col"><input class="form-control mt-1" type="number" step="0.000001" id="trmnl_arrived_latitude" name="trmnl_arrived_latitude"></div>
                         <div class="col"><label class="col-form-label">Arrived Longitude:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="number" id="trmnl_arrived_longitude" name="trmnl_arrived_longitude"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" id="trmnl_arrived_longitude" name="trmnl_arrived_longitude"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Arrived Radius:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1" type="number" id="trmnl_arrived_radius" name="trmnl_arrived_radius"></div>
+                        <div class="col"><input class="form-control mt-1" type="number" step="0.000001" id="trmnl_arrived_radius" name="trmnl_arrived_radius"></div>
                         <div class="col"><label class="col-form-label">&nbsp;</label></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" style="visibility: hidden"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Halo Center Latitude:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1" type="number" id="trmnl_halo_center_latitude" name="trmnl_halo_center_latitude"></div>
+                        <div class="col"><input class="form-control mt-1" type="number" step="0.000001" id="trmnl_halo_center_latitude" name="trmnl_halo_center_latitude"></div>
                         <div class="col"><label class="col-form-label">Halo Center Longitude:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="number" id="trmnl_halo_center_longitude" name="trmnl_halo_center_longitude"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" id="trmnl_halo_center_longitude" name="trmnl_halo_center_longitude"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Halo Center Radius:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1" type="number" id="trmnl_halo_center_radius" name="trmnl_halo_center_radius"></div>
+                        <div class="col"><input class="form-control mt-1" type="number" step="0.000001" id="trmnl_halo_center_radius" name="trmnl_halo_center_radius"></div>
                         <div class="col"><label class="col-form-label">&nbsp;</label></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" style="visibility: hidden"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Ingate Latitude:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1" type="number" id="trmnl_ingate_latitude" name="trmnl_ingate_latitude"></div>
+                        <div class="col"><input class="form-control mt-1" type="number" step="0.000001" id="trmnl_ingate_latitude" name="trmnl_ingate_latitude"></div>
                         <div class="col"><label class="col-form-label">Ingate Longitude:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="number" id="trmnl_ingate_longitude" name="trmnl_ingate_longitude"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" id="trmnl_ingate_longitude" name="trmnl_ingate_longitude"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Ingate Radius:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1" type="number" id="trmnl_ingate_radius" name="trmnl_ingate_radius"></div>
+                        <div class="col"><input class="form-control mt-1" type="number" step="0.000001" id="trmnl_ingate_radius" name="trmnl_ingate_radius"></div>
                         <div class="col"><label class="col-form-label">&nbsp;</label></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" style="visibility: hidden"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Outgate Latitude:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1" type="number" id="trmnl_outgate1_latitude" name="trmnl_outgate1_latitude"></div>
+                        <div class="col"><input class="form-control mt-1" type="number" step="0.000001" id="trmnl_outgate1_latitude" name="trmnl_outgate1_latitude"></div>
                         <div class="col"><label class="col-form-label">Outgate Longitude:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="number" id="trmnl_outgate1_longitude" name="trmnl_outgate1_longitude"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" id="trmnl_outgate1_longitude" name="trmnl_outgate1_longitude"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Outgate Radius:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1" type="number" id="trmnl_outgate1_radius" name="trmnl_outgate1_radius"></div>
+                        <div class="col"><input class="form-control mt-1" type="number" step="0.000001" id="trmnl_outgate1_radius" name="trmnl_outgate1_radius"></div>
                         <div class="col"><label class="col-form-label">&nbsp;</label></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" style="visibility: hidden"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Outgate 2 Latitude:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1" type="number" id="trmnl_outgate2_latitude" name="trmnl_outgate2_latitude"></div>
+                        <div class="col"><input class="form-control mt-1" type="number" step="0.000001" id="trmnl_outgate2_latitude" name="trmnl_outgate2_latitude"></div>
                         <div class="col"><label class="col-form-label">Outgate 2 Longitude:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="number" id="trmnl_outgate2_longitude" name="trmnl_outgate2_longitude"></div>
+                        <div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" id="trmnl_outgate2_longitude" name="trmnl_outgate2_longitude"></div>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Outgate 2 Radius:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1" type="number" id="trmnl_outgate2_radius" name="trmnl_outgate2_radius"></div>
+                        <div class="col"><input class="form-control mt-1" type="number" step="0.000001" id="trmnl_outgate2_radius" name="trmnl_outgate2_radius"></div>
                         <div class="col"><label class="col-form-label">&nbsp;</label></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" style="visibility: hidden"></div>
                     </div>

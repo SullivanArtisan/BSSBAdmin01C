@@ -90,15 +90,9 @@
 	function GetSearchResult1(search_by) {
 		zone_search_value = document.getElementById('zone_search_input').value;
 		if (zone_search_value) {
-			url = '';
-			if (search_by == 'zone_name') {
-				url = "{{ route('zone_name_selected', ':zone_name') }}";
-			} else if (search_by == 'zone_group') {
-				url = "{{ route('zone_group_selected', ':zone_group') }}";
-			} else if (search_by == 'zone_fsc_deduction') {
-				url = "{{ route('zone_fsc_deduction_selected', ':zone_fsc_deduction') }}";
-			}
-			url = url.replace(':'+search_by, search_by+'='+zone_search_value);
+			param = search_by + '=' + zone_search_value;
+			url = "{{ route('zone_condition_selected', '::') }}";
+			url = url.replace('::', param);
 			document.location.href=url;
 		}
 	}

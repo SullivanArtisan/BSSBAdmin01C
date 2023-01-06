@@ -61,7 +61,7 @@
 			@endif
 			<div class="row">
 				<div class="col">
-					<form method="post" action="{{route('terminal_update', ['id'=>$id])}}">
+					<form method="post" action="{{route('op_result.terminal_update', ['id'=>$id])}}">
 						@csrf
 						<div class="row">
 							<div class="col"><label class="col-form-label">Terminal:&nbsp;</label></div>
@@ -113,71 +113,89 @@
 							<div class="col"><label class="col-form-label">No Signature Required:&nbsp;</label></div>
 							<div class="col"><input type="checkbox" style="margin-top:3%" name="trmnl_no_sig_required" <?php if($trmnl->trmnl_no_sig_required) {echo "checked";}?>></div>
 							<div class="col"><label class="col-form-label">Geofence Facility:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_geofence_facility" value="{{$trmnl->trmnl_geofence_facility}}"></div>
+							<div class="col">
+								<?php
+									if ($trmnl->trmnl_geofence_facility) {
+										$placeholder = \App\Models\GeofenceFacility::where('id', $trmnl->trmnl_geofence_facility)->first()->facility_name;
+										$html_tag = '<input class="form-control mt-1 my-text-height" list="trmnl_geofence_facility" name="trmnl_geofence_facility" type="text" placeholder="'.$placeholder.'">';
+									} else {
+										$html_tag = '<input class="form-control mt-1 my-text-height" list="trmnl_geofence_facility" name="trmnl_geofence_facility" type="text">';
+									}
+									echo $html_tag;
+								?>
+								<datalist id="trmnl_geofence_facility">
+									<?php
+										$geo_fs = \App\Models\GeofenceFacility::all();
+										foreach ($geo_fs as $geo_f) {
+											echo ("<option value=\"".$geo_f->facility_name."\">");
+										}
+									?>
+								</datalist>
+							</div>
 						</div>
 						<div class="row">
 							<div class="col"><label class="col-form-label">Trmnl Latitude:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_latitude" value="{{$trmnl->trmnl_latitude}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_latitude" value="{{$trmnl->trmnl_latitude}}"></div>
 							<div class="col"><label class="col-form-label">Trmnl Longitude:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_longitude" value="{{$trmnl->trmnl_longitude}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_longitude" value="{{$trmnl->trmnl_longitude}}"></div>
 						</div>
 						<div class="row">
 							<div class="col"><label class="col-form-label">Arrived Latitude:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_arrived_latitude" value="{{$trmnl->trmnl_arrived_latitude}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_arrived_latitude" value="{{$trmnl->trmnl_arrived_latitude}}"></div>
 							<div class="col"><label class="col-form-label">Arrived Longitude:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_arrived_longitude" value="{{$trmnl->trmnl_arrived_longitude}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_arrived_longitude" value="{{$trmnl->trmnl_arrived_longitude}}"></div>
 						</div>
 						<div class="row">
 							<div class="col"><label class="col-form-label">Arrived Radius:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_arrived_radius" value="{{$trmnl->trmnl_arrived_radius}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_arrived_radius" value="{{$trmnl->trmnl_arrived_radius}}"></div>
 							<div class="col"><label class="col-form-label">&nbsp;</label></div>
 							<div class="col"><input class="form-control mt-1 my-text-height" style="visibility: hidden"></div>
 						</div>
 						<div class="row">
 							<div class="col"><label class="col-form-label">Halo Center Latitude:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_halo_center_latitude" value="{{$trmnl->trmnl_halo_center_latitude}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_halo_center_latitude" value="{{$trmnl->trmnl_halo_center_latitude}}"></div>
 							<div class="col"><label class="col-form-label">Halo Center Longitude:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_halo_center_longitude" value="{{$trmnl->trmnl_halo_center_longitude}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_halo_center_longitude" value="{{$trmnl->trmnl_halo_center_longitude}}"></div>
 						</div>
 						<div class="row">
 							<div class="col"><label class="col-form-label">Halo Center Radius:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_halo_center_radius" value="{{$trmnl->trmnl_halo_center_radius}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_halo_center_radius" value="{{$trmnl->trmnl_halo_center_radius}}"></div>
 							<div class="col"><label class="col-form-label">&nbsp;</label></div>
 							<div class="col"><input class="form-control mt-1 my-text-height" style="visibility: hidden"></div>
 						</div>
 						<div class="row">
 							<div class="col"><label class="col-form-label">Ingate Latitude:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_ingate_latitude" value="{{$trmnl->trmnl_ingate_latitude}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_ingate_latitude" value="{{$trmnl->trmnl_ingate_latitude}}"></div>
 							<div class="col"><label class="col-form-label">Ingate Longitude:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_ingate_longitude" value="{{$trmnl->trmnl_ingate_longitude}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_ingate_longitude" value="{{$trmnl->trmnl_ingate_longitude}}"></div>
 						</div>
 						<div class="row">
 							<div class="col"><label class="col-form-label">Ingate Radius:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_ingate_radius" value="{{$trmnl->trmnl_ingate_radius}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_ingate_radius" value="{{$trmnl->trmnl_ingate_radius}}"></div>
 							<div class="col"><label class="col-form-label">&nbsp;</label></div>
 							<div class="col"><input class="form-control mt-1 my-text-height" style="visibility: hidden"></div>
 						</div>
 						<div class="row">
 							<div class="col"><label class="col-form-label">Outgate Latitude:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_outgate1_latitude" value="{{$trmnl->trmnl_outgate1_latitude}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_outgate1_latitude" value="{{$trmnl->trmnl_outgate1_latitude}}"></div>
 							<div class="col"><label class="col-form-label">Outgate Longitude:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_outgate1_longitude" value="{{$trmnl->trmnl_outgate1_longitude}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_outgate1_longitude" value="{{$trmnl->trmnl_outgate1_longitude}}"></div>
 						</div>
 						<div class="row">
 							<div class="col"><label class="col-form-label">Outgate Radius:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_outgate1_radius" value="{{$trmnl->trmnl_outgate1_radius}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_outgate1_radius" value="{{$trmnl->trmnl_outgate1_radius}}"></div>
 							<div class="col"><label class="col-form-label">&nbsp;</label></div>
 							<div class="col"><input class="form-control mt-1 my-text-height" style="visibility: hidden"></div>
 						</div>
 						<div class="row">
 							<div class="col"><label class="col-form-label">Outgate 2 Latitude:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_outgate2_latitude" value="{{$trmnl->trmnl_outgate2_latitude}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_outgate2_latitude" value="{{$trmnl->trmnl_outgate2_latitude}}"></div>
 							<div class="col"><label class="col-form-label">Outgate 2 Longitude:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_outgate2_longitude" value="{{$trmnl->trmnl_outgate2_longitude}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_outgate2_longitude" value="{{$trmnl->trmnl_outgate2_longitude}}"></div>
 						</div>
 						<div class="row">
 							<div class="col"><label class="col-form-label">Outgate 2 Radius:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="number" name="trmnl_outgate2_radius" value="{{$trmnl->trmnl_outgate2_radius}}"></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="number" step="0.000001" name="trmnl_outgate2_radius" value="{{$trmnl->trmnl_outgate2_radius}}"></div>
 							<div class="col"><label class="col-form-label">&nbsp;</label></div>
 							<div class="col"><input class="form-control mt-1 my-text-height" style="visibility: hidden"></div>
 						</div>

@@ -5,8 +5,6 @@
 @show
 
 <?php
-	use App\Models\PowerUnit;
-	
 	$url_components = parse_url($_SERVER['REQUEST_URI']);
 	parse_str($url_components['query'], $params);
 	$key = array_keys($params)[0];
@@ -17,7 +15,14 @@
     <div>
         <div class="row m-4">
             <div>
-				<h2 class="text-muted pl-2">Power Units Searched Results (by Plate Number)</h2>
+				<?php
+					$page_head = "<h2 class=\"text-muted pl-2\">Power Units Searched Results (by ";
+					if ($key == 'unit_id') {
+						$page_head .= "Unit Id)</h2>";
+					} else if ($key == 'plate_number') {
+						$page_head .= "Plate Number)</h2>";
+					}echo $page_head;
+				?>
             </div>
             <div class="col">
 				<div class="input-group">
@@ -34,7 +39,7 @@
         </div>
     </div>
 	<?php
-		$units = \App\Models\PowerUnit::where('plate_number', $value_parm)->get();
+		$units = \App\Models\PowerUnit::where($key, $value_parm)->get();
 		
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";
@@ -123,13 +128,9 @@
 	function GetSearchResult(search_by) {
 		unit_search_value = document.getElementById('unit_search_input').value;
 		if (unit_search_value) {
-			url = '';
-			if (search_by == 'unit_id') {
-				url = "{{ route('power_unit_id_selected', ':unit_id') }}";
-			} else if (search_by == 'plate_number') {
-				url = "{{ route('power_unit_plate_number_selected', ':plate_number') }}";
-			}
-			url = url.replace(':'+search_by, search_by+'='+unit_search_value);
+			param = search_by + '=' + unit_search_value;
+			url = "{{ route('power_unit_condition_selected', '::') }}";
+			url = url.replace('::', param);
 			document.location.href=url;
 		}
 	}

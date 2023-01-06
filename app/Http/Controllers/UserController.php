@@ -25,7 +25,7 @@ class UserController extends Controller
 		
 		$emailExists = User::where('email', $request->email)->first();
 		if ($emailExists) {
-			return redirect('system_user_result')->with('status', ' <span style="color:red">Data cannot NOT be inserted as the email address exists already!</span>');
+			return redirect()->route('op_result.user')->with('status', ' <span style="color:red">Data cannot NOT be inserted as the email address exists already!</span>');
 		} else {
 			$user = new User;
 			$user->name = $request->name;
@@ -46,7 +46,7 @@ class UserController extends Controller
 			$saved = $user->save();
 			
 			if(!$saved) {
-				return redirect('system_user_result')->with('status', ' <span style="color:red">Data Has NOT Been inserted!</span>');
+				return redirect()->route('op_result.user')->with('status', ' <span style="color:red">Data Has NOT Been inserted!</span>');
 			} else {
 				$targetUser = User::where('email', $request->email)->get();
 				
@@ -95,7 +95,7 @@ class UserController extends Controller
 				$saved = $userDetails->save();
 
 				if(!$saved) {
-					return redirect('system_user_result')->with('status', ' <span style="color:red">Data has NOT been inserted!</span>');
+					return redirect()->route('op_result.user')->with('status', ' <span style="color:red">Data has NOT been inserted!</span>');
 				} else {
 					if ($request->email_password == 'on') {
 						$emailBody = array('name'=>$request->name, 'status'=>'Your account has been created successfully with temporart password: '.$request->password.'. Please change it ASAP!');
@@ -104,7 +104,7 @@ class UserController extends Controller
 							$message->to($toAddr, 'HarbourLink Administration')->subject('Congratulations!!');
 						});
 					}
-					return redirect('system_user_result')->with('status', 'The new user,  <span style="font-weight:bold;font-style:italic;color:blue">'.$targetUser[0]->name.'</span>, hs been inserted successfully.');
+					return redirect()->route('op_result.user')->with('status', 'The new user,  <span style="font-weight:bold;font-style:italic;color:blue">'.$targetUser[0]->name.'</span>, hs been inserted successfully.');
 				}
 			}
 		}
@@ -124,7 +124,7 @@ class UserController extends Controller
 		
 		//$emailExists = User::where('email', $request->email)->first();
 		//if ($emailExists) {
-		//	return redirect('system_user_result')->with('status', ' <span style="color:red">Data cannot NOT be updated as the email address exists already!</span>'.$request->ops_code);
+		//	return redirect()->route('op_result.user')->with('status', ' <span style="color:red">Data cannot NOT be updated as the email address exists already!</span>'.$request->ops_code);
 		//} else {
 			$user = User::where('email', $request->email)->first();
 			$user->name = $request->name;
@@ -145,7 +145,7 @@ class UserController extends Controller
 			$saved = $user->save();
 			
 			if(!$saved) {
-				return redirect('system_user_result')->with('status', ' <span style="color:red">Data Has NOT Been inserted!</span>');
+				return redirect()->route('op_result.user')->with('status', ' <span style="color:red">Data Has NOT Been inserted!</span>');
 			} else {
 				$userDetails = UserSysDetail::where('user_id', $user->id)->first();
 				//$userDetails->user_id = $targetUser[0]->id;
@@ -193,9 +193,9 @@ class UserController extends Controller
 				$saved = $userDetails->save();
 
 				if(!$saved) {
-					return redirect('system_user_result')->with('status', ' <span style="color:red">Data has NOT been updated!</span>');
+					return redirect()->route('op_result.user')->with('status', ' <span style="color:red">Data has NOT been updated!</span>');
 				} else {
-					return redirect('system_user_result')->with('status', 'The new user,  <span style="font-weight:bold;font-style:italic;color:blue">'.$user->name.'</span>, hs been updated successfully.');
+					return redirect()->route('op_result.user')->with('status', 'The new user,  <span style="font-weight:bold;font-style:italic;color:blue">'.$user->name.'</span>, hs been updated successfully.');
 				}
 			}
 		//}

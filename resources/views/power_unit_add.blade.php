@@ -28,7 +28,7 @@
 		@endif
         <div class="row">
             <div class="col">
-                <form method="post" action="{{url('power_unit_result')}}">
+                <form method="post" action="{{route('op_result.power_unit_add')}}">
 					@csrf
                     <div class="row">
                         <div class="col"><label class="col-form-label">Unit ID:&nbsp;</label></div>

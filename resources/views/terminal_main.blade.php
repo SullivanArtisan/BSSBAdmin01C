@@ -108,19 +108,9 @@
 	function GetSearchResult1(search_by) {
 		trmnl_search_value = document.getElementById('trmnl_search_input').value;
 		if (trmnl_search_value) {
-			url = '';
-			if (search_by == 'trmnl_name') {
-				url = "{{ route('terminal_name_selected', ':trmnl_name') }}";
-			} else if (search_by == 'trmnl_city') {
-				url = "{{ route('terminal_city_selected', ':trmnl_city') }}";
-			} else if (search_by == 'trmnl_province') {
-				url = "{{ route('terminal_province_selected', ':trmnl_province') }}";
-			} else if (search_by == 'trmnl_country') {
-				url = "{{ route('terminal_country_selected', ':trmnl_country') }}";
-			} else if (search_by == 'trmnl_area') {
-				url = "{{ route('terminal_area_selected', ':trmnl_area') }}";
-			}
-			url = url.replace(':'+search_by, search_by+'='+trmnl_search_value);
+			param = search_by + '=' + trmnl_search_value;
+			url = "{{ route('terminal_condition_selected', '::') }}";
+			url = url.replace('::', param);
 			document.location.href=url;
 		}
 	}

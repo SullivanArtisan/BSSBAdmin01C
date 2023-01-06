@@ -28,7 +28,7 @@
 		@endif
         <div class="row">
             <div class="col">
-                <form method="post" action="{{url('zone_result')}}">
+                <form method="post" action="{{route('op_result.zone_add')}}">
 					@csrf
                     <div class="row">
                         <div class="col"><label class="col-form-label">Zone Name:&nbsp;</label></div>

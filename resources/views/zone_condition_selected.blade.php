@@ -5,8 +5,6 @@
 @show
 
 <?php
-	use App\Models\Zone;
-	
 	$url_components = parse_url($_SERVER['REQUEST_URI']);
 	parse_str($url_components['query'], $params);
 	$key = array_keys($params)[0];
@@ -17,7 +15,17 @@
     <div>
         <div class="row m-4">
             <div>
-				<h2 class="text-muted pl-2">Zone Searched Results (by Zone Name)</h2>
+				<?php
+					$page_head = "<h2 class=\"text-muted pl-2\">Zones Searched Results (by ";
+					if ($key == 'zone_name') {
+						$page_head .= "Zone Name)</h2>";
+					} else if ($key == 'zone_group') {
+						$page_head .= "Zone Group)</h2>";
+					} else if ($key == 'zone_fsc_deduction') {
+						$page_head .= "Zone FSC Deduction %)</h2>";
+					}
+					echo $page_head;
+				?>
             </div>
             <div class="col">
 				<div class="input-group">
@@ -25,8 +33,9 @@
 				  <div class="input-group-append">
 					<button class="btn btn-outline-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
 					<div class="dropdown-menu">
-					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('zone_group')\" style=\"cursor: pointer;\">by Zone Group</button>");</script>
-					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('zone_fsc_deduction')\" style=\"cursor: pointer;\">by Zone FSC Deduction 5</button>");</script>
+					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult1('zone_name')\" style=\"cursor: pointer;\">by Zone Name</button>");</script>
+					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult1('zone_group')\" style=\"cursor: pointer;\">by Zone Group</button>");</script>
+					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult1('zone_fsc_deduction')\" style=\"cursor: pointer;\">by Zone FSC Deduction</button>");</script>
 					</div>
 				  </div>
 				</div>			
@@ -34,7 +43,7 @@
         </div>
     </div>
 	<?php
-		$zones = \App\Models\Zone::where('zone_name', $value_parm)->get();
+		$zones = \App\Models\Zone::where($key, $value_parm)->get();
 		
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";
@@ -68,7 +77,7 @@
 					$outContents .= "</a>";
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-5\">";
-					$outContents .= "<a href=\"zone_selected?id=$zone->id\">";
+					$outContents .= "<a href=\zone_selected?id=$zone->id\">";
 					$outContents .= $zone->zone_description;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
@@ -88,16 +97,12 @@
 @endsection
 
 <script>
-	function GetSearchResult(search_by) {
+	function GetSearchResult1(search_by) {
 		zone_search_value = document.getElementById('zone_search_input').value;
 		if (zone_search_value) {
-			url = '';
-			if (search_by == 'zone_group') {
-				url = "{{ route('zone_group_selected', ':zone_group') }}";
-			} else if (search_by == 'zone_fsc_deduction') {
-				url = "{{ route('zone_fsc_deduction_selected', ':zone_fsc_deduction') }}";
-			}
-			url = url.replace(':'+search_by, search_by+'='+zone_search_value);
+			param = search_by + '=' + zone_search_value;
+			url = "{{ route('zone_condition_selected', '::') }}";
+			url = url.replace('::', param);
 			document.location.href=url;
 		}
 	}

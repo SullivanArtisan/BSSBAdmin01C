@@ -5,8 +5,6 @@
 @show
 
 <?php
-	use App\Models\UserSysDetail;
-	
 	$url_components = parse_url($_SERVER['REQUEST_URI']);
 	parse_str($url_components['query'], $params);
 	$key = array_keys($params)[0];
@@ -17,7 +15,17 @@
     <div>
         <div class="row m-4">
             <div>
-				<h2 class="text-muted pl-2">System Users Searched Results (by User Name)</h2>
+				<?php
+					$page_head = "<h2 class=\"text-muted pl-2\">System Users Searched Results (by ";
+					if ($key == 'id') {
+						$page_head .= "User Id)</h2>";
+					} else if ($key == 'name') {
+						$page_head .= "User Name)</h2>";
+					} else if ($key == 'email') {
+						$page_head .= "User Email)</h2>";
+					}
+					echo $page_head;
+				?>
             </div>
             <div class="col">
 				<div class="input-group">
@@ -35,7 +43,9 @@
         </div>
     </div>
 	<?php
-		$users = \App\Models\User::where('name', $value_parm)->get();
+		use App\Models\UserSysDetail;
+		
+		$users = \App\Models\User::where($key, $value_parm)->get();
 		
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";
@@ -126,21 +136,10 @@
 <script>
 	function GetSearchResult(search_by) {
 		user_search_value = document.getElementById('user_search_input').value;
-		if (search_by) {
-			var key = search_by;
-		} else {
-			var key = @json($key);
-		}
 		if (user_search_value) {
-			url = '';
-			if (key == 'id') {
-				url = "{{ route('system_user_selected', ':id') }}";
-			} else if (key == 'name') {
-				url = "{{ route('system_user_name_selected', ':name') }}";
-			} else if (key == 'email') {
-				url = "{{ route('system_user_email_selected', ':email') }}";
-			}
-			url = url.replace(':'+key, key+'='+user_search_value);
+			param = search_by + '=' + user_search_value;
+			url = "{{ route('system_user_condition_selected', '::') }}";
+			url = url.replace('::', param);
 			document.location.href=url;
 		}
 	}

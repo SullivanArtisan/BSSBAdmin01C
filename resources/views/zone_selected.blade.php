@@ -61,7 +61,7 @@
 			@endif
 			<div class="row">
 				<div class="col">
-					<form method="post" action="{{route('zone_update', ['id'=>$id])}}">
+					<form method="post" action="{{route('op_result.zone_update', ['id'=>$id])}}">
 						@csrf
 						<div class="row mx-2">
 							<div class="col-2"><label class="col-form-label">Zone:&nbsp;</label></div>

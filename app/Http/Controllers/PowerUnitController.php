@@ -41,9 +41,9 @@ class PowerUnitController extends Controller
 			$saved = $unit->save();
 			
 			if(!$saved) {
-				return redirect('power_unit_result')->with('status', ' <span style="color:red">Data Has NOT Been inserted!</span>');
+				return redirect()->route('op_result.unit')->with('status', ' <span style="color:red">Data Has NOT Been inserted!</span>');
 			} else {
-				return redirect('power_unit_result')->with('status', 'The new power unit,  <span style="font-weight:bold;font-style:italic;color:blue">'.$request->unit_id.'</span>, hs been inserted successfully.');
+				return redirect()->route('op_result.unit')->with('status', 'The new power unit,  <span style="font-weight:bold;font-style:italic;color:blue">'.$request->unit_id.'</span>, hs been inserted successfully.');
 			}
 		}
     }
@@ -70,9 +70,9 @@ class PowerUnitController extends Controller
 		$saved = $unit->save();
 		
 		if(!$saved) {
-			return redirect('power_unit_result')->with('status', ' <span style="color:red">Data has NOT been updated!</span>');
+			return redirect()->route('op_result.unit')->with('status', ' <span style="color:red">Data has NOT been updated!</span>');
 		} else {
-			return redirect('power_unit_result')->with('status', 'The power unit,  <span style="font-weight:bold;font-style:italic;color:blue">'.$unit->plate_number.'</span>, hs been updated successfully.');
+			return redirect()->route('op_result.unit')->with('status', 'The power unit,  <span style="font-weight:bold;font-style:italic;color:blue">'.$unit->plate_number.'</span>, hs been updated successfully.');
 		}
     }
 }

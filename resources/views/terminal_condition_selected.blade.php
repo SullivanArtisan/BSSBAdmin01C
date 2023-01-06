@@ -15,7 +15,21 @@
     <div>
         <div class="row m-4">
             <div>
-				<h2 class="text-muted pl-2">Terminals Searched Results (by City)</h2>
+				<?php
+					$page_head = "<h2 class=\"text-muted pl-2\">Terminals Searched Results (by ";
+					if ($key == 'trmnl_name') {
+						$page_head .= "Terminal Name)</h2>";
+					} else if ($key == 'trmnl_city') {
+						$page_head .= "City)</h2>";
+					} else if ($key == 'trmnl_province') {
+						$page_head .= "Province)</h2>";
+					} else if ($key == 'trmnl_country') {
+						$page_head .= "Country)</h2>";
+					} else if ($key == 'trmnl_area') {
+						$page_head .= "Area)</h2>";
+					}
+					echo $page_head;
+				?>
             </div>
             <div class="col">
 				<div class="input-group">
@@ -35,7 +49,7 @@
         </div>
     </div>
 	<?php
-		$trmnls = \App\Models\Terminal::where('trmnl_city', $value_parm)->get();
+		$trmnls = \App\Models\Terminal::where($key, $value_parm)->get();
 		
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";
@@ -108,19 +122,9 @@
 	function GetSearchResult1(search_by) {
 		trmnl_search_value = document.getElementById('trmnl_search_input').value;
 		if (trmnl_search_value) {
-			url = '';
-			if (search_by == 'trmnl_name') {
-				url = "{{ route('terminal_name_selected', ':trmnl_name') }}";
-			} else if (search_by == 'trmnl_city') {
-				url = "{{ route('terminal_city_selected', ':trmnl_city') }}";
-			} else if (search_by == 'trmnl_province') {
-				url = "{{ route('terminal_province_selected', ':trmnl_province') }}";
-			} else if (search_by == 'trmnl_country') {
-				url = "{{ route('terminal_country_selected', ':trmnl_country') }}";
-			} else if (search_by == 'trmnl_area') {
-				url = "{{ route('terminal_area_selected', ':trmnl_area') }}";
-			}
-			url = url.replace(':'+search_by, search_by+'='+trmnl_search_value);
+			param = search_by + '=' + trmnl_search_value;
+			url = "{{ route('terminal_condition_selected', '::') }}";
+			url = url.replace('::', param);
 			document.location.href=url;
 		}
 	}

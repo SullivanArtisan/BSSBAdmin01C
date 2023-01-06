@@ -151,15 +151,9 @@
 	function GetSearchResult(search_by) {
 		user_search_value = document.getElementById('user_search_input').value;
 		if (user_search_value) {
-			url = '';
-			if (search_by == 'id') {
-				url = "{{ route('system_user_selected', ':id') }}";
-			} else if (search_by == 'name') {
-				url = "{{ route('system_user_name_selected', ':name') }}";
-			} else if (search_by == 'email') {
-				url = "{{ route('system_user_email_selected', ':email') }}";
-			}
-			url = url.replace(':'+search_by, search_by+'='+user_search_value);
+			param = search_by + '=' + user_search_value;
+			url = "{{ route('system_user_condition_selected', '::') }}";
+			url = url.replace('::', param);
 			document.location.href=url;
 		}
 	}

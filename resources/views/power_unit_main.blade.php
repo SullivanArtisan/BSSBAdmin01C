@@ -123,13 +123,9 @@
 	function GetSearchResult(search_by) {
 		unit_search_value = document.getElementById('unit_search_input').value;
 		if (unit_search_value) {
-			url = '';
-			if (search_by == 'unit_id') {
-				url = "{{ route('power_unit_id_selected', ':unit_id') }}";
-			} else if (search_by == 'plate_number') {
-				url = "{{ route('power_unit_plate_number_selected', ':plate_number') }}";
-			}
-			url = url.replace(':'+search_by, search_by+'='+unit_search_value);
+			param = search_by + '=' + unit_search_value;
+			url = "{{ route('power_unit_condition_selected', '::') }}";
+			url = url.replace('::', param);
 			document.location.href=url;
 		}
 	}

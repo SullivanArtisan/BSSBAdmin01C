@@ -33,7 +33,7 @@
 		@endif
         <div class="row">
             <div class="col">
-                <form method="post" action="{{url('system_user_result')}}">
+                <form method="post" action="{{route('op_result.system_user_add')}}">
 					@csrf
                     <div class="row">
                         <div class="col"><label class="col-form-label">Name:&nbsp;</label></div>
