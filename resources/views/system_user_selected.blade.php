@@ -47,11 +47,9 @@
 		<?php
 			if (Session::get('uploadPath')) {
 				$picPath = Session::get('uploadPath');
-				Log::info('a = '.$picPath);
 				Session::forget(['uploadPath']);
 			} else {
 				$picPath = $userDetails->picture_file;
-				Log::info('b = '.$picPath);
 			}
 		?>
 		<div>

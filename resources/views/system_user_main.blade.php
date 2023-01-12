@@ -31,37 +31,44 @@
 	<?php
 		use App\Models\UserSysDetail;
 		
-		$users = \App\Models\User::paginate(10);
-		
-		/*
-		$outContents = "<ul class=\"list-group\">";
-		$outContents .= "<li class=\"list-group-item\">";
-		$outContents .= "<input class=\"form-check-input me-1\" type=\"radio\" value=\"\" aria-label=\"...\">";
-		$outContents .= "First button";
-		$outContents .= "</li>";
-		$outContents .= "<li class=\"list-group-item\">";
-		$outContents .= "<input class=\"form-check-input me-1\" type=\"radio\" value=\"\" aria-label=\"...\">";
-		$outContents .= "Second button";
-		$outContents .= "</li>";
-		$outContents .= "</ul>";
-		*/
-		/*
-		$outContents = "<div class=\"list-group\">";
-		$outContents .= "<a href=\"home_page\" class=\"list-group-item list-group-item-action\" aria-current=\"true\">";
-		$outContents .= "Item 1";
-		$outContents .= "</a>";
-		$outContents .= "<a href=\"home_page\" class=\"list-group-item list-group-item-action\">";
-		$outContents .= "Item 2";
-		$outContents .= "</a>";
-		$outContents .= "</div>";
-		{{echo $outContents;}}
-		*/
-		
+		// Check if the page is refresed
+		if (isset($_GET['sort_time'])) {
+			if ($_GET['sort_time'] != session('sort_time', '0')) {
+				session(['sort_time' => $_GET['sort_time']]);
+				$needResort = true;
+			}
+			else {
+				$needResort = false;
+			}
+		} else {
+			$needResort = false;
+		}
+			
+		// Get data ordered by the user's intent
+		$sortOrder = session('sort_order', 'asc');
+		$sortKey = session('sort_key', 'name');
+		if ($needResort == true) {
+			if ($sortOrder == 'asc') {
+				session(['sort_order' => 'desc']);
+			} else {
+				session(['sort_order' => 'asc']);
+			}
+			$users = \App\Models\User::orderBy($_GET['sort_key'], session('sort_order', 'asc'))->paginate(10);
+			////$users = \App\Models\User::sortable([$_GET['sort_key'] => session('sort_order', 'asc')])->paginate(10);		// If you want to use the Kyslik\ColumnSortable package (google the instruction for installation and usage)
+			session(['sort_key' => 'name']);
+		} else {
+			$users = \App\Models\User::orderBy($sortKey, $sortOrder)->paginate(10);
+			////$users = \App\Models\User::sortable([$sortKey => $sortOrder])->paginate(10);				// If you want to use the Kyslik\ColumnSortable package (google the instruction for installation and usage)
+		}
+
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";
         $outContents .= "<div class=\"row bg-info text-white fw-bold\">";
 			$outContents .= "<div class=\"col-2 align-middle\">";
+				$sortParms = "?sort_key=name&sort_time=".time();
+				$outContents .= "<a href=\"system_user_main".$sortParms."\">";
 				$outContents .= "Name";
+				$outContents .= "</a>";
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-3\">";
 				$outContents .= "Email";
