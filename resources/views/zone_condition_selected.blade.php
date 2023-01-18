@@ -43,13 +43,45 @@
         </div>
     </div>
 	<?php
-		$zones = \App\Models\Zone::where($key, $value_parm)->get();
+		// Check if the page is refresed
+		if (isset($_GET['sort_time'])) {
+			if ($_GET['sort_time'] != session('sort_time', '0')) {
+				session(['sort_time' => $_GET['sort_time']]);
+				$needResort = true;
+			}
+			else {
+				$needResort = false;
+			}
+		} else {
+			$needResort = false;
+		}
+			
+		$sort_icon = $sortOrder = session('sort_order', 'asc');
+		if ($needResort == true) {
+			if ($sortOrder == 'asc') {
+				session(['sort_order' => 'desc']);
+				$sort_icon = 'desc';
+			} else {
+				session(['sort_order' => 'asc']);
+				$sort_icon = 'asc';
+			}
+			$zones = \App\Models\Zone::where($key, $value_parm)->orderBy('zone_name', session('sort_order', 'asc'))->get();
+		} else {
+			$zones = \App\Models\Zone::where($key, $value_parm)->orderBy('zone_name', $sortOrder)->get();
+		}
 		
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";
         $outContents .= "<div class=\"row bg-info text-white fw-bold\">";
 			$outContents .= "<div class=\"col-3 align-middle\">";
+				$sortParms = "?".$key."=".$value_parm."&sort_key_zone=zone_name&sort_time=".time();
+				$outContents .= "<a href=\"zone_condition_selected".$sortParms."\">";
 				$outContents .= "Zone";
+				if ($sort_icon == 'asc') {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
+				} else {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
+				}
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
 				$outContents .= "Group";

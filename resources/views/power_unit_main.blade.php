@@ -30,19 +30,89 @@
 	<?php
 		use App\Models\UserSysDetail;
 		
-		$units = \App\Models\PowerUnit::paginate(10);
-		
+		// Check if the page is refresed
+		if (isset($_GET['sort_time'])) {
+			if ($_GET['sort_time'] != session('sort_time', '0')) {
+				session(['sort_time' => $_GET['sort_time']]);
+				$needResort = true;
+			}
+			else {
+				$needResort = false;
+			}
+			$sortKeyInput = $_GET['sort_key_unit'];
+		} else {
+			$needResort = false;
+			if (!isset($_GET['page'])) {
+				$sortKeyInput = session('sort_key_unit', '');
+				if ($sortKeyInput == '') {
+					$sortKeyInput = 'unit_id';
+				} 
+			} else {
+				$sortKeyInput = session('sort_key_unit', 'unit_id');
+			}
+		}
+			
+		// Get data ordered by the user's intent
+		$sort_icon = $sortOrder = session('sort_order', 'asc');
+		$sortKey = session('sort_key_unit', $sortKeyInput);
+		if ($needResort == true) {
+			if ($sortOrder == 'asc') {
+				session(['sort_order' => 'desc']);
+				$sort_icon = 'desc';
+			} else {
+				session(['sort_order' => 'asc']);
+				$sort_icon = 'asc';
+			}
+			$units = \App\Models\PowerUnit::orderBy($_GET['sort_key_unit'], session('sort_order', 'asc'))->paginate(10);
+			session(['sort_key_unit' => $sortKeyInput]);
+		} else {
+			$units = \App\Models\PowerUnit::orderBy($sortKey, $sortOrder)->paginate(10);
+		}
+				
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";
         $outContents .= "<div class=\"row bg-info text-white fw-bold\">";
 			$outContents .= "<div class=\"col-1 align-middle\">";
+				$sortParms = "?sort_key_unit=unit_id&sort_time=".time();
+				$outContents .= "<a href=\"power_unit_main".$sortParms."\">";
 				$outContents .= "Unit ID";
+				if ($sortKeyInput != 'unit_id') {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
+				} else {
+					if ($sort_icon == 'asc') {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
+					} else {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
+					}
+				}
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-1\">";
+				$sortParms = "?sort_key_unit=make&sort_time=".time();
+				$outContents .= "<a href=\"power_unit_main".$sortParms."\">";
 				$outContents .= "Make";
+				if ($sortKeyInput != 'make') {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
+				} else {
+					if ($sort_icon == 'asc') {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
+					} else {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
+					}
+				}
 			$outContents .= "</div>";
-			$outContents .= "<div class=\"col-1\">";
+			$outContents .= "<div class=\"col-2\">";
+				$sortParms = "?sort_key_unit=plate_number&sort_time=".time();
+				$outContents .= "<a href=\"power_unit_main".$sortParms."\">";
 				$outContents .= "Plate Number";
+				if ($sortKeyInput != 'plate_number') {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
+				} else {
+					if ($sort_icon == 'asc') {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
+					} else {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
+					}
+				}
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-3\">";
 				$outContents .= "VIN";
@@ -75,7 +145,7 @@
 					$outContents .= $unit->make;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
-                $outContents .= "<div class=\"col-1\">";
+                $outContents .= "<div class=\"col-2\">";
 					$outContents .= "<a href=\"power_unit_selected?id=$unit->id\">";
 					$outContents .= $unit->plate_number;
 					$outContents .= "</a>";
@@ -100,7 +170,7 @@
 					$outContents .= $unit->ops_code;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
-				$outContents .= "<div class=\"col-2\">";
+				$outContents .= "<div class=\"col-1\">";
 					$outContents .= "<a href=\"power_unit_selected?id=$unit->id\">";
 					$outContents .= $unit->insurance_expiry_date;
 					$outContents .= "</a>";

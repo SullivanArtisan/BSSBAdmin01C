@@ -45,17 +45,19 @@
 		}
 			
 		// Get data ordered by the user's intent
-		$sortOrder = session('sort_order', 'asc');
-		$sortKey = session('sort_key', 'name');
+		$sort_icon = $sortOrder = session('sort_order', 'asc');
+		$sortKey = session('sort_key_user', 'name');
 		if ($needResort == true) {
 			if ($sortOrder == 'asc') {
 				session(['sort_order' => 'desc']);
+				$sort_icon = 'desc';
 			} else {
 				session(['sort_order' => 'asc']);
+				$sort_icon = 'asc';
 			}
-			$users = \App\Models\User::orderBy($_GET['sort_key'], session('sort_order', 'asc'))->paginate(10);
-			////$users = \App\Models\User::sortable([$_GET['sort_key'] => session('sort_order', 'asc')])->paginate(10);		// If you want to use the Kyslik\ColumnSortable package (google the instruction for installation and usage)
-			session(['sort_key' => 'name']);
+			$users = \App\Models\User::orderBy($_GET['sort_key_user'], session('sort_order', 'asc'))->paginate(10);
+			////$users = \App\Models\User::sortable([$_GET['sort_key_user'] => session('sort_order', 'asc')])->paginate(10);		// If you want to use the Kyslik\ColumnSortable package (google the instruction for installation and usage)
+			session(['sort_key_user' => 'name']);
 		} else {
 			$users = \App\Models\User::orderBy($sortKey, $sortOrder)->paginate(10);
 			////$users = \App\Models\User::sortable([$sortKey => $sortOrder])->paginate(10);				// If you want to use the Kyslik\ColumnSortable package (google the instruction for installation and usage)
@@ -65,10 +67,14 @@
 		$outContents = "<div class=\"container mw-100\">";
         $outContents .= "<div class=\"row bg-info text-white fw-bold\">";
 			$outContents .= "<div class=\"col-2 align-middle\">";
-				$sortParms = "?sort_key=name&sort_time=".time();
+				$sortParms = "?sort_key_user=name&sort_time=".time();
 				$outContents .= "<a href=\"system_user_main".$sortParms."\">";
 				$outContents .= "Name";
-				$outContents .= "</a>";
+				if ($sort_icon == 'asc') {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
+				} else {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
+				}
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-3\">";
 				$outContents .= "Email";

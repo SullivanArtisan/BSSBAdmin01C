@@ -29,22 +29,92 @@
         </div>
     </div>
 	<?php
-		$zones = \App\Models\Zone::paginate(10);
+		// Check if the page is refresed
+		if (isset($_GET['sort_time'])) {
+			if ($_GET['sort_time'] != session('sort_time', '0')) {
+				session(['sort_time' => $_GET['sort_time']]);
+				$needResort = true;
+			}
+			else {
+				$needResort = false;
+			}
+			$sortKeyInput = $_GET['sort_key_zone'];
+		} else {
+			$needResort = false;
+			if (!isset($_GET['page'])) {
+				$sortKeyInput = session('sort_key_zone', '');
+				if ($sortKeyInput == '') {
+					$sortKeyInput = 'zone_name';
+				} 
+			} else {
+				$sortKeyInput = session('sort_key_zone', 'zone_name');
+			}
+		}
+			
+		// Get data ordered by the user's intent
+		$sort_icon = $sortOrder = session('sort_order', 'asc');
+		$sortKey = session('sort_key_zone', $sortKeyInput);
+		if ($needResort == true) {
+			if ($sortOrder == 'asc') {
+				session(['sort_order' => 'desc']);
+				$sort_icon = 'desc';
+			} else {
+				session(['sort_order' => 'asc']);
+				$sort_icon = 'asc';
+			}
+			$zones = \App\Models\Zone::orderBy($_GET['sort_key_zone'], session('sort_order', 'asc'))->paginate(10);
+			session(['sort_key_zone' => $sortKeyInput]);
+		} else {
+			$zones = \App\Models\Zone::orderBy($sortKey, $sortOrder)->paginate(10);
+		}
 		
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";
         $outContents .= "<div class=\"row bg-info text-white fw-bold\">";
 			$outContents .= "<div class=\"col-3 align-middle\">";
+				$sortParms = "?sort_key_zone=zone_name&sort_time=".time();
+				$outContents .= "<a href=\"zone_main".$sortParms."\">";
 				$outContents .= "Zone";
+				if ($sortKeyInput != 'zone_name') {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
+				} else {
+					if ($sort_icon == 'asc') {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
+					} else {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
+					}
+				}
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
+				$sortParms = "?sort_key_zone=zone_group&sort_time=".time();
+				$outContents .= "<a href=\"zone_main".$sortParms."\">";
 				$outContents .= "Group";
+				if ($sortKeyInput != 'zone_group') {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
+				} else {
+					if ($sort_icon == 'asc') {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
+					} else {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
+					}
+				}
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-5\">";
 				$outContents .= "Description";
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
+				$sortParms = "?sort_key_zone=zone_fsc_deduction&sort_time=".time();
+				$outContents .= "<a href=\"zone_main".$sortParms."\">";
 				$outContents .= "FSC Deduction %";
+				if ($sortKeyInput != 'zone_fsc_deduction') {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
+				} else {
+					if ($sort_icon == 'asc') {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
+					} else {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
+					}
+				}
 			$outContents .= "</div>";
 		$outContents .= "</div><hr class=\"m-2\"/>";
 		{{echo $outContents;}}

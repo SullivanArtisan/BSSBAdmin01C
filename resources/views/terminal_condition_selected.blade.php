@@ -49,21 +49,53 @@
         </div>
     </div>
 	<?php
-		$trmnls = \App\Models\Terminal::where($key, $value_parm)->get();
+		// Check if the page is refresed
+		if (isset($_GET['sort_time'])) {
+			if ($_GET['sort_time'] != session('sort_time', '0')) {
+				session(['sort_time' => $_GET['sort_time']]);
+				$needResort = true;
+			}
+			else {
+				$needResort = false;
+			}
+		} else {
+			$needResort = false;
+		}
+			
+		$sort_icon = $sortOrder = session('sort_order', 'asc');
+		if ($needResort == true) {
+			if ($sortOrder == 'asc') {
+				session(['sort_order' => 'desc']);
+				$sort_icon = 'desc';
+			} else {
+				session(['sort_order' => 'asc']);
+				$sort_icon = 'asc';
+			}
+			$trmnls = \App\Models\Terminal::where($key, $value_parm)->orderBy('trmnl_name', session('sort_order', 'asc'))->get();
+		} else {
+			$trmnls = \App\Models\Terminal::where($key, $value_parm)->orderBy('trmnl_name', $sortOrder)->get();
+		}
 		
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";
         $outContents .= "<div class=\"row bg-info text-white fw-bold\">";
 			$outContents .= "<div class=\"col-2 align-middle\">";
+				$sortParms = "?".$key."=".$value_parm."&sort_key_terminal=trmnl_name&sort_time=".time();
+				$outContents .= "<a href=\"terminal_condition_selected".$sortParms."\">";
 				$outContents .= "Terminal";
+				if ($sort_icon == 'asc') {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
+				} else {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
+				}
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-3\">";
 				$outContents .= "Address";
 			$outContents .= "</div>";
-			$outContents .= "<div class=\"col-1\">";
+			$outContents .= "<div class=\"col-2\">";
 				$outContents .= "City";
 			$outContents .= "</div>";
-			$outContents .= "<div class=\"col-2\">";
+			$outContents .= "<div class=\"col-1\">";
 				$outContents .= "Province";
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
@@ -88,12 +120,12 @@
 					$outContents .= $trmnl->trmnl_address;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
-                $outContents .= "<div class=\"col-1\">";
+                $outContents .= "<div class=\"col-2\">";
 					$outContents .= "<a href=\"terminal_selected?id=$trmnl->id\">";
 					$outContents .= $trmnl->trmnl_city;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
-                $outContents .= "<div class=\"col-2\">";
+                $outContents .= "<div class=\"col-1\">";
 					$outContents .= "<a href=\"terminal_selected?id=$trmnl->id\">";
 					$outContents .= $trmnl->trmnl_province;
 					$outContents .= "</a>";

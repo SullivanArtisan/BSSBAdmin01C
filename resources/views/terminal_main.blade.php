@@ -31,28 +31,120 @@
         </div>
     </div>
 	<?php
-		$trmnls = \App\Models\Terminal::paginate(10);
+		// Check if the page is refresed
+		if (isset($_GET['sort_time'])) {
+			if ($_GET['sort_time'] != session('sort_time', '0')) {
+				session(['sort_time' => $_GET['sort_time']]);
+				$needResort = true;
+			}
+			else {
+				$needResort = false;
+			}
+			$sortKeyInput = $_GET['sort_key_terminal'];
+		} else {
+			$needResort = false;
+			if (!isset($_GET['page'])) {
+				$sortKeyInput = session('sort_key_terminal', '');
+				if ($sortKeyInput == '') {
+					$sortKeyInput = 'trmnl_name';
+				} 
+			} else {
+				$sortKeyInput = session('sort_key_terminal', 'trmnl_name');
+			}
+		}
+			
+		// Get data ordered by the user's intent
+		$sort_icon = $sortOrder = session('sort_order', 'asc');
+		$sortKey = session('sort_key_terminal', $sortKeyInput);
+		if ($needResort == true) {
+			if ($sortOrder == 'asc') {
+				session(['sort_order' => 'desc']);
+				$sort_icon = 'desc';
+			} else {
+				session(['sort_order' => 'asc']);
+				$sort_icon = 'asc';
+			}
+			$trmnls = \App\Models\Terminal::orderBy($_GET['sort_key_terminal'], session('sort_order', 'asc'))->paginate(10);
+			session(['sort_key_terminal' => $sortKeyInput]);
+		} else {
+			$trmnls = \App\Models\Terminal::orderBy($sortKey, $sortOrder)->paginate(10);
+		}
 		
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";
         $outContents .= "<div class=\"row bg-info text-white fw-bold\">";
 			$outContents .= "<div class=\"col-2 align-middle\">";
+				$sortParms = "?sort_key_terminal=trmnl_name&sort_time=".time();
+				$outContents .= "<a href=\"terminal_main".$sortParms."\">";
 				$outContents .= "Terminal";
+				if ($sortKeyInput != 'trmnl_name') {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
+				} else {
+					if ($sort_icon == 'asc') {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
+					} else {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
+					}
+				}
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-3\">";
 				$outContents .= "Address";
 			$outContents .= "</div>";
-			$outContents .= "<div class=\"col-1\">";
+			$outContents .= "<div class=\"col-2\">";
+				$sortParms = "?sort_key_terminal=trmnl_city&sort_time=".time();
+				$outContents .= "<a href=\"terminal_main".$sortParms."\">";
 				$outContents .= "City";
+				if ($sortKeyInput != 'trmnl_city') {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
+				} else {
+					if ($sort_icon == 'asc') {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
+					} else {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
+					}
+				}
 			$outContents .= "</div>";
-			$outContents .= "<div class=\"col-2\">";
+			$outContents .= "<div class=\"col-1\">";
+				$sortParms = "?sort_key_terminal=trmnl_province&sort_time=".time();
+				$outContents .= "<a href=\"terminal_main".$sortParms."\">";
 				$outContents .= "Province";
+				if ($sortKeyInput != 'trmnl_province') {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
+				} else {
+					if ($sort_icon == 'asc') {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
+					} else {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
+					}
+				}
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
+				$sortParms = "?sort_key_terminal=trmnl_country&sort_time=".time();
+				$outContents .= "<a href=\"terminal_main".$sortParms."\">";
 				$outContents .= "Country";
+				if ($sortKeyInput != 'trmnl_country') {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
+				} else {
+					if ($sort_icon == 'asc') {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
+					} else {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
+					}
+				}
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
+				$sortParms = "?sort_key_terminal=trmnl_area&sort_time=".time();
+				$outContents .= "<a href=\"terminal_main".$sortParms."\">";
 				$outContents .= "Area";
+				if ($sortKeyInput != 'trmnl_area') {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
+				} else {
+					if ($sort_icon == 'asc') {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
+					} else {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
+					}
+				}
 			$outContents .= "</div>";
 		$outContents .= "</div><hr class=\"m-2\"/>";
 		{{echo $outContents;}}
@@ -70,12 +162,12 @@
 					$outContents .= $trmnl->trmnl_address;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
-                $outContents .= "<div class=\"col-1\">";
+                $outContents .= "<div class=\"col-2\">";
 					$outContents .= "<a href=\"terminal_selected?id=$trmnl->id\">";
 					$outContents .= $trmnl->trmnl_city;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
-                $outContents .= "<div class=\"col-2\">";
+                $outContents .= "<div class=\"col-1\">";
 					$outContents .= "<a href=\"terminal_selected?id=$trmnl->id\">";
 					$outContents .= $trmnl->trmnl_province;
 					$outContents .= "</a>";
