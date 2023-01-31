@@ -49,7 +49,7 @@
                 <li>
                     <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Administration</a>
                     <ul class="collapse list-unstyled" id="adminSubmenu">
-                        <li> <a href="#">Customer File</a> </li>
+                        <li> <a href="{{route('customer_main')}}">Customer File</a> </li>
                         <li> <a href="#">Driver File</a> </li>
                         <li> <a href="#">Invoicing</a> </li>
                         <li> <a href="#">Driver Pay</a> </li>

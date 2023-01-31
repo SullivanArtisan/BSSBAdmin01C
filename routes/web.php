@@ -7,11 +7,13 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\PowerUnitController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\TerminalController;
+use App\Http\Controllers\CustomerController;
 use App\Models\User;
 use App\Models\UserSysDetail;
 use App\Models\PowerUnit;
 use App\Models\Zone;
 use App\Models\Terminal;
+use App\Models\Customer;
 
 /*
 |--------------------------------------------------------------------------
@@ -180,6 +182,34 @@ Route::get('/terminal_delete/{id}', function ($id) {
 	}
 })->middleware(['auth'])->name('terminal_delete');
 
+//////// For Customers
+Route::get('/customer_main', function () {
+    return view('customer_main');
+})->middleware(['auth'])->name('customer_main');
+
+Route::get('customer_selected', function (Request $request) {
+    return view('customer_selected');
+})->middleware(['auth'])->name('customer_selected');
+
+Route::get('customer_condition_selected', function (Request $request) {
+    return view('customer_condition_selected');
+})->middleware(['auth'])->name('customer_condition_selected');
+
+Route::get('/customer_add', function () {
+    return view('customer_add');
+})->middleware(['auth'])->name('customer_add');
+
+Route::get('/customer_delete/{id}', function ($id) {
+	$customer = Customer::where('id', $id)->first();
+	$customerName = $customer->cstm_account_name;
+	$res=Customer::where('id', $id)->delete();
+	if (!$res) {
+		return redirect()->route('op_result.customer')->with('status', 'The customer, <span style="font-weight:bold;font-style:italic;color:red">'.$customerName.'</span>, cannot be deleted for some reason.');	
+	} else {
+		return redirect()->route('op_result.customer')->with('status', 'The customer, <span style="font-weight:bold;font-style:italic;color:blue">'.$customerName.'</span>, hs been deleted successfully.');	
+	}
+})->middleware(['auth'])->name('customer_delete');
+
 
 //////// For All Results
 Route::name('op_result.')->group(function () {
@@ -199,6 +229,10 @@ Route::name('op_result.')->group(function () {
 		return view('op_result')->withOprand('user');
 	})->middleware(['auth'])->name('user');
 
+	Route::get('op_result_customer', function () {
+		return view('op_result')->withOprand('customer');
+	})->middleware(['auth'])->name('customer');
+
 	Route::post('/terminal_result', [TerminalController::class, 'store'])->name('terminal_add');
 	Route::post('/terminal_update', [TerminalController::class, 'update'])->name('terminal_update');
 
@@ -210,6 +244,9 @@ Route::name('op_result.')->group(function () {
 
 	Route::post('/system_user_result', [UserController::class, 'store'])->name('system_user_add');
 	Route::post('/system_user_update', [UserController::class, 'update'])->name('system_user_update');
+
+	Route::post('/customer_result', [CustomerController::class, 'store'])->name('customer_add');
+	Route::post('/customer_update', [CustomerController::class, 'update'])->name('customer_update');
 });
 
 //////// For Misc
