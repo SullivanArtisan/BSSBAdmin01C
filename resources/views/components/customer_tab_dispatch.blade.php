@@ -1,6 +1,14 @@
 	<div class="row">
 		<div class="col"><label class="col-form-label">POD Email 1:&nbsp;</label></div>
-		<div class="col"><input class="form-control mt-1 my-text-height" type="text" id="cstm_dspch_pod_email1" name="cstm_dspch_pod_email1"></div>
+		<div class="col">
+			<?php
+				if(isset($dbTable)) {
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"cstm_dspch_pod_email1\" name=\"cstm_dspch_pod_email1\" value=\"".$dbTable->cstm_dspch_pod_email1."\">";
+				} else {
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"cstm_dspch_pod_email1\" name=\"cstm_dspch_pod_email1\">";
+				}
+			?>
+		</div>
 		<div class="col"><label class="col-form-label">Customer Group 1:&nbsp;</label></div>
 		<div class="col"><input class="form-control mt-1 my-text-height" type="text" id="cstm_dspch_group1" name="cstm_dspch_group1"></div>
 	</div>

@@ -118,73 +118,73 @@ class CustomerController extends Controller
 				
 					// Prepare the data in customer's Invoice tab 
 					$cstmInvoice->cstm_account_no = $targetCustomer[0]->cstm_account_no;
-					$cstmInvoice->cstm_invoice_period = 'test';	//$request->cstm_invoice_period;
-					$cstmInvoice->cstm_invoice_layout = 'test';	//$request->cstm_invoice_layout;
-					// $cstmInvoice->cstm_invoice_style = $request->cstm_invoice_style;
-					// $cstmInvoice->cstm_invoice_pdf_style = $request->cstm_invoice_pdf_style;
-					// if ($request->cstm_invoice_requires_pod == 'on') {
-						// $cstmInvoice->cstm_invoice_requires_pod = 1;
-					// } else {
-						// $cstmInvoice->cstm_invoice_requires_pod = 0;
-					// }
-					// if ($request->cstm_invoice_by_group_only == 'on') {
-						// $cstmInvoice->cstm_invoice_by_group_only = 1;
-					// } else {
-						// $cstmInvoice->cstm_invoice_by_group_only = 0;
-					// }
-					// if ($request->cstm_invoice_tax == 'on') {
-						// $cstmInvoice->cstm_invoice_tax = 1;
-					// } else {
-						// $cstmInvoice->cstm_invoice_tax = 0;
-					// }
-					// if ($request->cstm_invoice_no_bridge_toll == 'on') {
-						// $cstmInvoice->cstm_invoice_no_bridge_toll = 1;
-					// } else {
-						// $cstmInvoice->cstm_invoice_no_bridge_toll = 0;
-					// }
-					// if ($request->cstm_invoice_email_in_pdf_fmt == 'on') {
-						// $cstmInvoice->cstm_invoice_email_in_pdf_fmt = 1;
-					// } else {
-						// $cstmInvoice->cstm_invoice_email_in_pdf_fmt = 0;
-					// }
-					// if ($request->cstm_invoice_include_in_print_run == 'on') {
-						// $cstmInvoice->cstm_invoice_include_in_print_run = 1;
-					// } else {
-						// $cstmInvoice->cstm_invoice_include_in_print_run = 0;
-					// }
-					// if ($request->cstm_invoice_deleted == 'on') {
-						// $cstmInvoice->cstm_invoice_deleted = 1;
-					// } else {
-						// $cstmInvoice->cstm_invoice_deleted = 0;
-					// }
-					// if ($request->cstm_invoice_local_fuel_if_surcharged == 'on') {
-						// $cstmInvoice->cstm_invoice_local_fuel_if_surcharged = 1;
-					// } else {
-						// $cstmInvoice->cstm_invoice_local_fuel_if_surcharged = 0;
-					// }
-					// if ($request->cstm_invoice_hwy_fuel_if_surcharged == 'on') {
-						// $cstmInvoice->cstm_invoice_hwy_fuel_if_surcharged = 1;
-					// } else {
-						// $cstmInvoice->cstm_invoice_hwy_fuel_if_surcharged = 0;
-					// }
-					// $cstmInvoice->cstm_invoice_attachments_needed	= $request->cstm_invoice_attachments_needed;
-					$cstmInvoice->cstm_invoice_local_office 			= 'test'; 	//$request->cstm_invoice_local_office;
-					$cstmInvoice->cstm_invoice_payment_terms 			= 5;		//$request->cstm_invoice_payment_terms;
-					$cstmInvoice->cstm_invoice_account_status 			= 'test';	//$request->cstm_invoice_account_status;
-					// $cstmInvoice->cstm_invoice_export_job_fmt 		= $request->cstm_invoice_export_job_fmt;
-					$cstmInvoice->cstm_invoice_email_addr1				= 'test';	//$request->cstm_invoice_email_addr1;
-					// $cstmInvoice->cstm_invoice_email_addr2 			= $request->cstm_invoice_email_addr2;
-					// $cstmInvoice->cstm_invoice_email_addr3 			= $request->cstm_invoice_email_addr3;
-					// $cstmInvoice->cstm_invoice_email_addr4 			= $request->cstm_invoice_email_addr4;
-					// $cstmInvoice->cstm_invoice_email_addr5 			= $request->cstm_invoice_email_addr5;
-					// $cstmInvoice->cstm_invoice_email_addr6 			= $request->cstm_invoice_email_addr6;
-					$cstmInvoice->cstm_invoice_account_opened 			= '2023-01-31';	//$request->cstm_invoice_account_opened;
-					$cstmInvoice->cstm_invoice_currency 			 	= 'test';	//$request->cstm_invoice_currency;
-					$cstmInvoice->cstm_invoice_credit_limit 			= 5.5;		//$request->cstm_invoice_credit_limit;
-					$cstmInvoice->cstm_invoice_local_fuel_surcharged 	= 5.7;		//$request->cstm_invoice_local_fuel_surcharged;
-					$cstmInvoice->cstm_invoice_hwy_fuel_surcharged 		= 5.6;		//$request->cstm_invoice_hwy_fuel_surcharged;
-					// $cstmInvoice->cstm_invoice_additional_email_addr = $request->cstm_invoice_additional_email_addr;
-					// $cstmInvoice->cstm_invoice_fsc_email_addr		= $request->cstm_invoice_fsc_email_addr;
+					$cstmInvoice->cstm_invoice_period 		= $request->cstm_invoice_period;
+					$cstmInvoice->cstm_invoice_layout 		= $request->cstm_invoice_layout;
+					$cstmInvoice->cstm_invoice_style 		= $request->cstm_invoice_style;
+					$cstmInvoice->cstm_invoice_pdf_style	= $request->cstm_invoice_pdf_style;
+					if ($request->cstm_invoice_requires_pod == 'on') {
+						$cstmInvoice->cstm_invoice_requires_pod = 1;
+					} else {
+						$cstmInvoice->cstm_invoice_requires_pod = 0;
+					}
+					if ($request->cstm_invoice_by_group_only == 'on') {
+						$cstmInvoice->cstm_invoice_by_group_only = 1;
+					} else {
+						$cstmInvoice->cstm_invoice_by_group_only = 0;
+					}
+					if ($request->cstm_invoice_tax == 'on') {
+						$cstmInvoice->cstm_invoice_tax = 1;
+					} else {
+						$cstmInvoice->cstm_invoice_tax = 0;
+					}
+					if ($request->cstm_invoice_no_bridge_toll == 'on') {
+						$cstmInvoice->cstm_invoice_no_bridge_toll = 1;
+					} else {
+						$cstmInvoice->cstm_invoice_no_bridge_toll = 0;
+					}
+					if ($request->cstm_invoice_email_in_pdf_fmt == 'on') {
+						$cstmInvoice->cstm_invoice_email_in_pdf_fmt = 1;
+					} else {
+						$cstmInvoice->cstm_invoice_email_in_pdf_fmt = 0;
+					}
+					if ($request->cstm_invoice_include_in_print_run == 'on') {
+						$cstmInvoice->cstm_invoice_include_in_print_run = 1;
+					} else {
+						$cstmInvoice->cstm_invoice_include_in_print_run = 0;
+					}
+					if ($request->cstm_invoice_deleted == 'on') {
+						$cstmInvoice->cstm_invoice_deleted = 1;
+					} else {
+						$cstmInvoice->cstm_invoice_deleted = 0;
+					}
+					if ($request->cstm_invoice_local_fuel_if_surcharged == 'on') {
+						$cstmInvoice->cstm_invoice_local_fuel_if_surcharged = 1;
+					} else {
+						$cstmInvoice->cstm_invoice_local_fuel_if_surcharged = 0;
+					}
+					if ($request->cstm_invoice_hwy_fuel_if_surcharged == 'on') {
+						$cstmInvoice->cstm_invoice_hwy_fuel_if_surcharged = 1;
+					} else {
+						$cstmInvoice->cstm_invoice_hwy_fuel_if_surcharged = 0;
+					}
+					$cstmInvoice->cstm_invoice_attachments_needed		= $request->cstm_invoice_attachments_needed;
+					$cstmInvoice->cstm_invoice_local_office 			= $request->cstm_invoice_local_office;
+					$cstmInvoice->cstm_invoice_payment_terms 			= $request->cstm_invoice_payment_terms;
+					$cstmInvoice->cstm_invoice_account_status 			= $request->cstm_invoice_account_status;
+					$cstmInvoice->cstm_invoice_export_job_fmt 			= $request->cstm_invoice_export_job_fmt;
+					$cstmInvoice->cstm_invoice_email_addr1				= $request->cstm_invoice_email_addr1;
+					$cstmInvoice->cstm_invoice_email_addr2 				= $request->cstm_invoice_email_addr2;
+					$cstmInvoice->cstm_invoice_email_addr3 				= $request->cstm_invoice_email_addr3;
+					$cstmInvoice->cstm_invoice_email_addr4 				= $request->cstm_invoice_email_addr4;
+					$cstmInvoice->cstm_invoice_email_addr5 				= $request->cstm_invoice_email_addr5;
+					$cstmInvoice->cstm_invoice_email_addr6 				= $request->cstm_invoice_email_addr6;
+					$cstmInvoice->cstm_invoice_account_opened 			= $request->cstm_invoice_account_opened;
+					$cstmInvoice->cstm_invoice_currency 			 	= $request->cstm_invoice_currency;
+					$cstmInvoice->cstm_invoice_credit_limit 			= $request->cstm_invoice_credit_limit;
+					$cstmInvoice->cstm_invoice_local_fuel_surcharged 	= $request->cstm_invoice_local_fuel_surcharged;
+					$cstmInvoice->cstm_invoice_hwy_fuel_surcharged 		= $request->cstm_invoice_hwy_fuel_surcharged;
+					$cstmInvoice->cstm_invoice_additional_email_addr = $request->cstm_invoice_additional_email_addr;
+					$cstmInvoice->cstm_invoice_fsc_email_addr		= $request->cstm_invoice_fsc_email_addr;
 					$saved = $cstmInvoice->save();
 					if(!$saved) {
 						return redirect()->route('op_result.customer')->with('status', ' <span style="color:red">Data has NOT been inserted -- cstm_invoices table insertion failed!</span>');
@@ -237,7 +237,7 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        //
+		echo "<h1>".$request->cstm_invoice_fsc_email_addr."</h1><br/>";
     }
 
     /**

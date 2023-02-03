@@ -73,7 +73,7 @@
 						@include('components.customer_tab_notes')
 					</div>
 					<div class="tab-pane fade" id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
-						<p>Content for tab 4.</p>
+						@include('components.customer_tab_invoice')
 					</div>
 					<div class="tab-pane fade" id="changes" role="tabpanel" aria-labelledby="changes-tab">
 						@include('components.customer_tab_changes')

@@ -1,5 +1,9 @@
 <?php
 	use App\Models\Customer;
+	use App\Models\CstmDispatch;
+	use App\Models\CstmInvoice;
+	use App\Models\CstmAccountPrice;
+	use App\Models\CstmAllOther;
 ?>
 
 @extends('layouts.home_page_base')
@@ -15,12 +19,15 @@
 	$id = $_GET['id'];
 	if ($id) {
 		$customer = Customer::where('id', $id)->first();
+		$cstmDispatch = CstmDispatch::where('cstm_account_no', $customer->cstm_account_no)->first();
+		$cstmInvoice = CstmInvoice::where('cstm_account_no', $customer->cstm_account_no)->first();
+		$cstmAllOther = CstmAllOther::where('cstm_account_no', $customer->cstm_account_no)->first();
 	}
 ?>
 	
 <link rel="stylesheet" href="css/all_tabs_for_customers.css">
 
-@if (!$id or !$customer) {
+@if (!$id or !$customer or !$cstmDispatch or !$cstmInvoice or !$cstmAllOther) {
 	@section('function_page')
 		<div>
 			<div class="row">
@@ -93,22 +100,22 @@
 
 					<div class="tab-content" id="myTabContent">
 						<div class="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-							@include('components.customer_tab_contact')
+							@include('components.customer_tab_contact', ['dbTable'=>$customer])
 						</div>
 						<div class="tab-pane fade" id="dispatch" role="tabpanel" aria-labelledby="dispatch-tab">
-							@include('components.customer_tab_dispatch')
+							@include('components.customer_tab_dispatch', ['dbTable'=>$cstmDispatch])
 						</div>
 						<div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
-							@include('components.customer_tab_notes')
+							@include('components.customer_tab_notes', ['dbTable'=>$cstmAllOther])
 						</div>
 						<div class="tab-pane fade" id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
-							<p>Content for tab 4.</p>
+							@include('components.customer_tab_invoice', ['dbTable'=>$cstmInvoice])
 						</div>
 						<div class="tab-pane fade" id="changes" role="tabpanel" aria-labelledby="changes-tab">
 							@include('components.customer_tab_changes')
 						</div>
 						<div class="tab-pane fade" id="control2" role="tabpanel" aria-labelledby="control2-tab">
-							@include('components.customer_tab_control2')
+							@include('components.customer_tab_control2', ['dbTable'=>$cstmAllOther])
 						</div>
 						<div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
 							@include('components.customer_tab_history')

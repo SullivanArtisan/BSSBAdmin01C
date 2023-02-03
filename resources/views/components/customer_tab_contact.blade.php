@@ -1,6 +1,14 @@
 	<div class="row">
 		<div class="col"><label class="col-form-label">Account Number:&nbsp;</label></div>
-		<div class="col"><input class="form-control mt-1 my-text-height" type="text" id="cstm_account_no" name="cstm_account_no"></div>
+		<div class="col">
+			<?php
+				if(isset($dbTable)) {
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"cstm_account_no\" name=\"cstm_account_no\" value=\"".$dbTable->cstm_account_no."\">";
+				} else {
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"cstm_account_no\" name=\"cstm_account_no\">";
+				}
+			?>
+		</div>
 		<div class="col"><label class="col-form-label">Invoice Name:&nbsp;</label></div>
 		<div class="col"><input class="form-control mt-1 my-text-height" type="text" id="cstm_contact_invoice_name" name="cstm_contact_invoice_name"></div>
 	</div>
