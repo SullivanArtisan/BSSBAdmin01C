@@ -11,13 +11,13 @@
 				<h2 class="text-muted pl-2">Terminals</h2>
             </div>
             <div class="col my-auto ml-5">
-				<button class="btn btn-secondary mr-4" type="button"><a href="{{route('terminal_add')}}">Add</a></button>
+				<button class="btn btn-success mr-4" type="button"><a href="{{route('terminal_add')}}">Add</a></button>
 			</div>
             <div class="col">
 				<div class="input-group">
 				  <input type="text" class="form-control" aria-label="Text input with dropdown button" id="trmnl_search_input">
 				  <div class="input-group-append">
-					<button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
+					<button class="btn btn-info" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
 					<div class="dropdown-menu">
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult1('trmnl_name')\" style=\"cursor: pointer;\">by Terminals Name</button>");</script>
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult1('trmnl_city')\" style=\"cursor: pointer;\">by City</button>");</script>

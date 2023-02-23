@@ -58,7 +58,7 @@
 					<h2 class="text-muted pl-2">System User: {{$user->name}}</h2>
 				</div>
 				<div class="col my-auto ml-5">
-					<button class="btn btn-secondary me-2" type="button"><a href="system_user_delete?id={{$user->id}}" onclick="return myConfirmation();">Delete</a></button>
+					<button class="btn btn-danger me-2" type="button"><a href="system_user_delete?id={{$user->id}}" onclick="return myConfirmation();">Delete</a></button>
 				</div>
 				<div class="col"></div>
 			</div>
@@ -183,7 +183,7 @@
 							<div class="col">
 								<div class="row">
 									<div class="col-9 pr-0"><input class="form-control mt-1 my-text-height" type="text" id="picture_file" name="picture_file" value="{{$userDetails->picture_file}}" onmouseover="showImage('picture_file', '{{$wanted_pic_path}}')" onmouseout="hideImage('picture_file')"></div>
-									<div class="col-3 pl-2"><button class="btn btn-secondary btn-sm mt-1" type="button" onclick="KeepInput()"><a href="{{route('system_user_pic_upload', 'id='.$id)}}">Browse</a></button></div>
+									<div class="col-3 pl-2"><button class="btn btn-info btn-sm mt-1" type="button" onclick="KeepInput()"><a href="{{route('system_user_pic_upload', 'id='.$id)}}">Browse</a></button></div>
 								</div>
 							</div>
 						</div>
@@ -219,7 +219,7 @@
 							<div class="w-25"></div>
 							<div class="col">
 								<div class="row">
-									<button class="btn btn-secondary mx-4" type="submit">Update</button>
+									<button class="btn btn-warning mx-4" type="submit">Update</button>
 									<button class="btn btn-secondary mx-3" type="button"><a href="{{route('system_user_main')}}">Cancel</a></button>
 								</div>
 							</div>

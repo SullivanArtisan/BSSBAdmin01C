@@ -198,7 +198,7 @@ class CustomerController extends Controller
 							return redirect()->route('op_result.customer')->with('status', ' <span style="color:red">Data has NOT been inserted -- cstm_account_prices table insertion failed!</span>');
 						} else {
 
-							return redirect()->route('op_result.customer')->with('status', 'The new customer,  <span style="font-weight:bold;font-style:italic;color:blue">'.$targetCustomer[0]->cstm_account_name.'</span>, hs been inserted successfully.');
+							return redirect()->route('op_result.customer')->with('status', 'The new customer,  <span style="font-weight:bold;font-style:italic;color:blue">'.$targetCustomer[0]->cstm_account_name.'</span>, has been inserted successfully.');
 						}
 					}
 				}
@@ -410,16 +410,7 @@ class CustomerController extends Controller
 					if(!$saved) {
 						return redirect()->route('op_result.customer')->with('status', ' <span style="color:red">Customer Invoice Data Has NOT Been updated!</span>');
 					} else {
-						// Prepare the data in customer's AccountPrices tab 
-						$cstmAccountPrice = CstmAccountPrice::where('cstm_account_no', $customer->cstm_account_no)->first();
-						// $cstmAccountPrice->cstm_account_chassis = $request->cstm_account_chassis;
-						$saved = $cstmAccountPrice->save();
-						if(!$saved) {
-							return redirect()->route('op_result.customer')->with('status', ' <span style="color:red">Customer Account Price Data Has NOT Been updated!</span>');
-						} else {
-
-							return redirect()->route('op_result.customer')->with('status', 'The customer,  <span style="font-weight:bold;font-style:italic;color:blue">'.$customer->cstm_account_name.'</span>, hs been updated successfully.');
-						}
+						return redirect()->route('op_result.customer')->with('status', 'The customer,  <span style="font-weight:bold;font-style:italic;color:blue">'.$customer->cstm_account_name.'</span>, hs been updated successfully.');
 					}
 				}
 			}

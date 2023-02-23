@@ -52,10 +52,12 @@
 				<div>
 					<h2 class="text-muted pl-2">Customer: {{$customer->cstm_account_name}}</h2>
 				</div>
-				<div class="col my-auto ml-5">
-					<button class="btn btn-secondary me-2" type="button"><a href="{{route('customer_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>
+				<div class="col-1 my-auto ml-5">
+					<button class="btn btn-danger me-2" type="button"><a href="{{route('customer_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>
 				</div>
-				<div class="col"></div>
+				<div class="col my-auto">
+					<button class="btn btn-success me-2" type="button"><a href="{{route('customer_accprice_add', ['id'=>$id])}}">Add New Price</a></button>
+				</div>
 			</div>
 		</div>
 		<div>
@@ -69,7 +71,7 @@
 				</div>
 			@endif
 			<div class="col-md-11 mb-4">
-				<form method="post" action="{{route('customer_accprice_add', ['id'=>$id])}}">
+				<form method="post" action="{{route('op_result.customer_update', ['id'=>$id])}}">
 					@csrf
 					<ul class="nav nav-tabs" id="myTab" role="tablist">
 						<li class="nav-item">
@@ -128,7 +130,7 @@
 						<div class="w-25"></div>
 						<div class="col">
 							<div class="row">
-								<button class="btn btn-secondary mx-4" type="submit">Update</button>
+								<button class="btn btn-warning mx-4" type="submit">Update</button>
 								<button class="btn btn-secondary mx-3" type="button"><a href="{{route('customer_main')}}">Cancel</a></button>
 							</div>
 						</div>

@@ -165,7 +165,7 @@
 				<div class="w-25"></div>
 				<div class="col">
 					<div class="row">
-						<button class="btn btn-secondary mx-4" type="submit">Update</button>
+						<button class="btn btn-warning mx-4" type="submit">Update</button>
 						<button class="btn btn-secondary mx-3" type="button"><a href="customer_selected?id={{$customerId}}">Cancel</a></button>
 					</div>
 				</div>

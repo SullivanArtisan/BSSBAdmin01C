@@ -54,7 +54,7 @@
 				<h2 class="text-muted pl-2">Customers</h2>
             </div>
             <div class="col my-auto ml-5">
-				<button class="btn btn-secondary mr-4" type="button"><a href="{{route('customer_add')}}">Add</a></button>
+				<button class="btn btn-success mr-4" type="button"><a href="{{route('customer_add')}}">Add</a></button>
 			</div>
             <div class="col">
 				<div class="input-group">

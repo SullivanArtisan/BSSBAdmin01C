@@ -44,7 +44,7 @@
 					<h2 class="text-muted pl-2">Zone: {{$zone->zone_name}}</h2>
 				</div>
 				<div class="col my-auto ml-5">
-					<button class="btn btn-secondary me-2" type="button"><a href="{{route('zone_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>
+					<button class="btn btn-danger me-2" type="button"><a href="{{route('zone_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>
 				</div>
 				<div class="col"></div>
 			</div>
@@ -83,7 +83,7 @@
 							<div class="w-25"></div>
 							<div class="col">
 								<div class="row">
-									<button class="btn btn-secondary mx-4" type="submit">Update</button>
+									<button class="btn btn-warning mx-4" type="submit">Update</button>
 									<button class="btn btn-secondary mx-3" type="button"><a href="{{route('zone_main')}}">Cancel</a></button>
 								</div>
 							</div>

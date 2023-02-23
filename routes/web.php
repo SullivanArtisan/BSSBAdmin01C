@@ -221,6 +221,13 @@ Route::get('customer_accprice_selected_main', function (Request $request) {
     return view('customer_accprice_selected_main');
 })->middleware(['auth'])->name('customer_accprice_selected_main');
 
+Route::get('/customer_accprice_add', function () {
+	$id = $_GET['id'];
+	if ($id) {
+		return view('customer_accprice_add')->withOprand($id);
+	}
+})->middleware(['auth'])->name('customer_accprice_add');
+
 Route::post('/customer_accprice_update', [CstmAccountPriceController::class, 'update'])->name('customer_accprice_update');
 
 
@@ -260,7 +267,7 @@ Route::name('op_result.')->group(function () {
 
 	Route::post('/customer_result', [CustomerController::class, 'store'])->name('customer_add');
 	Route::post('/customer_update', [CustomerController::class, 'update'])->name('customer_update');
-	// Route::post('/customer_accprice_result', [CstmAccountPriceController::class, 'store'])->name('customer_accprice_add');
+	Route::post('/customer_accprice_result', [CstmAccountPriceController::class, 'store'])->name('customer_accprice_add');
 
 	Route::get('op_result_accprice', function () {
 		return view('op_result')->withOprand('customer');
