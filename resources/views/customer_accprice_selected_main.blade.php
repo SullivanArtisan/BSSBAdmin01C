@@ -66,6 +66,9 @@
             <div>
 				<h2 class="text-muted pl-2">Customer {{$customer_accprice->cstm_account_no}}'s Price (from zone {{$customer_accprice->cstm_account_from}} &#x27A1; {{$customer_accprice->cstm_account_to}})</h2>
             </div>
+			<div class="col-1 my-auto ml-5">
+				<button class="btn btn-danger me-2" type="button"><a href="{{route('customer_accprice_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>
+			</div>
         </div>
     </div>
 	
@@ -173,6 +176,13 @@
 			</div>
 		</form>
 	</div>
+		
+	<script>
+		function myConfirmation() {
+			if(!confirm("Are you sure to delete this account price?"))
+			event.preventDefault();
+		}
+	</script>
 @endsection
 
 <script>

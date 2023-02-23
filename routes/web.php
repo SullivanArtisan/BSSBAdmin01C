@@ -15,6 +15,7 @@ use App\Models\PowerUnit;
 use App\Models\Zone;
 use App\Models\Terminal;
 use App\Models\Customer;
+use App\Models\CstmAccountPrice;
 
 /*
 |--------------------------------------------------------------------------
@@ -210,6 +211,18 @@ Route::get('/customer_delete/{id}', function ($id) {
 		return redirect()->route('op_result.customer')->with('status', 'The customer, <span style="font-weight:bold;font-style:italic;color:blue">'.$customerName.'</span>, hs been deleted successfully.');	
 	}
 })->middleware(['auth'])->name('customer_delete');
+
+Route::get('/customer_accprice_delete/{id}', function ($id) {
+	$customer_accprice = CstmAccountPrice::where('id', $id)->first();
+	$priceFromZone = $customer_accprice->cstm_account_from;
+	$priceToZone = $customer_accprice->cstm_account_to;
+	$res=CstmAccountPrice::where('id', $id)->delete();
+	if (!$res) {
+		return redirect()->route('op_result.customer')->with('status', 'The price, zone <span style="font-weight:bold;font-style:italic;color:red">'.$priceFromZone.' &#x27A1; '.$priceToZone.'</span>, cannot be deleted for some reason.');	
+	} else {
+		return redirect()->route('op_result.customer')->with('status', 'The price, zone <span style="font-weight:bold;font-style:italic;color:blue">'.$priceFromZone.' &#x27A1; '.$priceToZone.'</span>, hs been deleted successfully.');	
+	}
+})->middleware(['auth'])->name('customer_accprice_delete');
 
 Route::post('/customer_accprice_result', [CstmAccountPriceController::class, 'store'])->name('customer_accprice_add');
 Route::post('/customer_update2', function () {
