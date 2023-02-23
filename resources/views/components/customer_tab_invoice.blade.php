@@ -377,10 +377,32 @@
 		</div>
 	</div>
 	
-	<!-- row 12 -->
+	<!-- row 13 -->
 	<div class="row">
-                        <div class="col"><label class="col-form-label">Account Opened:&nbsp;</label></div>
-                        <div class="col"><input class="form-control mt-1 my-text-height" type="date" id="cstm_invoice_account_opened" name="cstm_invoice_account_opened" value="<?php echo date('Y-m-d'); ?>"></div>
-                        <div class="col"><label class="col-form-label"></label></div>
-                        <div class="col"><input type="hidden" style="margin-top:3%" id="show_internet_bookings" name="show_internet_bookings"></div>
+		<div class="col"><label class="col-form-label">Account Opened:&nbsp;</label></div>
+		<div class="col">
+			<?php
+				if(isset($dbTable)) {
+					echo "<input class=\"form-control mt-1\" type=\"date\" id=\"cstm_invoice_account_opened\" name=\"cstm_invoice_account_opened\" value=\"".$dbTable->cstm_invoice_account_opened."\">";
+				} else {
+					echo "<input class=\"form-control mt-1\" type=\"date\" id=\"cstm_invoice_account_opened\" name=\"cstm_invoice_account_opened\" value=\"<?php echo date('Y-m-d'); ?>\">";
+				}
+			?>
+		</div>
+		<div class="col"><label class="col-form-label">Mark Account as Deleted:&nbsp;</label></div>
+		<div class="col">
+			<?php
+				$tagHead = "<input style=\"margin-top:3%\" type=\"checkbox\" id=\"cstm_invoice_deleted\" name=\"cstm_invoice_deleted\" ";
+				$tagTail = ">";
+				if(isset($dbTable)) {
+					if($dbTable->cstm_invoice_deleted) {
+						echo $tagHead."checked".$tagTail;
+					} else {
+						echo $tagHead.$tagTail;
+					}
+				} else {
+					echo $tagHead.$tagTail;
+				}
+			?>
+		</div>
 	</div>

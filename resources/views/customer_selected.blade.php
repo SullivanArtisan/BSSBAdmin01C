@@ -69,7 +69,7 @@
 				</div>
 			@endif
 			<div class="col-md-11 mb-4">
-				<form method="post" action="{{route('op_result.customer_update', ['id'=>$id])}}">
+				<form method="post" action="{{route('customer_accprice_add', ['id'=>$id])}}">
 					@csrf
 					<ul class="nav nav-tabs" id="myTab" role="tablist">
 						<li class="nav-item">
@@ -121,7 +121,7 @@
 							@include('components.customer_tab_history')
 						</div>
 						<div class="tab-pane fade" id="accprices" role="tabpanel" aria-labelledby="accprices-tab">
-							<p>Content for tab 8.</p>
+							@include('components.customer_tab_accprice')
 						</div>
 					</div>
 					<div class="row my-3">

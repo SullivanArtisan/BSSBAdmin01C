@@ -57,9 +57,11 @@
 					<li class="nav-item">
 						<a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab" aria-controls="history" aria-selected="false">History</a>
 					</li>
+					{{--
 					<li class="nav-item">
 						<a class="nav-link" id="accprices-tab" data-toggle="tab" href="#accprices" role="tab" aria-controls="accprices" aria-selected="false">Account Prices</a>
 					</li>
+					--}}
 				</ul>
 
 				<div class="tab-content" id="myTabContent">
@@ -84,9 +86,11 @@
 					<div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
 						@include('components.customer_tab_history')
 					</div>
+					{{--
 					<div class="tab-pane fade" id="accprices" role="tabpanel" aria-labelledby="accprices-tab">
-						<p>Content for tab 8.</p>
+						@include('components.customer_tab_accprice')
 					</div>
+					--}}
 				</div>
 				<div class="row my-3">
 					<div class="w-25"></div>

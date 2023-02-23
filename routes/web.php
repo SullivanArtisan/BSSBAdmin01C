@@ -8,6 +8,7 @@ use App\Http\Controllers\PowerUnitController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CstmAccountPriceController;
 use App\Models\User;
 use App\Models\UserSysDetail;
 use App\Models\PowerUnit;
@@ -210,6 +211,18 @@ Route::get('/customer_delete/{id}', function ($id) {
 	}
 })->middleware(['auth'])->name('customer_delete');
 
+Route::post('/customer_accprice_result', [CstmAccountPriceController::class, 'store'])->name('customer_accprice_add');
+Route::post('/customer_update2', function () {
+	Log::info("HEHEHE");
+	route('customer_accprice_add');
+})->name('customer_update2');
+
+Route::get('customer_accprice_selected_main', function (Request $request) {
+    return view('customer_accprice_selected_main');
+})->middleware(['auth'])->name('customer_accprice_selected_main');
+
+Route::post('/customer_accprice_update', [CstmAccountPriceController::class, 'update'])->name('customer_accprice_update');
+
 
 //////// For All Results
 Route::name('op_result.')->group(function () {
@@ -247,6 +260,11 @@ Route::name('op_result.')->group(function () {
 
 	Route::post('/customer_result', [CustomerController::class, 'store'])->name('customer_add');
 	Route::post('/customer_update', [CustomerController::class, 'update'])->name('customer_update');
+	// Route::post('/customer_accprice_result', [CstmAccountPriceController::class, 'store'])->name('customer_accprice_add');
+
+	Route::get('op_result_accprice', function () {
+		return view('op_result')->withOprand('customer');
+	})->middleware(['auth'])->name('accprice');
 });
 
 //////// For Misc

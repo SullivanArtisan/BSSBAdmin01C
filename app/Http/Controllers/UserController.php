@@ -145,7 +145,7 @@ class UserController extends Controller
 			$saved = $user->save();
 			
 			if(!$saved) {
-				return redirect()->route('op_result.user')->with('status', ' <span style="color:red">Data Has NOT Been inserted!</span>');
+				return redirect()->route('op_result.user')->with('status', ' <span style="color:red">Data Has NOT Been updated!</span>');
 			} else {
 				$userDetails = UserSysDetail::where('user_id', $user->id)->first();
 				//$userDetails->user_id = $targetUser[0]->id;
@@ -195,7 +195,7 @@ class UserController extends Controller
 				if(!$saved) {
 					return redirect()->route('op_result.user')->with('status', ' <span style="color:red">Data has NOT been updated!</span>');
 				} else {
-					return redirect()->route('op_result.user')->with('status', 'The new user,  <span style="font-weight:bold;font-style:italic;color:blue">'.$user->name.'</span>, hs been updated successfully.');
+					return redirect()->route('op_result.user')->with('status', 'The user,  <span style="font-weight:bold;font-style:italic;color:blue">'.$user->name.'</span>, hs been updated successfully.');
 				}
 			}
 		//}
