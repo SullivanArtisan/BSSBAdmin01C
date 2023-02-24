@@ -9,6 +9,7 @@ use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CstmAccountPriceController;
+use App\Http\Controllers\DriverPricesController;
 use App\Models\User;
 use App\Models\UserSysDetail;
 use App\Models\PowerUnit;
@@ -243,6 +244,19 @@ Route::get('/customer_accprice_add', function () {
 
 Route::post('/customer_accprice_update', [CstmAccountPriceController::class, 'update'])->name('customer_accprice_update');
 
+//////// For Driver Pay Prices
+Route::get('/driver_pay_prices_main', function () {
+    return view('driver_pay_prices_main');
+})->middleware(['auth'])->name('driver_pay_prices_main');
+
+Route::get('/driver_pay_prices_add', function () {
+    return view('driver_pay_prices_add');
+})->middleware(['auth'])->name('driver_pay_prices_add');
+
+Route::get('driver_pay_prices_selected', function (Request $request) {
+    return view('driver_pay_prices_selected');
+})->middleware(['auth'])->name('driver_pay_prices_selected');
+
 
 //////// For All Results
 Route::name('op_result.')->group(function () {
@@ -282,9 +296,16 @@ Route::name('op_result.')->group(function () {
 	Route::post('/customer_update', [CustomerController::class, 'update'])->name('customer_update');
 	Route::post('/customer_accprice_result', [CstmAccountPriceController::class, 'store'])->name('customer_accprice_add');
 
+	Route::post('/driver_price_result', [DriverPricesController::class, 'store'])->name('driver_price_add');
+	Route::post('/driver_price_update/{id}', [DriverPricesController::class, 'update'])->name('driver_price_update');
+
 	Route::get('op_result_accprice', function () {
 		return view('op_result')->withOprand('customer');
 	})->middleware(['auth'])->name('accprice');
+
+	Route::get('op_result_driver_price', function () {
+		return view('op_result')->withOprand('driver_pay_prices');
+	})->middleware(['auth'])->name('driver_price');
 });
 
 //////// For Misc

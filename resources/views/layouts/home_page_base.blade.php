@@ -52,7 +52,7 @@
                         <li> <a href="{{route('customer_main')}}">Customer File</a> </li>
                         <li> <a href="#">Driver File</a> </li>
                         <li> <a href="#">Invoicing</a> </li>
-                        <li> <a href="#">Driver Pay</a> </li>
+                        <li> <a href="{{route('driver_pay_prices_main')}}">Driver Pay</a> </li>
                         <li> <a href="#">Steamship Line DB</a> </li>
                         <li> <a href="#addressSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Address DB</a> </li>
 							<ul class="collapse list-unstyled mx-4" id="addressSubmenu">

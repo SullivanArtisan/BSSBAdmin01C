@@ -162,7 +162,7 @@
                         <div class="w-25"></div>
                         <div class="col">
 							<div class="row">
-								<button class="btn btn-secondary mx-4" type="submit">Save</button>
+								<button class="btn btn-success mx-4" type="submit">Save</button>
 								<button class="btn btn-secondary mx-3" type="button"><a href="{{route('terminal_main')}}">Cancel</a></button>
 							</div>
 						</div>

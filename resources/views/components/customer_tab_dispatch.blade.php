@@ -165,7 +165,7 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"cstm_dspch_import_driver_notes\" name=\"cstm_dspch_import_driver_notes\" value=\"".$dbTable->cstm_dspch_import_driver_notes."\"></textarea>";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"cstm_dspch_import_driver_notes\" name=\"cstm_dspch_import_driver_notes\" placeholder=\"".$dbTable->cstm_dspch_import_driver_notes."\"></textarea>";
 				} else {
 					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"cstm_dspch_import_driver_notes\" name=\"cstm_dspch_import_driver_notes\"></textarea>";
 				}
@@ -175,7 +175,7 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<textarea class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"cstm_dspch_export_driver_notes\" name=\"cstm_dspch_export_driver_notes\" value=\"".$dbTable->cstm_dspch_import_driver_notes."\"></textarea>";
+					echo "<textarea class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"cstm_dspch_export_driver_notes\" name=\"cstm_dspch_export_driver_notes\" placeholder=\"".$dbTable->cstm_dspch_import_driver_notes."\"></textarea>";
 				} else {
 					echo "<textarea class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"cstm_dspch_export_driver_notes\" name=\"cstm_dspch_export_driver_notes\"></textarea>";
 				}

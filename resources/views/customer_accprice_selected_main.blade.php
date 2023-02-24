@@ -109,7 +109,7 @@
 			<div class="row">
 				<div class="col"><label class="col-form-label">Chassis (or Blank):&nbsp;</label></div>
 				<div class="col">
-					<input list="cstm_account_chassis" name="cstm_account_chassis" id="cstm_account_chassis_li" class="form-control mt-1 my-text-height">
+					<input list="cstm_account_chassis" name="cstm_account_chassis" id="cstm_account_chassis_li" class="form-control mt-1 my-text-height" value="{{$customer_accprice->cstm_account_chassis}}">
 						<datalist id="cstm_account_chassis">
 							<option value="12PT">
 							<option value="AIRRIDE">
@@ -123,12 +123,12 @@
 							<option value="TTRAIN">
 						</datalist></div>
 				<div class="col"><label class="col-form-label">Job Type:&nbsp;</label></div>
-				<div class="col"><input class="form-control mt-1 my-text-height" type="text" id="cstm_account_job_type" name="cstm_account_job_type">{{$customer_accprice->cstm_account_job_type}}</div>
+				<div class="col"><input class="form-control mt-1 my-text-height" type="text" id="cstm_account_job_type" name="cstm_account_job_type" value="{{$customer_accprice->cstm_account_job_type}}"></div>
 			</div>
 			<div class="row">
 				<div class="col"><label class="col-form-label">Empty Location:&nbsp;</label></div>
 				<div class="col">
-					<input list="cstm_account_mt_return" name="cstm_account_mt_return" id="cstm_account_mt_return_li" class="form-control mt-1 my-text-height">
+					<input list="cstm_account_mt_return" name="cstm_account_mt_return" id="cstm_account_mt_return_li" class="form-control mt-1 my-text-height" value="{{$customer_accprice->cstm_account_mt_return}}">
 						<datalist id="cstm_account_mt_return">
 							<option value="Empty Location 1">
 							<option value="Empty Location 2">
