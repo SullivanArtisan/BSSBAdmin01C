@@ -74,7 +74,7 @@
 						<div class="col"><input class="form-control mt-1 my-text-height" type="text" id="drvr_pay_price_job_type" name="drvr_pay_price_job_type"></div>
 					</div>
 					<div class="row">
-						<div class="col"><label class="col-form-label">Pay:&nbsp;</label></div>
+						<div class="col"><label class="col-form-label">Charge:&nbsp;</label></div>
 						<div class="col"><input class="form-control mt-1 my-text-height" type="number" id="drvr_pay_price_charge" name="drvr_pay_price_charge" step="any"></div>
 						<div class="col"><label class="col-form-label">One Way:&nbsp;</label></div>
 						<div class="col"><input type="checkbox" style="margin-top:3%" id="drvr_pay_price_one_way" name="drvr_pay_price_one_way"></div>

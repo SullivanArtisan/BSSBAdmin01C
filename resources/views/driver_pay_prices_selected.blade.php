@@ -46,7 +46,7 @@
 					<h2 class="text-muted pl-2">Price: {{$price->drvr_pay_price_zone_from}}&#x27A1;{{$price->drvr_pay_price_zone_to}}</h2>
 				</div>
 				<div class="col my-auto ml-5">
-					<button class="btn btn-danger me-2" type="button"><a href="{{route('zone_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>
+					<button class="btn btn-danger me-2" type="button"><a href="{{route('driver_pay_prices_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>
 				</div>
 				<div class="col"></div>
 			</div>
@@ -139,7 +139,7 @@
 		
 		<script>
 			function myConfirmation() {
-				if(!confirm("Are you sure to delete this zone?"))
+				if(!confirm("Are you sure to delete this driver price?"))
 				event.preventDefault();
 			}
 		</script>

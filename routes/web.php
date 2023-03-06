@@ -17,6 +17,7 @@ use App\Models\Zone;
 use App\Models\Terminal;
 use App\Models\Customer;
 use App\Models\CstmAccountPrice;
+use App\Models\DriverPrices;
 
 /*
 |--------------------------------------------------------------------------
@@ -261,6 +262,18 @@ Route::get('driver_pay_prices_condition_selected', function (Request $request) {
     return view('driver_pay_prices_condition_selected');
 })->middleware(['auth'])->name('driver_pay_prices_condition_selected');
 
+Route::get('/driver_pay_prices_delete/{id}', function ($id) {
+	$driver_price = DriverPrices::where('id', $id)->first();
+	$zoneFrom = $driver_price->drvr_pay_price_zone_from;
+	$zoneTo = $driver_price->drvr_pay_price_zone_to;
+	$res=DriverPrices::where('id', $id)->delete();
+	if (!$res) {
+		return redirect()->route('op_result.driver_price')->with('status', 'The driver price, <span style="font-weight:bold;font-style:italic;color:red">'.$zoneFrom.' &#x27A1; '.$zoneTo.'</span>, cannot be deleted for some reason.');	
+	} else {
+		return redirect()->route('op_result.driver_price')->with('status', 'The driver price, <span style="font-weight:bold;font-style:italic;color:blue">'.$zoneFrom.' &#x27A1; '.$zoneTo.'</span>, hs been deleted successfully.');	
+	}
+})->middleware(['auth'])->name('driver_pay_prices_delete');
+
 
 //////// For All Results
 Route::name('op_result.')->group(function () {
@@ -283,6 +296,10 @@ Route::name('op_result.')->group(function () {
 	Route::get('op_result_customer', function () {
 		return view('op_result')->withOprand('customer');
 	})->middleware(['auth'])->name('customer');
+
+	Route::get('op_result_driverprice', function () {
+		return view('op_result')->withOprand('driverprice');
+	})->middleware(['auth'])->name('driverprice');
 
 	Route::post('/terminal_result', [TerminalController::class, 'store'])->name('terminal_add');
 	Route::post('/terminal_update', [TerminalController::class, 'update'])->name('terminal_update');
