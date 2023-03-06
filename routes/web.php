@@ -257,6 +257,10 @@ Route::get('driver_pay_prices_selected', function (Request $request) {
     return view('driver_pay_prices_selected');
 })->middleware(['auth'])->name('driver_pay_prices_selected');
 
+Route::get('driver_pay_prices_condition_selected', function (Request $request) {
+    return view('driver_pay_prices_condition_selected');
+})->middleware(['auth'])->name('driver_pay_prices_condition_selected');
+
 
 //////// For All Results
 Route::name('op_result.')->group(function () {
