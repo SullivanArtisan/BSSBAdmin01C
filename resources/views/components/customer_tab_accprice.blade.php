@@ -25,7 +25,7 @@
 						$id = $_GET['id'];
 						if ($id) {
 							$customer = Customer::where('id', $id)->first();
-							$cstmPrices = CstmAccountPrice::where('cstm_account_no', $customer->cstm_account_no)->get();								
+							$cstmPrices = CstmAccountPrice::where('cstm_account_no', $customer->cstm_account_no)->orderBy('cstm_account_from', 'asc')->get();								
 							foreach ($cstmPrices as $cstmPrice) {
 								echo "<tr>";
 								echo "<td><a href=\"customer_accprice_selected_main?id=$cstmPrice->id\">".$cstmPrice->cstm_account_chassis."</a></td>";

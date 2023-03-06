@@ -62,9 +62,9 @@
 				  <div class="input-group-append">
 					<button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
 					<div class="dropdown-menu">
-					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('account')\" style=\"cursor: pointer;\">by Account No</button>");</script>
-					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('name')\" style=\"cursor: pointer;\">by Customer Name</button>");</script>
-					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('city')\" style=\"cursor: pointer;\">by City</button>");</script>
+					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('cstm_account_no')\" style=\"cursor: pointer;\">by Account No</button>");</script>
+					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('cstm_account_name')\" style=\"cursor: pointer;\">by Customer Name</button>");</script>
+					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('cstm_city')\" style=\"cursor: pointer;\">by City</button>");</script>
 					</div>
 				  </div>
 				</div>			
