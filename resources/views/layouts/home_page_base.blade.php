@@ -50,9 +50,18 @@
                     <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Administration</a>
                     <ul class="collapse list-unstyled" id="adminSubmenu">
                         <li> <a href="{{route('customer_main')}}">Customer File</a> </li>
-                        <li> <a href="#">Driver File</a> </li>
+                        <li> <a href="#driverFileSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Driver File</a> </li>
+							<ul class="collapse list-unstyled mx-4" id="driverFileSubmenu">
+							  <li><a href="#">Enter New Driver</a></li>
+							  <li><a href="#">View/Amend Driver</a></li>
+							  <li><a href="#">Delete Driver</a></li>
+							  <li><a href="#">View Deleted Drivers</a></li>
+							  <li><a href="#">Driver Deductions</a></li>
+							  <li><a href="{{route('driver_pay_prices_main')}}">Driver Pay Rates</a></li>
+							  <li><a href="#">Subhauler Pay Rates</a></li>
+							</ul>						
                         <li> <a href="#">Invoicing</a> </li>
-                        <li> <a href="{{route('driver_pay_prices_main')}}">Driver Pay</a> </li>
+                        <li> <a href="#">Driver Pay</a> </li>
                         <li> <a href="#">Steamship Line DB</a> </li>
                         <li> <a href="#addressSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Address DB</a> </li>
 							<ul class="collapse list-unstyled mx-4" id="addressSubmenu">
