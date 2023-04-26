@@ -52,10 +52,7 @@
                         <li> <a href="{{route('customer_main')}}">Customer File</a> </li>
                         <li> <a href="#driverFileSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Driver File</a> </li>
 							<ul class="collapse list-unstyled mx-4" id="driverFileSubmenu">
-							  <li><a href="#">Enter New Driver</a></li>
-							  <li><a href="#">View/Amend Driver</a></li>
-							  <li><a href="#">Delete Driver</a></li>
-							  <li><a href="#">View Deleted Drivers</a></li>
+							  <li><a href="{{route('driver_main')}}">All Drivers</a></li>
 							  <li><a href="#">Driver Deductions</a></li>
 							  <li><a href="{{route('driver_pay_prices_main')}}">Driver Pay Rates</a></li>
 							  <li><a href="#">Subhauler Pay Rates</a></li>

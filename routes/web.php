@@ -8,6 +8,7 @@ use App\Http\Controllers\PowerUnitController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\CstmAccountPriceController;
 use App\Http\Controllers\DriverPricesController;
 use App\Models\User;
@@ -16,6 +17,7 @@ use App\Models\PowerUnit;
 use App\Models\Zone;
 use App\Models\Terminal;
 use App\Models\Customer;
+use App\Models\Driver;
 use App\Models\CstmAccountPrice;
 use App\Models\DriverPrices;
 
@@ -245,6 +247,36 @@ Route::get('/customer_accprice_add', function () {
 
 Route::post('/customer_accprice_update', [CstmAccountPriceController::class, 'update'])->name('customer_accprice_update');
 
+//////// For Drivers
+Route::get('/driver_main', function () {
+    return view('driver_main');
+})->middleware(['auth'])->name('driver_main');
+
+Route::get('driver_selected', function (Request $request) {
+    return view('driver_selected');
+})->middleware(['auth'])->name('driver_selected');
+
+Route::get('driver_condition_selected', function (Request $request) {
+    return view('driver_condition_selected');
+})->middleware(['auth'])->name('driver_condition_selected');
+
+Route::get('/driver_add', function () {
+    return view('driver_add');
+})->middleware(['auth'])->name('driver_add');
+
+Route::get('/driver_delete/{id}', function ($id) {
+	$driver = Driver::where('id', $id)->first();
+	$driverName = $driver->dvr_name;
+	$driver->dvr_deleted = 'Y';
+	$res = $driver->save();
+					
+	if(!$res) {
+		return redirect()->route('op_result.driver')->with('status', ' <span style="color:red">Failed to delete driver '.$driverName.'!</span>');
+	} else {
+		return redirect()->route('op_result.driver')->with('status', 'The driver,  <span style="font-weight:bold;font-style:italic;color:blue">'.$driverName.'</span>, hs been deleted successfully.');
+	}
+})->middleware(['auth'])->name('driver_delete');
+
 //////// For Driver Pay Prices
 Route::get('/driver_pay_prices_main', function () {
     return view('driver_pay_prices_main');
@@ -297,6 +329,10 @@ Route::name('op_result.')->group(function () {
 		return view('op_result')->withOprand('customer');
 	})->middleware(['auth'])->name('customer');
 
+	Route::get('op_result_driver', function () {
+		return view('op_result')->withOprand('driver');
+	})->middleware(['auth'])->name('driver');
+
 	Route::get('op_result_driverprice', function () {
 		return view('op_result')->withOprand('driverprice');
 	})->middleware(['auth'])->name('driverprice');
@@ -316,6 +352,9 @@ Route::name('op_result.')->group(function () {
 	Route::post('/customer_result', [CustomerController::class, 'store'])->name('customer_add');
 	Route::post('/customer_update', [CustomerController::class, 'update'])->name('customer_update');
 	Route::post('/customer_accprice_result', [CstmAccountPriceController::class, 'store'])->name('customer_accprice_add');
+
+	Route::post('/driver_result', [DriverController::class, 'store'])->name('driver_add');
+	Route::post('/driver_update', [DriverController::class, 'update'])->name('driver_update');
 
 	Route::post('/driver_price_result', [DriverPricesController::class, 'store'])->name('driver_price_add');
 	Route::post('/driver_price_update/{id}', [DriverPricesController::class, 'update'])->name('driver_price_update');

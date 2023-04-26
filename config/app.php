@@ -230,6 +230,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 		'PhpMailerProxy' => App\Services\UsePhpMailer\PhpMailerProxyFacade::class, 
+        'MyHelper' => App\Helper\MyHelper::class,
     ],
 
 ];
