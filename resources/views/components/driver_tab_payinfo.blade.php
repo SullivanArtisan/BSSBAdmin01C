@@ -13,9 +13,9 @@
 		<div class="col">
             <?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_pay_set_amount\" name=\"dvr_pay_set_amount\" value=\"".$dbTable->dvr_pay_set_amount."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_pay_set_amount\" name=\"dvr_pay_set_amount\" value=\"".$dbTable->dvr_pay_set_amount."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_pay_set_amount\" name=\"dvr_pay_set_amount\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_pay_set_amount\" name=\"dvr_pay_set_amount\">";
 				}
 			?>
 		</div>
@@ -93,21 +93,39 @@
 		<div class="col">
             <?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_paye_type\" name=\"dvr_paye_type\" value=\"".$dbTable->dvr_paye_type."\">";
+					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_paye_type\" name=\"dvr_paye_type\" value=\"".$dbTable->dvr_paye_type."\">";
+                    echo "<input list=\"dvr_paye_type\" name=\"dvr_paye_type\" id=\"driverPayTypeInput\" class=\"form-control mt-1 my-text-height\" value=\"".$dbTable->dvr_paye_type."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_paye_type\" name=\"dvr_paye_type\">";
+					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_paye_type\" name=\"dvr_paye_type\">";
+                    echo "<input list=\"dvr_paye_type\" name=\"dvr_paye_type\" id=\"driverPayTypeInput\" class=\"form-control mt-1 my-text-height\">";
 				}
 			?>
+            <datalist id="dvr_paye_type">
+            <option value="Trip">
+            <option value="Hourly">
+            <option value="Subhauler Trip">
+            <option value="Milage Hourly">
+            <option value="Owner Operator Trip">
+            </datalist>
 		</div>
 		<div class="col"><label class="col-form-label">Ledger Code:&nbsp;</label></div>
 		<div class="col">
             <?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_ledger_code\" name=\"dvr_ledger_code\" value=\"".$dbTable->dvr_ledger_code."\">";
+					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_ledger_code\" name=\"dvr_ledger_code\" value=\"".$dbTable->dvr_ledger_code."\">";
+                    echo "<input list=\"dvr_ledger_code\" name=\"dvr_ledger_code\" id=\"dvrLedgerCodeInput\" class=\"form-control mt-1 my-text-height\" value=\"".$dbTable->dvr_ledger_code."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_ledger_code\" name=\"dvr_ledger_code\">";
+					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_ledger_code\" name=\"dvr_ledger_code\">";
+                    echo "<input list=\"dvr_ledger_code\" name=\"dvr_ledger_code\" id=\"dvrLedgerCodeInput\" class=\"form-control mt-1 my-text-height\">";
 				}
 			?>
+            <datalist id="dvr_ledger_code">
+            <option value="50001000/Local">
+            <option value="50004000/Highway">
+            <option value="51001000/Company Trip">
+            <option value="50002000/Subhauler">
+            <option value="50005000/Subhauler">
+            </datalist>
 		</div>
 	</div>
 	<div class="row">
@@ -115,9 +133,9 @@
 		<div class="col">
             <?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_hourly_rate\" name=\"dvr_hourly_rate\" value=\"".$dbTable->dvr_hourly_rate."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_hourly_rate\" name=\"dvr_hourly_rate\" value=\"".$dbTable->dvr_hourly_rate."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_hourly_rate\" name=\"dvr_hourly_rate\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_hourly_rate\" name=\"dvr_hourly_rate\">";
 				}
 			?>
 		</div>
@@ -125,9 +143,9 @@
 		<div class="col">
             <?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_safe_driving_premium\" name=\"dvr_safe_driving_premium\" value=\"".$dbTable->dvr_safe_driving_premium."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_safe_driving_premium\" name=\"dvr_safe_driving_premium\" value=\"".$dbTable->dvr_safe_driving_premium."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_safe_driving_premium\" name=\"dvr_safe_driving_premium\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_safe_driving_premium\" name=\"dvr_safe_driving_premium\">";
 				}
 			?>
 		</div>
@@ -137,9 +155,9 @@
 		<div class="col">
             <?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_clean_nsc_premium\" name=\"dvr_clean_nsc_premium\" value=\"".$dbTable->dvr_clean_nsc_premium."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_clean_nsc_premium\" name=\"dvr_clean_nsc_premium\" value=\"".$dbTable->dvr_clean_nsc_premium."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_clean_nsc_premium\" name=\"dvr_clean_nsc_premium\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_clean_nsc_premium\" name=\"dvr_clean_nsc_premium\">";
 				}
 			?>
 		</div>
@@ -151,9 +169,9 @@
 		<div class="col">
             <?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_milage_rate\" name=\"dvr_milage_rate\" value=\"".$dbTable->dvr_milage_rate."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_milage_rate\" name=\"dvr_milage_rate\" value=\"".$dbTable->dvr_milage_rate."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_milage_rate\" name=\"dvr_milage_rate\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_milage_rate\" name=\"dvr_milage_rate\">";
 				}
 			?>
 		</div>
@@ -161,9 +179,9 @@
 		<div class="col">
             <?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_safe_driving_premium2\" name=\"dvr_safe_driving_premium2\" value=\"".$dbTable->dvr_safe_driving_premium2."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_safe_driving_premium2\" name=\"dvr_safe_driving_premium2\" value=\"".$dbTable->dvr_safe_driving_premium2."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_safe_driving_premium2\" name=\"dvr_safe_driving_premium2\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_safe_driving_premium2\" name=\"dvr_safe_driving_premium2\">";
 				}
 			?>
 		</div>
@@ -173,9 +191,9 @@
 		<div class="col">
             <?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_clean_nsc_premium2\" name=\"dvr_clean_nsc_premium2\" value=\"".$dbTable->dvr_clean_nsc_premium2."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_clean_nsc_premium2\" name=\"dvr_clean_nsc_premium2\" value=\"".$dbTable->dvr_clean_nsc_premium2."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_clean_nsc_premium2\" name=\"dvr_clean_nsc_premium2\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_clean_nsc_premium2\" name=\"dvr_clean_nsc_premium2\">";
 				}
 			?>
 		</div>
@@ -187,9 +205,9 @@
 		<div class="col">
             <?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_ot_rate\" name=\"dvr_ot_rate\" value=\"".$dbTable->dvr_ot_rate."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_ot_rate\" name=\"dvr_ot_rate\" value=\"".$dbTable->dvr_ot_rate."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_ot_rate\" name=\"dvr_ot_rate\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_ot_rate\" name=\"dvr_ot_rate\">";
 				}
 			?>
 		</div>
@@ -197,9 +215,9 @@
 		<div class="col">
             <?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_stat_holiday_rate\" name=\"dvr_stat_holiday_rate\" value=\"".$dbTable->dvr_stat_holiday_rate."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_stat_holiday_rate\" name=\"dvr_stat_holiday_rate\" value=\"".$dbTable->dvr_stat_holiday_rate."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_stat_holiday_rate\" name=\"dvr_stat_holiday_rate\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_stat_holiday_rate\" name=\"dvr_stat_holiday_rate\">";
 				}
 			?>
 		</div>
@@ -209,9 +227,9 @@
 		<div class="col">
             <?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_max_standard_hous_perweek\" name=\"dvr_max_standard_hous_perweek\" value=\"".$dbTable->dvr_max_standard_hous_perweek."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_max_standard_hous_perweek\" name=\"dvr_max_standard_hous_perweek\" value=\"".$dbTable->dvr_max_standard_hous_perweek."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_max_standard_hous_perweek\" name=\"dvr_max_standard_hous_perweek\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"number\" step=\"any\" id=\"dvr_max_standard_hous_perweek\" name=\"dvr_max_standard_hous_perweek\">";
 				}
 			?>
 		</div>

@@ -3,11 +3,17 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_dayornight\" name=\"dvr_dayornight\" value=\"".$dbTable->dvr_dayornight."\">";
+					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_dayornight\" name=\"dvr_dayornight\" value=\"".$dbTable->dvr_dayornight."\">";
+                    echo "<input list=\"dvr_dayornight\" name=\"dvr_dayornight\" id=\"dayOrNightInput\" class=\"form-control mt-1 my-text-height\" value=\"".$dbTable->dvr_dayornight."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_dayornight\" name=\"dvr_dayornight\">";
+					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_dayornight\" name=\"dvr_dayornight\">";
+                    echo "<input list=\"dvr_dayornight\" name=\"dvr_dayornight\" id=\"dayOrNightInput\" class=\"form-control mt-1 my-text-height\">";
 				}
-			?>
+            ?>
+            <datalist id="dvr_dayornight">
+            <option value="Day">
+            <option value="Night">
+            </datalist>
 		</div>
 		<div class="col"><label class="col-form-label">Fuel Card No.:&nbsp;</label></div>
 		<div class="col">
@@ -25,11 +31,19 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_mobile_data_type\" name=\"dvr_mobile_data_type\" value=\"".$dbTable->dvr_mobile_data_type."\">";
+					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_mobile_data_type\" name=\"dvr_mobile_data_type\" value=\"".$dbTable->dvr_mobile_data_type."\">";
+                    echo "<input list=\"dvr_mobile_data_type\" name=\"dvr_mobile_data_type\" id=\"mobileDataTypeInput\" class=\"form-control mt-1 my-text-height\" value=\"".$dbTable->dvr_mobile_data_type."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_mobile_data_type\" name=\"dvr_mobile_data_type\">";
+					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_mobile_data_type\" name=\"dvr_mobile_data_type\">";
+                    echo "<input list=\"dvr_mobile_data_type\" name=\"dvr_mobile_data_type\" id=\"mobileDataTypeInput\" class=\"form-control mt-1 my-text-height\">";
 				}
 			?>
+            <datalist id="dvr_mobile_data_type">
+            <option value="Alamein HL">
+            <option value="Email">
+            <option value="Alamein 26-11">
+            <option value="Alamein 2016">
+            </datalist>
 		</div>
 		<div class="col"><label class="col-form-label">Mobile Call Sign:&nbsp;</label></div>
 		<div class="col">
@@ -75,11 +89,19 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_altern_data_type\" name=\"dvr_altern_data_type\" value=\"".$dbTable->dvr_altern_data_type."\">";
+					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_altern_data_type\" name=\"dvr_altern_data_type\" value=\"".$dbTable->dvr_altern_data_type."\">";
+                    echo "<input list=\"dvr_altern_data_type\" name=\"dvr_altern_data_type\" id=\"alternDataTypeInput\" class=\"form-control mt-1 my-text-height\" value=\"".$dbTable->dvr_altern_data_type."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_altern_data_type\" name=\"dvr_altern_data_type\">";
+					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_altern_data_type\" name=\"dvr_altern_data_type\">";
+                    echo "<input list=\"dvr_altern_data_type\" name=\"dvr_altern_data_type\" id=\"alternDataTypeInput\" class=\"form-control mt-1 my-text-height\">";
 				}
 			?>
+            <datalist id="dvr_altern_data_type">
+            <option value="Alamein HL">
+            <option value="Email">
+            <option value="Alamein 26-11">
+            <option value="Alamein 2016">
+            </datalist>
 		</div>
 		<div class="col"><label class="col-form-label">Alternative Call Sign:&nbsp;</label></div>
 		<div class="col">
@@ -125,11 +147,17 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_local_office\" name=\"dvr_local_office\" placeholder=\"".$dbTable->dvr_local_office."\"></textarea>";
+					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_local_office\" name=\"dvr_local_office\" placeholder=\"".$dbTable->dvr_local_office."\"></textarea>";
+                    echo "<input list=\"dvr_local_office\" name=\"dvr_local_office\" id=\"localOfficeInput\" class=\"form-control mt-1 my-text-height\" value=\"".$dbTable->dvr_local_office."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_local_office\" name=\"dvr_local_office\"></textarea>";
+					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_local_office\" name=\"dvr_local_office\"></textarea>";
+                    echo "<input list=\"dvr_local_office\" name=\"dvr_local_office\" id=\"localOfficeInput\" class=\"form-control mt-1 my-text-height\">";
 				}
 			?>
+            <datalist id="dvr_local_office">
+            <option value="HL">
+            <option value="TW">
+            </datalist>
 		</div>
 		<div class="col"><label class="col-form-label">PAYE No.:&nbsp;</label></div>
 		<div class="col">
@@ -175,11 +203,18 @@
 		<div class="col">
 			<?php
                 if(isset($dbTable)) {
-                    echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_type\" name=\"dvr_type\" value=\"".$dbTable->dvr_type."\">";
+                    //echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_type\" name=\"dvr_type\" value=\"".$dbTable->dvr_type."\">";
+                    echo "<input list=\"dvr_type\" name=\"dvr_type\" id=\"driverTypeInput\" class=\"form-control mt-1 my-text-height\" value=\"".$dbTable->dvr_type."\">";
                 } else {
-                    echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_type\" name=\"dvr_type\">";
+                    //echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_type\" name=\"dvr_type\">";
+                    echo "<input list=\"dvr_type\" name=\"dvr_type\" id=\"driverTypeInput\" class=\"form-control mt-1 my-text-height\">";
                 }
 			?>
+            <datalist id="dvr_type">
+            <option value="Owner-Operator">
+            <option value="Company">
+            <option value="Subhauler">
+            </datalist>
 		</div>
 		<div class="col"><label class="col-form-label">HarbourLink Fuel Card:&nbsp;</label></div>
 		<div class="col">
@@ -203,9 +238,9 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_start_date\" name=\"dvr_start_date\" value=\"".$dbTable->dvr_start_date."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_start_date\" name=\"dvr_start_date\" value=\"".$dbTable->dvr_start_date."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_start_date\" name=\"dvr_start_date\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_start_date\" name=\"dvr_start_date\">";
 				}
 			?>
 		</div>
@@ -213,9 +248,9 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_termination_date\" name=\"dvr_termination_date\" value=\"".$dbTable->dvr_termination_date."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_termination_date\" name=\"dvr_termination_date\" value=\"".$dbTable->dvr_termination_date."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_termination_date\" name=\"dvr_termination_date\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_termination_date\" name=\"dvr_termination_date\">";
 				}
 			?>
 		</div>
@@ -225,9 +260,9 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_return_date\" name=\"dvr_return_date\" value=\"".$dbTable->dvr_return_date."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_return_date\" name=\"dvr_return_date\" value=\"".$dbTable->dvr_return_date."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_return_date\" name=\"dvr_return_date\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_return_date\" name=\"dvr_return_date\">";
 				}
 			?>
 		</div>

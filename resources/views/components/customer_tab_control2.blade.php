@@ -3,7 +3,7 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<textarea class=\"form-control mt-1\" rows=\"15\" id=\"cstm_other_docket_msgs\" name=\"cstm_other_docket_msgs\" placeholder=\"".$dbTable->cstm_other_docket_msgs."\"></textarea>";
+					echo "<textarea class=\"form-control mt-1\" rows=\"15\" id=\"cstm_other_docket_msgs\" name=\"cstm_other_docket_msgs\" placeholder=\"".$dbTable->cstm_other_docket_msgs."\">".$dbTable->cstm_other_docket_msgs."</textarea>";
 				} else {
 					echo "<textarea class=\"form-control mt-1\" rows=\"15\" id=\"cstm_other_docket_msgs\" name=\"cstm_other_docket_msgs\"></textarea>";
 				}
@@ -13,7 +13,7 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<textarea class=\"form-control mt-1\" rows=\"15\" id=\"cstm_other_additional_info\" name=\"cstm_other_additional_info\" placeholder=\"".$dbTable->cstm_other_additional_info."\"></textarea>";
+					echo "<textarea class=\"form-control mt-1\" rows=\"15\" id=\"cstm_other_additional_info\" name=\"cstm_other_additional_info\" placeholder=\"".$dbTable->cstm_other_additional_info."\">".$dbTable->cstm_other_additional_info."</textarea>";
 				} else {
 					echo "<textarea class=\"form-control mt-1\" rows=\"15\" id=\"cstm_other_additional_info\" name=\"cstm_other_additional_info\"></textarea>";
 				}
@@ -25,7 +25,7 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<textarea class=\"form-control mt-1\" rows=\"15\" id=\"cstm_other_control_msgs\" name=\"cstm_other_control_msgs\" placeholder=\"".$dbTable->cstm_other_control_msgs."\"></textarea>";
+					echo "<textarea class=\"form-control mt-1\" rows=\"15\" id=\"cstm_other_control_msgs\" name=\"cstm_other_control_msgs\" placeholder=\"".$dbTable->cstm_other_control_msgs."\">".$dbTable->cstm_other_control_msgs."</textarea>";
 				} else {
 					echo "<textarea class=\"form-control mt-1\" rows=\"15\" id=\"cstm_other_control_msgs\" name=\"cstm_other_control_msgs\"></textarea>";
 				}
@@ -35,7 +35,7 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<textarea class=\"form-control mt-1\" rows=\"15\" id=\"cstm_other_special_instructions\" name=\"cstm_other_special_instructions\" placeholder=\"".$dbTable->cstm_other_special_instructions."\"></textarea>";
+					echo "<textarea class=\"form-control mt-1\" rows=\"15\" id=\"cstm_other_special_instructions\" name=\"cstm_other_special_instructions\" placeholder=\"".$dbTable->cstm_other_special_instructions."\">".$dbTable->cstm_other_special_instructions."</textarea>";
 				} else {
 					echo "<textarea class=\"form-control mt-1\" rows=\"15\" id=\"cstm_other_special_instructions\" name=\"cstm_other_special_instructions\"></textarea>";
 				}

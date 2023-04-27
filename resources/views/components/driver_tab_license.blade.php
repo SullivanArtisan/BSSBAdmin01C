@@ -4,9 +4,9 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_birth_date\" name=\"dvr_birth_date\" placeholder=\"".$dbTable->dvr_birth_date."\"></textarea>";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_birth_date\" name=\"dvr_birth_date\" value=\"".$dbTable->dvr_birth_date."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_birth_date\" name=\"dvr_birth_date\"></textarea>";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_birth_date\" name=\"dvr_birth_date\">";
 				}
 			?>
 		</div>
@@ -94,9 +94,9 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_license_exp_date\" name=\"dvr_license_exp_date\" value=\"".$dbTable->dvr_license_exp_date."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_license_exp_date\" name=\"dvr_license_exp_date\" value=\"".$dbTable->dvr_license_exp_date."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_license_exp_date\" name=\"dvr_license_exp_date\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_license_exp_date\" name=\"dvr_license_exp_date\">";
 				}
 			?>
 		</div>
@@ -110,9 +110,9 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_abstract_exp_date\" name=\"dvr_abstract_exp_date\" value=\"".$dbTable->dvr_abstract_exp_date."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_abstract_exp_date\" name=\"dvr_abstract_exp_date\" value=\"".$dbTable->dvr_abstract_exp_date."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_abstract_exp_date\" name=\"dvr_abstract_exp_date\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_abstract_exp_date\" name=\"dvr_abstract_exp_date\">";
 				}
 			?>
 		</div>
@@ -120,9 +120,9 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_tdg_exp_date\" name=\"dvr_tdg_exp_date\" value=\"".$dbTable->dvr_tdg_exp_date."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_tdg_exp_date\" name=\"dvr_tdg_exp_date\" value=\"".$dbTable->dvr_tdg_exp_date."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_tdg_exp_date\" name=\"dvr_tdg_exp_date\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_tdg_exp_date\" name=\"dvr_tdg_exp_date\">";
 				}
 			?>
 		</div>
@@ -166,9 +166,9 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_port_pass_exp_date\" name=\"dvr_port_pass_exp_date\" value=\"".$dbTable->dvr_port_pass_exp_date."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_port_pass_exp_date\" name=\"dvr_port_pass_exp_date\" value=\"".$dbTable->dvr_port_pass_exp_date."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_port_pass_exp_date\" name=\"dvr_port_pass_exp_date\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_port_pass_exp_date\" name=\"dvr_port_pass_exp_date\">";
 				}
 			?>
 		</div>
@@ -212,9 +212,9 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_twic_card_exp_date\" name=\"dvr_twic_card_exp_date\" value=\"".$dbTable->dvr_twic_card_exp_date."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_twic_card_exp_date\" name=\"dvr_twic_card_exp_date\" value=\"".$dbTable->dvr_twic_card_exp_date."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_twic_card_exp_date\" name=\"dvr_twic_card_exp_date\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_twic_card_exp_date\" name=\"dvr_twic_card_exp_date\">";
 				}
 			?>
 		</div>
@@ -258,9 +258,9 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_fast_pass_exp_date\" name=\"dvr_fast_pass_exp_date\" value=\"".$dbTable->dvr_fast_pass_exp_date."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_fast_pass_exp_date\" name=\"dvr_fast_pass_exp_date\" value=\"".$dbTable->dvr_fast_pass_exp_date."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_fast_pass_exp_date\" name=\"dvr_fast_pass_exp_date\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_fast_pass_exp_date\" name=\"dvr_fast_pass_exp_date\">";
 				}
 			?>
 		</div>
@@ -305,9 +305,9 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_tls_license_exp_date\" name=\"dvr_tls_license_exp_date\" value=\"".$dbTable->dvr_tls_license_exp_date."\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_tls_license_exp_date\" name=\"dvr_tls_license_exp_date\" value=\"".$dbTable->dvr_tls_license_exp_date."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_tls_license_exp_date\" name=\"dvr_tls_license_exp_date\">";
+					echo "<input class=\"form-control mt-1 my-text-height\" type=\"date\" id=\"dvr_tls_license_exp_date\" name=\"dvr_tls_license_exp_date\">";
 				}
 			?>
 		</div>

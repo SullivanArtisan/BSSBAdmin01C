@@ -71,19 +71,19 @@
 							<a class="nav-link active " id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="true">Contact</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="generalinfo-tab" data-toggle="tab" href="#generalinfo" role="tab" aria-controls="generalinfo" aria-selected="false">GeneralInfo</a>
+							<a class="nav-link" id="generalinfo-tab" data-toggle="tab" href="#generalinfo" role="tab" aria-controls="generalinfo" aria-selected="false">General Info</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" id="license-tab" data-toggle="tab" href="#license" role="tab" aria-controls="license" aria-selected="false">License</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="payinfo-tab" data-toggle="tab" href="#payinfo" role="tab" aria-controls="payinfo" aria-selected="false">PayInfo</a>
+							<a class="nav-link" id="payinfo-tab" data-toggle="tab" href="#payinfo" role="tab" aria-controls="payinfo" aria-selected="false">Pay Info</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" id="notes-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false">Notes</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="changelogs-tab" data-toggle="tab" href="#changelogs" role="tab" aria-controls="changelogs" aria-selected="false">ChangeLogs</a>
+							<a class="nav-link" id="changelogs-tab" data-toggle="tab" href="#changelogs" role="tab" aria-controls="changelogs" aria-selected="false">Change Logs</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab" aria-controls="history" aria-selected="false">History</a>

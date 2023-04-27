@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Driver;
 use App\Helper\MyHelper;
@@ -151,7 +152,8 @@ class DriverController extends Controller
 		$driver->dvr_clean_nsc_premium2 = $request->dvr_clean_nsc_premium2;
 		$driver->dvr_vendor_code = $request->dvr_vendor_code;
 		$driver->dvr_wcb_no = $request->dvr_wcb_no;
-		$driver->dvr_ledger_code = $request->dvr_ledger_code;
+        $ledgerResults = explode("/", $request->dvr_ledger_code);
+		$driver->dvr_ledger_code = $ledgerResults[0];
 		$driver->dvr_subhauler_address = $request->dvr_subhauler_address;
 		if ($request->dvr_add_tax_to_pay_sheet == 'on') {
 			$driver->dvr_add_tax_to_pay_sheet = 1;
@@ -317,7 +319,8 @@ class DriverController extends Controller
 		$driver->dvr_clean_nsc_premium2 = $request->dvr_clean_nsc_premium2;
 		$driver->dvr_vendor_code = $request->dvr_vendor_code;
 		$driver->dvr_wcb_no = $request->dvr_wcb_no;
-		$driver->dvr_ledger_code = $request->dvr_ledger_code;
+        $ledgerResults = explode("/", $request->dvr_ledger_code);
+		$driver->dvr_ledger_code = $ledgerResults[0];
 		$driver->dvr_subhauler_address = $request->dvr_subhauler_address;
 		if ($request->dvr_add_tax_to_pay_sheet == 'on') {
 			$driver->dvr_add_tax_to_pay_sheet = 1;

@@ -147,11 +147,18 @@
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_ops_code\" name=\"dvr_ops_code\" value=\"".$dbTable->dvr_ops_code."\">";
+					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_ops_code\" name=\"dvr_ops_code\" value=\"".$dbTable->dvr_ops_code."\">";
+                    echo "<input list=\"dvr_ops_code\" name=\"dvr_ops_code\" id=\"opsCodeInput\" class=\"form-control mt-1 my-text-height\" value=\"".$dbTable->dvr_ops_code."\">";
 				} else {
-					echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_ops_code\" name=\"dvr_ops_code\">";
+					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_ops_code\" name=\"dvr_ops_code\">";
+                    echo "<input list=\"dvr_ops_code\" name=\"dvr_ops_code\" id=\"opsCodeInput\" class=\"form-control mt-1 my-text-height\">";
 				}
 			?>
+            <datalist id="dvr_ops_code">
+            <option value="Local">
+            <option value="Highway">
+            <option value="Admin">
+            </datalist>
 		</div>
 	</div>
 	<div class="row">

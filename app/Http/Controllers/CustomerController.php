@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use App\Models\Customer;
 use App\Models\CstmDispatch;
 use App\Models\CstmInvoice;
