@@ -1,3 +1,12 @@
+<?php
+    if (Session::get('uploadPath')) {
+        $picPath = Session::get('uploadPath');
+        Session::forget(['uploadPath']);
+    } else {
+        $picPath = $dbTable->dvr_picture_file;
+    }
+?>
+
 	<div class="row">
 		<div class="col"><label class="col-form-label">PowerUnit No. 1:&nbsp;</label></div>
 		<div class="col">
@@ -183,3 +192,93 @@
 			?>
 		</div>
 	</div>
+	<div class="row">
+        <div class="col" id="pic_holder"><label class="col-form-label">Picture File:&nbsp;</label></div>
+        <?php
+            if(isset($dbTable)) {   // A specific driver is selected ==> to modify its data
+                $origin_pic_path_array = explode("/", $dbTable->picture_file);
+                $wanted_pic_path = url('')."/";
+                for ($i=1; $i<sizeof($origin_pic_path_array); $i++) {
+                    $wanted_pic_path .= $origin_pic_path_array[$i];
+                    if($i != sizeof($origin_pic_path_array)-1) {
+                        $wanted_pic_path .= "/";
+                    }
+                }
+            }
+        ?>
+        <div class="col">
+            <div class="row">
+                <?php
+                if(isset($dbTable)) {   // A specific driver is selected ==> to modify its data
+                    echo "<div class=\"col-9 pr-0\"><input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_picture_file\" name=\"dvr_picture_file\" value=\"$dbTable->dvr_picture_file\" onmouseover=\"showImage('dvr_picture_file', '".$wanted_pic_path."')\" onmouseout=\"hideImage('dvr_picture_file')\"></div>";
+                    echo "<div class=\"col-3 pl-2\"><button class=\"btn btn-info btn-sm mt-1\" type=\"button\" onclick=\"KeepInput()\"><a href=\"".route('system_user_pic_upload', 'driverId='.$dbTable->id)."\">Browse</a></button></div>";
+                } else {                // To add a new driver
+                    echo "<div class=\"col-9 pr-0\"><input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_picture_file\" name=\"dvr_picture_file\"></div>";
+                    echo "<div class=\"col-3 pl-2\"><button class=\"btn btn-info btn-sm mt-1\" type=\"button\" onclick=\"KeepInput()\"><a href=\"system_user_pic_upload&noDriverId=1\">Browse</a></button></div>";
+                }
+                ?>
+            </div>
+        </div>
+        <div class="col"><label class="col-form-label" id="driver_image" style="display: none;">Image:</label></div>
+        <div class="col"><input class="form-control mt-1" type="hidden"></div>
+	</div>
+		
+    <script>
+        (function() {
+            if (document.getElementById("dvr_picture_file").value) {
+                document.getElementById("driver_image").style.display = "block";
+                var picPath = {!! json_encode($picPath) !!};
+                const popImage = new Image();
+                //alert(picPath);
+                popImage.src = "./pic/1671825252_1670285560_image2.jpeg";				// this hard coded picture path can work
+                // popImage.src = "https://test.nueco.ca/NuEco/1670434551_1670285560_image2.jpeg";	// need to be tested if it's stored under domain_root/storage/app/public
+                popImage.style.display = "absolute";
+                popImage.style.zIndex = "1";
+                popImage.style.width = "200px";
+                popImage.style.height = "250px";
+                // elem.appendChild(popImage);										// for future optimization
+                popImage.style.marginLeft = "20";
+                document.getElementById("driver_image").appendChild(popImage);		// for now
+            }
+        })();
+
+        function showImage(elemId, imgSrc) {
+            /*
+            const elem = document.getElementById(elemId);
+            if (elem.value) {	
+                var picPath = {!! json_encode($picPath) !!};
+                const popImage = new Image();
+                //alert(picPath);
+                popImage.src = "./pic/1671825252_1670285560_image2.jpeg";				// this hard coded picture path can work
+                // popImage.src = "https://test.nueco.ca/NuEco/1670434551_1670285560_image2.jpeg";	// need to be tested if it's stored under domain_root/storage/app/public
+                popImage.style.display = "absolute";
+                popImage.style.zIndex = "1";
+                popImage.style.width = "200px";
+                popImage.style.height = "250px";
+                // elem.appendChild(popImage);										// for future optimization
+                document.getElementById("pic_holder").appendChild(popImage);		// for now
+            }
+            */
+        }	
+        
+        function hideImage(elemId) {
+            /*
+            const elem = document.getElementById(elemId);
+            if (elem.value) {	
+                // console.log("elemId is: " + elemId);
+                while (elem.childElementCount > 0) {
+                elem.removeChild(elem.lastChild);
+                }
+                while (document.getElementById("pic_holder").childElementCount > 0) {
+                document.getElementById("pic_holder").removeChild(document.getElementById("pic_holder").lastChild);
+                break;
+                }
+            }
+            */
+        }			
+    </script>
+
+    <script>
+        var picPath = {!! json_encode($picPath) !!};
+        document.getElementById('dvr_picture_file').value = picPath;
+    </script>

@@ -12,7 +12,7 @@
 @show
 
 <?php
-	$id = $_GET['id'];
+	$id = $_GET['driverId'];
 	if ($id) {
 		$driver = Driver::where('id', $id)->first();
 		// $cstmDispatch = CstmDispatch::where('cstm_account_no', $customer->cstm_account_no)->first();

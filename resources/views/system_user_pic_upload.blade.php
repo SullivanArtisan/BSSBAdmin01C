@@ -1,16 +1,24 @@
 @extends('layouts.home_page_base')
 
 <?php
-	if (isset($_GET['id'])) {
+	if (isset($_GET['id'])) {						// for a specific system user selected
 		Session::put('--userId', $_GET['id']);
+	} else if (isset($_GET['driverId'])) {			// for a specific driver selected
+		Session::put('--driverId', $_GET['driverId']);
 	}
 ?>
 
 @section('goback')
 	@if (Session::get('--userId'))
 		<a class="text-primary" href="{{route('system_user_selected', ['id'=>Session::get('--userId')])}}" style="margin-right: 10px;">Back</a>
-	@else
+	@elseif (Session::get('--driverId'))
+		<a class="text-primary" href="{{route('driver_selected', ['driverId'=>Session::get('--driverId')])}}" style="margin-right: 10px;">Back</a>
+	@elseif (isset($_GET['noId']))
 		<a class="text-primary" href="{{route('system_user_add')}}" style="margin-right: 10px;">Back</a>
+	@elseif (isset($_GET['noDriverId']))
+		<a class="text-primary" href="{{route('driver_selected')}}" style="margin-right: 10px;">Back</a>
+	@else
+		<a class="text-primary" href="{{route('home_page')}}" style="margin-right: 10px;">Back</a>
 	@endif
 @show
 
@@ -19,7 +27,7 @@
     <div>
         <div class="row">
             <div class="col col-sm-auto">
-				<h2 class="text-muted pl-2">Upload User's Picture File</h2>
+				<h2 class="text-muted pl-2">Upload a Picture File</h2>
             </div>
             <div class="col"></div>
         </div>

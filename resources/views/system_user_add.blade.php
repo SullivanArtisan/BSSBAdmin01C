@@ -128,7 +128,7 @@
 						<div class="col">
 							<div class="row">
 								<div class="col-9 pr-0"><input class="form-control mt-1 my-text-height" type="text" id="picture_file" name="picture_file"></div>
-								<div class="col-3 pl-2"><button class="btn btn-secondary btn-sm mt-1" type="button" onclick="KeepInput()"><a href="{{route('system_user_pic_upload')}}">Upload</a></button></div>
+								<div class="col-3 pl-2"><button class="btn btn-secondary btn-sm mt-1" type="button" onclick="KeepInput()"><a href="{{route('system_user_pic_upload', 'noId=1)}}">Upload</a></button></div>
 							</div>
 						</div>
                     </div>

@@ -24,14 +24,14 @@ class FileUploadController extends Controller
          $file->move($location,$filename);
 
          // Session::flash('message','Upload Successfully.');
-		 Session::put('success', 'Upload Successfully (for file: '.$location.'/'.$filename.')');
-		 Session::put('uploadPath', $location."/".$filename);
+		   Session::put('success', 'Upload Successfully (for file: '.$location.'/'.$filename.')');
+		   Session::put('uploadPath', $location."/".$filename);
          // Session::flash('alert-class', 'alert-success');
-		 return redirect()->route('system_user_pic_upload');	
+		   return redirect()->route('system_user_pic_upload');	
       }else{
          // Session::flash('message','File not uploaded.');
          // Session::flash('alert-class', 'alert-danger');
-		 return redirect('system_user_result')->with('status', 'File not uploaded');	
+		   return redirect('system_user_result')->with('status', 'File not uploaded');	
       }
 
       // return redirect('/');
