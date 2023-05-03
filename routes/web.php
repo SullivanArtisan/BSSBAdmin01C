@@ -11,6 +11,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\CstmAccountPriceController;
 use App\Http\Controllers\DriverPricesController;
+use App\Http\Controllers\ChassisController;
 use App\Models\User;
 use App\Models\UserSysDetail;
 use App\Models\PowerUnit;
@@ -20,6 +21,7 @@ use App\Models\Customer;
 use App\Models\Driver;
 use App\Models\CstmAccountPrice;
 use App\Models\DriverPrices;
+use App\Models\Chassis;
 
 /*
 |--------------------------------------------------------------------------
@@ -306,6 +308,36 @@ Route::get('/driver_pay_prices_delete/{id}', function ($id) {
 	}
 })->middleware(['auth'])->name('driver_pay_prices_delete');
 
+//////// For Chassis
+Route::get('/chassis_main', function () {
+    return view('chassis_main');
+})->middleware(['auth'])->name('chassis_main');
+
+Route::get('/chassis_add', function () {
+    return view('chassis_add');
+})->middleware(['auth'])->name('chassis_add');
+
+Route::get('chassis_selected', function (Request $request) {
+    return view('chassis_selected');
+})->middleware(['auth'])->name('chassis_selected');
+
+Route::get('chassis_condition_selected', function (Request $request) {
+    return view('chassis_condition_selected');
+})->middleware(['auth'])->name('chassis_condition_selected');
+
+Route::get('/chassis_delete/{id}', function ($id) {
+	$chassis = Chassis::where('id', $id)->first();
+	$chassisNumber = $chassis->code;
+	$chassis->deleted = 'Y';
+	$res = $chassis->save();
+					
+	if(!$res) {
+		return redirect()->route('op_result.chassis')->with('status', ' <span style="color:red">Failed to delete chassis '.$chassisNumber.'!</span>');
+	} else {
+		return redirect()->route('op_result.chassis')->with('status', 'The chassis,  <span style="font-weight:bold;font-style:italic;color:blue">'.$chassisNumber.'</span>, hs been deleted successfully.');
+	}
+})->middleware(['auth'])->name('chassis_delete');
+
 
 //////// For All Results
 Route::name('op_result.')->group(function () {
@@ -337,6 +369,10 @@ Route::name('op_result.')->group(function () {
 		return view('op_result')->withOprand('driverprice');
 	})->middleware(['auth'])->name('driverprice');
 
+	Route::get('op_result_chassis', function () {
+		return view('op_result')->withOprand('chassis');
+	})->middleware(['auth'])->name('chassis');
+
 	Route::post('/terminal_result', [TerminalController::class, 'store'])->name('terminal_add');
 	Route::post('/terminal_update', [TerminalController::class, 'update'])->name('terminal_update');
 
@@ -358,6 +394,9 @@ Route::name('op_result.')->group(function () {
 
 	Route::post('/driver_price_result', [DriverPricesController::class, 'store'])->name('driver_price_add');
 	Route::post('/driver_price_update/{id}', [DriverPricesController::class, 'update'])->name('driver_price_update');
+
+	Route::post('/chassis_result', [ChassisController::class, 'store'])->name('chassis_add');
+	Route::post('/chassis_update/{id}', [ChassisController::class, 'update'])->name('chassis_update');
 
 	Route::get('op_result_accprice', function () {
 		return view('op_result')->withOprand('customer');

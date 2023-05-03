@@ -71,7 +71,7 @@
                         <li> <a href="{{route('zone_main')}}">Zones</a> </li>
                         <li> <a href="{{route('power_unit_main')}}">Power Units</a> </li>
                         <li> <a href="#">Accessorial Charges</a> </li>
-                        <li> <a href="#">Chissis List</a> </li>
+                        <li> <a href="{{route('chassis_main')}}">Chassis List</a> </li>
                         <li> <a href="#">Reports</a> </li>
                         <li> <a href="#">Security Levels</a> </li>
                         <li> <a href="#">System Settings</a> </li>

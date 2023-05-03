@@ -64,7 +64,7 @@
 							</div>
                         </div>
                         <div class="row">
-                            <div class="col"><a href="#" style="margin-right: 36px;">Zones</a><a href="#" style="margin-right: 36px;">Power Units</a><a href="#" style="margin-right: 36px;">Accessorial Charges</a><a href="#" style="margin-right: 36px;">Chissis List</a><a href="#" style="margin-right: 36px;">Reports</a><a href="#" style="margin-right: 36px;">Security Levels</a><a href="#" style="margin-right: 36px;">System Settings</a></div>
+                            <div class="col"><a href="#" style="margin-right: 36px;">Zones</a><a href="#" style="margin-right: 36px;">Power Units</a><a href="#" style="margin-right: 36px;">Accessorial Charges</a><a href="#" style="margin-right: 36px;">Chassis List</a><a href="#" style="margin-right: 36px;">Reports</a><a href="#" style="margin-right: 36px;">Security Levels</a><a href="#" style="margin-right: 36px;">System Settings</a></div>
                         </div>
                     </div>
                 </div>
