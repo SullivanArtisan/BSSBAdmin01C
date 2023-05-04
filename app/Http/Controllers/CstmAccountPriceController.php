@@ -133,7 +133,7 @@ class CstmAccountPriceController extends Controller
 		if(!$saved) {
 			return redirect()->route('op_result.accprice')->with('status', ' <span style="color:red">Data Has NOT Been updated!</span>');
 		} else {
-			return redirect()->route('op_result.accprice')->with('status', 'The account price from zone <span style="font-weight:bold;font-style:italic;color:blue">'.$accPrice->cstm_account_from.' -> '.$accPrice->cstm_account_to.'</span>, hs been updated successfully.');
+			return redirect()->route('op_result.accprice')->with('status', 'The account price from zone <span style="font-weight:bold;font-style:italic;color:blue">'.$accPrice->cstm_account_from.' -> '.$accPrice->cstm_account_to.'</span>, has been updated successfully.');
 		}
     }
 

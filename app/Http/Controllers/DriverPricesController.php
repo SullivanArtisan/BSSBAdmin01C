@@ -116,7 +116,7 @@ class DriverPricesController extends Controller
 		if(!$saved) {
 			return redirect()->route('op_result.driver_price')->with('status', ' <span style="color:red">Data Has NOT Been updated!</span>');
 		} else {
-			return redirect()->route('op_result.driver_price')->with('status', 'The drive price from zone <span style="font-weight:bold;font-style:italic;color:blue">'.$price->drvr_pay_price_zone_from.' -> '.$price->drvr_pay_price_zone_to.'</span>, hs been updated successfully.');
+			return redirect()->route('op_result.driver_price')->with('status', 'The drive price from zone <span style="font-weight:bold;font-style:italic;color:blue">'.$price->drvr_pay_price_zone_from.' -> '.$price->drvr_pay_price_zone_to.'</span>, has been updated successfully.');
 		}
     }
 

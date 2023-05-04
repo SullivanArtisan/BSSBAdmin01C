@@ -104,7 +104,7 @@ class UserController extends Controller
 							$message->to($toAddr, 'HarbourLink Administration')->subject('Congratulations!!');
 						});
 					}
-					return redirect()->route('op_result.user')->with('status', 'The new user,  <span style="font-weight:bold;font-style:italic;color:blue">'.$targetUser[0]->name.'</span>, hs been inserted successfully.');
+					return redirect()->route('op_result.user')->with('status', 'The new user,  <span style="font-weight:bold;font-style:italic;color:blue">'.$targetUser[0]->name.'</span>, has been inserted successfully.');
 				}
 			}
 		}
@@ -195,7 +195,7 @@ class UserController extends Controller
 				if(!$saved) {
 					return redirect()->route('op_result.user')->with('status', ' <span style="color:red">Data has NOT been updated!</span>');
 				} else {
-					return redirect()->route('op_result.user')->with('status', 'The user,  <span style="font-weight:bold;font-style:italic;color:blue">'.$user->name.'</span>, hs been updated successfully.');
+					return redirect()->route('op_result.user')->with('status', 'The user,  <span style="font-weight:bold;font-style:italic;color:blue">'.$user->name.'</span>, has been updated successfully.');
 				}
 			}
 		//}

@@ -59,7 +59,7 @@
 							</ul>						
                         <li> <a href="#">Invoicing</a> </li>
                         <li> <a href="#">Driver Pay</a> </li>
-                        <li> <a href="#">Steamship Line DB</a> </li>
+                        <li> <a href="{{route('ssl_main')}}">Steamship Line DB</a> </li>
                         <li> <a href="#addressSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Address DB</a> </li>
 							<ul class="collapse list-unstyled mx-4" id="addressSubmenu">
 							  <li><a href="{{route('terminal_main')}}">Terminals</a></li>

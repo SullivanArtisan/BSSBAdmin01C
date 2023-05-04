@@ -43,7 +43,7 @@
         </div>
     </div>
 	<?php
-        $chassis = \App\Models\Chassis::where($key, 'LIKE', '%'.$value_parm.'%')->orderBy('code', 'asc')->get();
+        $chassis = \App\Models\Chassis::where($key, 'LIKE', '%'.$value_parm.'%')->where('deleted', null)->orwhere('deleted', '<>', 'Y')->orderBy('code', 'asc')->get();
 		
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";

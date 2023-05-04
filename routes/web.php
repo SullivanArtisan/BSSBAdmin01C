@@ -12,6 +12,7 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\CstmAccountPriceController;
 use App\Http\Controllers\DriverPricesController;
 use App\Http\Controllers\ChassisController;
+use App\Http\Controllers\SteamShipLineController;
 use App\Models\User;
 use App\Models\UserSysDetail;
 use App\Models\PowerUnit;
@@ -22,6 +23,7 @@ use App\Models\Driver;
 use App\Models\CstmAccountPrice;
 use App\Models\DriverPrices;
 use App\Models\Chassis;
+use App\Models\SteamShipLine;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,7 +87,7 @@ Route::get('/system_user_delete', function () {
 		return redirect()->route('op_result.user')->with('status', 'The user, <span style="font-weight:bold;font-style:italic;color:red">'.$userName.'</span>, cannot be deleted for some reason.');	
 	} else {
 		User::where('id', $id)->delete();
-		return redirect()->route('op_result.user')->with('status', 'The user, <span style="font-weight:bold;font-style:italic;color:blue">'.$userName.'</span>, hs been deleted successfully.');	
+		return redirect()->route('op_result.user')->with('status', 'The user, <span style="font-weight:bold;font-style:italic;color:blue">'.$userName.'</span>, has been deleted successfully.');	
 	}
 })->middleware(['auth'])->name('system_user_delete');
 
@@ -130,7 +132,7 @@ Route::get('/power_unit_delete', function () {
 	if (!$res) {
 		return redirect()->route('op_result.unit')->with('status', 'The unit, <span style="font-weight:bold;font-style:italic;color:red">'.$unitPlateNum.'</span>, cannot be deleted for some reason.');	
 	} else {
-		return redirect()->route('op_result.unit')->with('status', 'The unit, <span style="font-weight:bold;font-style:italic;color:blue">'.$unitPlateNum.'</span>, hs been deleted successfully.');	
+		return redirect()->route('op_result.unit')->with('status', 'The unit, <span style="font-weight:bold;font-style:italic;color:blue">'.$unitPlateNum.'</span>, has been deleted successfully.');	
 	}
 })->middleware(['auth'])->name('power_unit_delete');
 
@@ -158,7 +160,7 @@ Route::get('/zone_delete/{id}', function ($id) {
 	if (!$res) {
 		return redirect()->route('op_result.zone')->with('status', 'The zone, <span style="font-weight:bold;font-style:italic;color:red">'.$zoneName.'</span>, cannot be deleted for some reason.');	
 	} else {
-		return redirect()->route('op_result.zone')->with('status', 'The zone, <span style="font-weight:bold;font-style:italic;color:blue">'.$zoneName.'</span>, hs been deleted successfully.');	
+		return redirect()->route('op_result.zone')->with('status', 'The zone, <span style="font-weight:bold;font-style:italic;color:blue">'.$zoneName.'</span>, has been deleted successfully.');	
 	}
 })->middleware(['auth'])->name('zone_delete');
 
@@ -186,7 +188,7 @@ Route::get('/terminal_delete/{id}', function ($id) {
 	if (!$res) {
 		return redirect()->route('op_result.terminal')->with('status', 'The trmnl, <span style="font-weight:bold;font-style:italic;color:red">'.$trmnlName.'</span>, cannot be deleted for some reason.');	
 	} else {
-		return redirect()->route('op_result.terminal')->with('status', 'The trmnl, <span style="font-weight:bold;font-style:italic;color:blue">'.$trmnlName.'</span>, hs been deleted successfully.');	
+		return redirect()->route('op_result.terminal')->with('status', 'The trmnl, <span style="font-weight:bold;font-style:italic;color:blue">'.$trmnlName.'</span>, has been deleted successfully.');	
 	}
 })->middleware(['auth'])->name('terminal_delete');
 
@@ -214,7 +216,7 @@ Route::get('/customer_delete/{id}', function ($id) {
 	if (!$res) {
 		return redirect()->route('op_result.customer')->with('status', 'The customer, <span style="font-weight:bold;font-style:italic;color:red">'.$customerName.'</span>, cannot be deleted for some reason.');	
 	} else {
-		return redirect()->route('op_result.customer')->with('status', 'The customer, <span style="font-weight:bold;font-style:italic;color:blue">'.$customerName.'</span>, hs been deleted successfully.');	
+		return redirect()->route('op_result.customer')->with('status', 'The customer, <span style="font-weight:bold;font-style:italic;color:blue">'.$customerName.'</span>, has been deleted successfully.');	
 	}
 })->middleware(['auth'])->name('customer_delete');
 
@@ -226,7 +228,7 @@ Route::get('/customer_accprice_delete/{id}', function ($id) {
 	if (!$res) {
 		return redirect()->route('op_result.customer')->with('status', 'The price, zone <span style="font-weight:bold;font-style:italic;color:red">'.$priceFromZone.' &#x27A1; '.$priceToZone.'</span>, cannot be deleted for some reason.');	
 	} else {
-		return redirect()->route('op_result.customer')->with('status', 'The price, zone <span style="font-weight:bold;font-style:italic;color:blue">'.$priceFromZone.' &#x27A1; '.$priceToZone.'</span>, hs been deleted successfully.');	
+		return redirect()->route('op_result.customer')->with('status', 'The price, zone <span style="font-weight:bold;font-style:italic;color:blue">'.$priceFromZone.' &#x27A1; '.$priceToZone.'</span>, has been deleted successfully.');	
 	}
 })->middleware(['auth'])->name('customer_accprice_delete');
 
@@ -275,7 +277,7 @@ Route::get('/driver_delete/{id}', function ($id) {
 	if(!$res) {
 		return redirect()->route('op_result.driver')->with('status', ' <span style="color:red">Failed to delete driver '.$driverName.'!</span>');
 	} else {
-		return redirect()->route('op_result.driver')->with('status', 'The driver,  <span style="font-weight:bold;font-style:italic;color:blue">'.$driverName.'</span>, hs been deleted successfully.');
+		return redirect()->route('op_result.driver')->with('status', 'The driver,  <span style="font-weight:bold;font-style:italic;color:blue">'.$driverName.'</span>, has been deleted successfully.');
 	}
 })->middleware(['auth'])->name('driver_delete');
 
@@ -304,7 +306,7 @@ Route::get('/driver_pay_prices_delete/{id}', function ($id) {
 	if (!$res) {
 		return redirect()->route('op_result.driver_price')->with('status', 'The driver price, <span style="font-weight:bold;font-style:italic;color:red">'.$zoneFrom.' &#x27A1; '.$zoneTo.'</span>, cannot be deleted for some reason.');	
 	} else {
-		return redirect()->route('op_result.driver_price')->with('status', 'The driver price, <span style="font-weight:bold;font-style:italic;color:blue">'.$zoneFrom.' &#x27A1; '.$zoneTo.'</span>, hs been deleted successfully.');	
+		return redirect()->route('op_result.driver_price')->with('status', 'The driver price, <span style="font-weight:bold;font-style:italic;color:blue">'.$zoneFrom.' &#x27A1; '.$zoneTo.'</span>, has been deleted successfully.');	
 	}
 })->middleware(['auth'])->name('driver_pay_prices_delete');
 
@@ -334,9 +336,39 @@ Route::get('/chassis_delete/{id}', function ($id) {
 	if(!$res) {
 		return redirect()->route('op_result.chassis')->with('status', ' <span style="color:red">Failed to delete chassis '.$chassisNumber.'!</span>');
 	} else {
-		return redirect()->route('op_result.chassis')->with('status', 'The chassis,  <span style="font-weight:bold;font-style:italic;color:blue">'.$chassisNumber.'</span>, hs been deleted successfully.');
+		return redirect()->route('op_result.chassis')->with('status', 'The chassis,  <span style="font-weight:bold;font-style:italic;color:blue">'.$chassisNumber.'</span>, has been deleted successfully.');
 	}
 })->middleware(['auth'])->name('chassis_delete');
+
+//////// For Steamship Lines
+Route::get('/ssl_main', function () {
+    return view('ssl_main');
+})->middleware(['auth'])->name('ssl_main');
+
+Route::get('/ssl_add', function () {
+    return view('ssl_add');
+})->middleware(['auth'])->name('ssl_add');
+
+Route::get('ssl_selected', function (Request $request) {
+    return view('ssl_selected');
+})->middleware(['auth'])->name('ssl_selected');
+
+Route::get('ssl_condition_selected', function (Request $request) {
+    return view('ssl_condition_selected');
+})->middleware(['auth'])->name('ssl_condition_selected');
+
+Route::get('/ssl_delete/{id}', function ($id) {
+	$ssl = SteamShipLine::where('id', $id)->first();
+	$ssl_name = $ssl->ssl_name;
+	$ssl->deleted = 'Y';
+	$res = $ssl->save();
+					
+	if(!$res) {
+		return redirect()->route('op_result.ssl')->with('status', ' <span style="color:red">Failed to delete ssl '.$ssl_name.'!</span>');
+	} else {
+		return redirect()->route('op_result.ssl')->with('status', 'The ssl,  <span style="font-weight:bold;font-style:italic;color:blue">'.$ssl_name.'</span>, has been deleted successfully.');
+	}
+})->middleware(['auth'])->name('ssl_delete');
 
 
 //////// For All Results
@@ -373,6 +405,10 @@ Route::name('op_result.')->group(function () {
 		return view('op_result')->withOprand('chassis');
 	})->middleware(['auth'])->name('chassis');
 
+	Route::get('op_result_ssl', function () {
+		return view('op_result')->withOprand('ssl');
+	})->middleware(['auth'])->name('ssl');
+
 	Route::post('/terminal_result', [TerminalController::class, 'store'])->name('terminal_add');
 	Route::post('/terminal_update', [TerminalController::class, 'update'])->name('terminal_update');
 
@@ -397,6 +433,9 @@ Route::name('op_result.')->group(function () {
 
 	Route::post('/chassis_result', [ChassisController::class, 'store'])->name('chassis_add');
 	Route::post('/chassis_update/{id}', [ChassisController::class, 'update'])->name('chassis_update');
+
+	Route::post('/ssl_result', [SteamShipLineController::class, 'store'])->name('ssl_add');
+	Route::post('/ssl_update/{id}', [SteamShipLineController::class, 'update'])->name('ssl_update');
 
 	Route::get('op_result_accprice', function () {
 		return view('op_result')->withOprand('customer');

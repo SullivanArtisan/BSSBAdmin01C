@@ -48,7 +48,7 @@ class ChassisController extends Controller
 		if(!$saved) {
 			return redirect()->route('op_result.chassis')->with('status', ' <span style="color:red">Data Has NOT Been inserted!</span>');
 		} else {
-			return redirect()->route('op_result.chassis')->with('status', 'The driver price from zone <span style="font-weight:bold;font-style:italic;color:blue">'.$chassis->code.'</span>, has been inserted successfully.');
+			return redirect()->route('op_result.chassis')->with('status', 'The chassis <span style="font-weight:bold;font-style:italic;color:blue">'.$chassis->code.'</span>, has been inserted successfully.');
 		}
     }
 
@@ -99,7 +99,7 @@ class ChassisController extends Controller
 		if(!$saved) {
 			return redirect()->route('op_result.chassis')->with('status', ' <span style="color:red">Data has NOT been updated!</span>');
 		} else {
-			return redirect()->route('op_result.chassis')->with('status', 'The chassis,  <span style="font-weight:bold;font-style:italic;color:blue">'.$chassis->code.'</span>, hs been updated successfully.');
+			return redirect()->route('op_result.chassis')->with('status', 'The chassis,  <span style="font-weight:bold;font-style:italic;color:blue">'.$chassis->code.'</span>, has been updated successfully.');
 		}
     }
 }

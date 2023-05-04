@@ -59,7 +59,7 @@ class TerminalController extends Controller
 		if(!$saved) {
 			return redirect()->route('op_result.terminal')->with('status', ' <span style="color:red">Data Has NOT Been inserted!</span>');
 		} else {
-			return redirect()->route('op_result.terminal')->with('status', 'The new terminal,  <span style="font-weight:bold;font-style:italic;color:blue">'.$request->trmnl_name.'</span>, hs been inserted successfully.');
+			return redirect()->route('op_result.terminal')->with('status', 'The new terminal,  <span style="font-weight:bold;font-style:italic;color:blue">'.$request->trmnl_name.'</span>, has been inserted successfully.');
 		}
     }
 	
@@ -116,7 +116,7 @@ class TerminalController extends Controller
 		if(!$saved) {
 			return redirect()->route('op_result.terminal')->with('status', ' <span style="color:red">Data has NOT been updated!</span>');
 		} else {
-			return redirect()->route('op_result.terminal')->with('status', 'The terminal,  <span style="font-weight:bold;font-style:italic;color:blue">'.$trmnl->trmnl_name.'</span>, hs been updated successfully.');
+			return redirect()->route('op_result.terminal')->with('status', 'The terminal,  <span style="font-weight:bold;font-style:italic;color:blue">'.$trmnl->trmnl_name.'</span>, has been updated successfully.');
 		}
     }
 }

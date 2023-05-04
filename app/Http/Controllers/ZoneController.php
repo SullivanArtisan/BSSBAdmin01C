@@ -23,7 +23,7 @@ class ZoneController extends Controller
 		if(!$saved) {
 			return redirect()->route('op_result.zone')->with('status', ' <span style="color:red">Data Has NOT Been inserted!</span>');
 		} else {
-			return redirect()->route('op_result.zone')->with('status', 'The new zone,  <span style="font-weight:bold;font-style:italic;color:blue">'.$request->zone_name.'</span>, hs been inserted successfully.');
+			return redirect()->route('op_result.zone')->with('status', 'The new zone,  <span style="font-weight:bold;font-style:italic;color:blue">'.$request->zone_name.'</span>, has been inserted successfully.');
 		}
     }
 	
@@ -44,7 +44,7 @@ class ZoneController extends Controller
 		if(!$saved) {
 			return redirect()->route('op_result.zone')->with('status', ' <span style="color:red">Data has NOT been updated!</span>');
 		} else {
-			return redirect()->route('op_result.zone')->with('status', 'The zone,  <span style="font-weight:bold;font-style:italic;color:blue">'.$zone->zone_name.'</span>, hs been updated successfully.');
+			return redirect()->route('op_result.zone')->with('status', 'The zone,  <span style="font-weight:bold;font-style:italic;color:blue">'.$zone->zone_name.'</span>, has been updated successfully.');
 		}
     }
 }

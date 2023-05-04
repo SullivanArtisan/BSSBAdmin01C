@@ -169,7 +169,7 @@ class DriverController extends Controller
 		if(!$saved) {
 			return redirect()->route('op_result.driver')->with('status', ' <span style="color:red">Data Has NOT Been inserted!</span>');
 		} else {
-			return redirect()->route('op_result.driver')->with('status', 'The new driver,  <span style="font-weight:bold;font-style:italic;color:blue">'.$request->dvr_name.'</span>, hs been inserted successfully.');
+			return redirect()->route('op_result.driver')->with('status', 'The new driver,  <span style="font-weight:bold;font-style:italic;color:blue">'.$request->dvr_name.'</span>, has been inserted successfully.');
 		}
     }
 
@@ -338,7 +338,7 @@ class DriverController extends Controller
 		if(!$saved) {
 			return redirect()->route('op_result.driver')->with('status', ' <span style="color:red">Data has NOT been updated!</span>');
 		} else {
-			return redirect()->route('op_result.driver')->with('status', 'The driver,  <span style="font-weight:bold;font-style:italic;color:blue">'.$driver->dvr_name.'</span>, hs been updated successfully.');
+			return redirect()->route('op_result.driver')->with('status', 'The driver,  <span style="font-weight:bold;font-style:italic;color:blue">'.$driver->dvr_name.'</span>, has been updated successfully.');
 		}
     }
 }

@@ -411,7 +411,7 @@ class CustomerController extends Controller
 					if(!$saved) {
 						return redirect()->route('op_result.customer')->with('status', ' <span style="color:red">Customer Invoice Data Has NOT Been updated!</span>');
 					} else {
-						return redirect()->route('op_result.customer')->with('status', 'The customer,  <span style="font-weight:bold;font-style:italic;color:blue">'.$customer->cstm_account_name.'</span>, hs been updated successfully.');
+						return redirect()->route('op_result.customer')->with('status', 'The customer,  <span style="font-weight:bold;font-style:italic;color:blue">'.$customer->cstm_account_name.'</span>, has been updated successfully.');
 					}
 				}
 			}
