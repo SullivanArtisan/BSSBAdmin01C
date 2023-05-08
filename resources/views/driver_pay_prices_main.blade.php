@@ -17,7 +17,7 @@
 				<div class="input-group">
 				  <input type="text" class="form-control" aria-label="Text input with dropdown button" id="price_search_input">
 				  <div class="input-group-append">
-					<button class="btn btn-info" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
+					<button class="btn btn-info ml-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
 					<div class="dropdown-menu">
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult1('drvr_pay_price_zone_from')\" style=\"cursor: pointer;\">by Zone From</button>");</script>
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult1('drvr_pay_price_zone_to')\" style=\"cursor: pointer;\">by Zone To</button>");</script>

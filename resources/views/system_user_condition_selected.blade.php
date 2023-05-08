@@ -31,7 +31,7 @@
 				<div class="input-group">
 				  <input type="text" class="form-control" aria-label="Text input with dropdown button" id="user_search_input">
 				  <div class="input-group-append">
-					<button class="btn btn-outline-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
+					<button class="btn btn-info ml-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
 					<div class="dropdown-menu">
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('id')\" style=\"cursor: pointer;\">by User Id</button>");</script>
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('name')\" style=\"cursor: pointer;\">by User Name</button>");</script>

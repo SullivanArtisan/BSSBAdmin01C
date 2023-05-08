@@ -31,7 +31,7 @@
 				<div class="input-group">
 				  <input type="text" class="form-control" aria-label="Text input with dropdown button" id="chassis_search_input">
 				  <div class="input-group-append">
-					<button class="btn btn-outline-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
+					<button class="btn btn-info ml-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
 					<div class="dropdown-menu">
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('code')\" style=\"cursor: pointer;\">by Chassis Number</button>");</script>
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('driver')\" style=\"cursor: pointer;\">by Driver</button>");</script>
@@ -43,7 +43,7 @@
         </div>
     </div>
 	<?php
-        $chassis = \App\Models\Chassis::where($key, 'LIKE', '%'.$value_parm.'%')->where('deleted', null)->orwhere('deleted', '<>', 'Y')->orderBy('code', 'asc')->get();
+        $chassis = \App\Models\Chassis::where($key, 'LIKE', '%'.$value_parm.'%')->orderBy('code', 'asc')->get();
 		
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";
@@ -73,6 +73,9 @@
 		
 		// Body Lines
 		foreach ($chassis as $single_chassis) {
+            if ($single_chassis->deleted == 'Y' || $single_chassis->deleted == 'y') {
+                continue;
+            }
             $outContents = "<div class=\"row\">";
                 $outContents .= "<div class=\"col-3\">";
 					$outContents .= "<a href=\"chassis_selected?id=$single_chassis->id\">";

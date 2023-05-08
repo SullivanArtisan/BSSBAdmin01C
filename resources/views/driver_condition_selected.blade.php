@@ -31,7 +31,7 @@
 				<div class="input-group">
 				  <input type="text" class="form-control" aria-label="Text input with dropdown button" id="driver_search_input">
 				  <div class="input-group-append">
-					<button class="btn btn-outline-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
+					<button class="btn btn-info ml-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
 					<div class="dropdown-menu">
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('dvr_no')\" style=\"cursor: pointer;\">by Driver No.</button>");</script>
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('dvr_name')\" style=\"cursor: pointer;\">by Driver Name</button>");</script>
@@ -114,29 +114,32 @@
 		
 		// Body Lines
 		foreach ($drivers as $driver) {
+            if ($driver->dvr_deleted == 'Y' || $driver->dvr_deleted == 'y') {
+                continue;
+            }
 			$outContents = "<div class=\"row\">";
 				$outContents .= "<div class=\"col-1\">";
-					$outContents .= "<a href=\"driver_selected?id=$driver->id\">";
+					$outContents .= "<a href=\"driver_selected?driverId=$driver->id\">";
 					$outContents .= $driver->dvr_no;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 				$outContents .= "<div class=\"col-2\">";
-					$outContents .= "<a href=\"driver_selected?id=$driver->id\">";
+					$outContents .= "<a href=\"driver_selected?driverId=$driver->id\">";
 					$outContents .= $driver->dvr_name;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 				$outContents .= "<div class=\"col-4\">";
-					$outContents .= "<a href=\"driver_selected?id=$driver->id\">";
+					$outContents .= "<a href=\"driver_selected?driverId=$driver->id\">";
 					$outContents .= $driver->dvr_address.", ".$driver->dvr_city.", ".$driver->dvr_province;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 				$outContents .= "<div class=\"col-2\">";
-					$outContents .= "<a href=\"driver_selected?id=$driver->id\">";
+					$outContents .= "<a href=\"driver_selected?driverId=$driver->id\">";
 					$outContents .= MyHelper::GetHyphenedPhoneNo($driver->dvr_cell_phone);
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 				$outContents .= "<div class=\"col-3\">";
-					$outContents .= "<a href=\"driver_selected?id=$driver->id\">";
+					$outContents .= "<a href=\"driver_selected?driverId=$driver->id\">";
 					$outContents .= $driver->dvr_email;
 					$outContents .= "</a>";
 				$outContents .= "</div>";

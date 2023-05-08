@@ -13,6 +13,7 @@ use App\Http\Controllers\CstmAccountPriceController;
 use App\Http\Controllers\DriverPricesController;
 use App\Http\Controllers\ChassisController;
 use App\Http\Controllers\SteamShipLineController;
+use App\Http\Controllers\CompanyController;
 use App\Models\User;
 use App\Models\UserSysDetail;
 use App\Models\PowerUnit;
@@ -24,6 +25,7 @@ use App\Models\CstmAccountPrice;
 use App\Models\DriverPrices;
 use App\Models\Chassis;
 use App\Models\SteamShipLine;
+use App\Models\Company;
 
 /*
 |--------------------------------------------------------------------------
@@ -370,6 +372,36 @@ Route::get('/ssl_delete/{id}', function ($id) {
 	}
 })->middleware(['auth'])->name('ssl_delete');
 
+//////// For Companies Addresses
+Route::get('/company_main', function () {
+    return view('company_main');
+})->middleware(['auth'])->name('company_main');
+
+Route::get('/company_add', function () {
+    return view('company_add');
+})->middleware(['auth'])->name('company_add');
+
+Route::get('company_selected', function (Request $request) {
+    return view('company_selected');
+})->middleware(['auth'])->name('company_selected');
+
+Route::get('company_condition_selected', function (Request $request) {
+    return view('company_condition_selected');
+})->middleware(['auth'])->name('company_condition_selected');
+
+Route::get('/company_delete/{id}', function ($id) {
+	$company = Company::where('id', $id)->first();
+	$company_name = $company->cmpny_name;
+	$company->cmpny_deleted = 'Y';
+	$res = $company->save();
+					
+	if(!$res) {
+		return redirect()->route('op_result.company')->with('status', ' <span style="color:red">Failed to delete company '.$company_name.'!</span>');
+	} else {
+		return redirect()->route('op_result.company')->with('status', 'The company,  <span style="font-weight:bold;font-style:italic;color:blue">'.$company_name.'</span>, has been deleted successfully.');
+	}
+})->middleware(['auth'])->name('company_delete');
+
 
 //////// For All Results
 Route::name('op_result.')->group(function () {
@@ -404,10 +436,14 @@ Route::name('op_result.')->group(function () {
 	Route::get('op_result_chassis', function () {
 		return view('op_result')->withOprand('chassis');
 	})->middleware(['auth'])->name('chassis');
-
+	
 	Route::get('op_result_ssl', function () {
 		return view('op_result')->withOprand('ssl');
 	})->middleware(['auth'])->name('ssl');
+
+	Route::get('op_result_company', function () {
+		return view('op_result')->withOprand('company');
+	})->middleware(['auth'])->name('company');
 
 	Route::post('/terminal_result', [TerminalController::class, 'store'])->name('terminal_add');
 	Route::post('/terminal_update', [TerminalController::class, 'update'])->name('terminal_update');
@@ -436,6 +472,9 @@ Route::name('op_result.')->group(function () {
 
 	Route::post('/ssl_result', [SteamShipLineController::class, 'store'])->name('ssl_add');
 	Route::post('/ssl_update/{id}', [SteamShipLineController::class, 'update'])->name('ssl_update');
+
+	Route::post('/company_result', [CompanyController::class, 'store'])->name('company_add');
+	Route::post('/company_update/{id}', [CompanyController::class, 'update'])->name('company_update');
 
 	Route::get('op_result_accprice', function () {
 		return view('op_result')->withOprand('customer');

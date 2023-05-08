@@ -63,7 +63,7 @@
                         <li> <a href="#addressSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Address DB</a> </li>
 							<ul class="collapse list-unstyled mx-4" id="addressSubmenu">
 							  <li><a href="{{route('terminal_main')}}">Terminals</a></li>
-							  <li><a href="#">Company Addresses</a></li>
+							  <li><a href="{{route('company_main')}}">Company Addresses</a></li>
 							  <li><a href="#">Container Depots</a></li>
 							  <li><a href="#">Custom Locations</a></li>
 							</ul>						

@@ -17,7 +17,7 @@
 				<div class="input-group">
 				  <input type="text" class="form-control" aria-label="Text input with dropdown button" id="zone_search_input">
 				  <div class="input-group-append">
-					<button class="btn btn-info" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
+					<button class="btn btn-info ml-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
 					<div class="dropdown-menu">
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult1('zone_name')\" style=\"cursor: pointer;\">by Zone Name</button>");</script>
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult1('zone_group')\" style=\"cursor: pointer;\">by Zone Group</button>");</script>

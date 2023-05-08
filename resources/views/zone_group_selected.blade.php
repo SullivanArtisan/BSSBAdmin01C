@@ -23,7 +23,7 @@
 				<div class="input-group">
 				  <input type="text" class="form-control" aria-label="Text input with dropdown button" id="zone_search_input">
 				  <div class="input-group-append">
-					<button class="btn btn-outline-info" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
+					<button class="btn btn-info ml-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
 					<div class="dropdown-menu">
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('zone_name')\" style=\"cursor: pointer;\">by Zone Name</button>");</script>
 					  <script>document.write("<button class=\"dropdown-item\" onclick=\"GetSearchResult('zone_fsc_deduction')\" style=\"cursor: pointer;\">by Zone FSC Deduction %>");</script>

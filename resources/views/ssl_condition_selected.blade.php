@@ -29,7 +29,7 @@
         </div>
     </div>
 	<?php
-        $ssls = \App\Models\SteamShipLine::where($key, 'LIKE', '%'.$value_parm.'%')->where('deleted', null)->orwhere('deleted', '<>', 'Y')->orderBy('ssl_name', 'asc')->get();
+        $ssls = \App\Models\SteamShipLine::where($key, 'LIKE', '%'.$value_parm.'%')->orderBy('ssl_name', 'asc')->get();
 
         // Title Line
 		$outContents = "<div class=\"container mw-100\">";
@@ -42,9 +42,19 @@
 		
 		// Body Lines
 		foreach ($ssls as $ssl) {
+            if ($ssl->deleted == 'Y' || $ssl->deleted == 'y') {
+                continue;
+            }
             $outContents = "<div class=\"row\">";
                 $outContents .= "<div class=\"col-3\">";
+                $outContents .= "<a href=\"ssl_selected?id=$ssl->id\">";
 				$outContents .= $ssl->ssl_name;
+                $outContents .= "</a>";
+				$outContents .= "</div>";
+                $outContents .= "<div class=\"col-3\">";
+                $outContents .= "<a href=\"ssl_selected?id=$ssl->id\">";
+				$outContents .= $ssl->ssl_description;
+                $outContents .= "</a>";
 				$outContents .= "</div>";
 			$outContents .= "</div><hr class=\"m-1\"/>";
 			{{ 					
