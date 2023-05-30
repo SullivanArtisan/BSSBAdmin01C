@@ -40,7 +40,7 @@
         </div>
     </div>
 	<?php
-        Log::info("key = ".$key."; value = ".$value_parm);
+        //Log::info("key = ".$key."; value = ".$value_parm);
         $companies = \App\Models\Company::where($key, 'LIKE', '%'.$value_parm.'%')->orderBy('cmpny_name', 'asc')->get();
 
         // Title Line

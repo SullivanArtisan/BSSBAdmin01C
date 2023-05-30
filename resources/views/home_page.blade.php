@@ -22,9 +22,9 @@
                             <div class="card-body">
                                 <h4 class="mx-2 mb-4 card-title text-center text-info">H/L Control Options</h4>
                                 <div class="vstack">
-                                    <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;">Enter New Job</button></div>
+                                    <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;"><a href="{{route('booking_add')}}">Enter New Job</a></button></div>
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;">Dispatch</button></div>
-                                    <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;">Bookings</button></div>
+                                    <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;"><a href="{{route('booking_main')}}">Bookings</a></button></div>
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;">Containers</button></div>
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;">Chassis</button></div>
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;">Power Units</button></div>

@@ -3,7 +3,10 @@
         $picPath = Session::get('uploadPath');
         Session::forget(['uploadPath']);
     } else {
-        $picPath = $dbTable->dvr_picture_file;
+		$picPath = "";
+		if(isset($dbTable)) {
+        	$picPath = $dbTable->dvr_picture_file;
+		}
     }
 ?>
 

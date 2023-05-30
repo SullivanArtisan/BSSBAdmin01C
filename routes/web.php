@@ -14,6 +14,8 @@ use App\Http\Controllers\DriverPricesController;
 use App\Http\Controllers\ChassisController;
 use App\Http\Controllers\SteamShipLineController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\ContainerController;
 use App\Models\User;
 use App\Models\UserSysDetail;
 use App\Models\PowerUnit;
@@ -26,6 +28,8 @@ use App\Models\DriverPrices;
 use App\Models\Chassis;
 use App\Models\SteamShipLine;
 use App\Models\Company;
+use App\Models\Booking;
+use App\Models\Container;
 
 /*
 |--------------------------------------------------------------------------
@@ -283,6 +287,46 @@ Route::get('/driver_delete/{id}', function ($id) {
 	}
 })->middleware(['auth'])->name('driver_delete');
 
+//////// For Bookings
+Route::get('/booking_main', function () {
+    return view('booking_main');
+})->middleware(['auth'])->name('booking_main');
+
+Route::get('booking_selected', function (Request $request) {
+    return view('booking_selected');
+})->middleware(['auth'])->name('booking_selected');
+
+Route::get('/booking_add', function () {
+    return view('booking_add');
+})->middleware(['auth'])->name('booking_add');
+
+//Route::post('booking_add', [BookingController::class, 'add'])->name('booking_add');
+
+//////// For Containers
+Route::post('ontainer_add', [ContainerController::class, 'add'])->name('ontainer_add');
+// Route::post('ontainer_add', function (Request $request) {
+// 	Log::info("HOHOHO: ". $request->cntnr_name);
+// 	echo "<p>HOHOHO</p>";
+// })->middleware(['auth'])->name('ontainer_add');
+
+Route::get('container_selected', function (Request $request) {
+    return view('container_selected');
+	//echo ($cntnrId.' ;'.$cntnrJobNo);
+})->middleware(['auth'])->name('container_selected');
+
+Route::get('/container_delete/{id}', function ($id) {
+	$container = Container::where('id', $id)->first();
+	$containerName = $container->cntnr_name;
+	$container->cntnr_status = 'deleted';
+	$res = $container->save();
+					
+	if(!$res) {
+		return redirect()->route('op_result.container')->with('status', ' <span style="color:red">Failed to delete driver '.$containerName.'!</span>');
+	} else {
+		return redirect()->route('op_result.container')->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been deleted successfully.');
+	}
+})->middleware(['auth'])->name('container_delete');
+
 //////// For Driver Pay Prices
 Route::get('/driver_pay_prices_main', function () {
     return view('driver_pay_prices_main');
@@ -445,6 +489,14 @@ Route::name('op_result.')->group(function () {
 		return view('op_result')->withOprand('company');
 	})->middleware(['auth'])->name('company');
 
+	Route::get('op_result_booking', function () {
+		return view('op_result')->withOprand('booking');
+	})->middleware(['auth'])->name('booking');
+
+	Route::get('op_result_container', function () {
+		return view('op_result')->withOprand('container');
+	})->middleware(['auth'])->name('container');
+
 	Route::post('/terminal_result', [TerminalController::class, 'store'])->name('terminal_add');
 	Route::post('/terminal_update', [TerminalController::class, 'update'])->name('terminal_update');
 
@@ -475,6 +527,12 @@ Route::name('op_result.')->group(function () {
 
 	Route::post('/company_result', [CompanyController::class, 'store'])->name('company_add');
 	Route::post('/company_update/{id}', [CompanyController::class, 'update'])->name('company_update');
+
+	Route::post('/booking_result_add', [BookingController::class, 'add'])->name('booking_add');						// We use 'add' to differentiate other 'store' features as Booking and Container input are in the same form
+	Route::post('/booking_update/{id}', [BookingController::class, 'update'])->name('booking_update');
+
+	//Route::post('/container_result_add', [ContainerController::class, 'add'])->name('container_add');				// We use 'add' to differentiate other 'store' features as Booking and Container input are in the same form
+	Route::post('/container_update/{id}', [ContainerController::class, 'update'])->name('container_update');
 
 	Route::get('op_result_accprice', function () {
 		return view('op_result')->withOprand('customer');

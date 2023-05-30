@@ -3,7 +3,17 @@
 namespace App\Helper;
 
 class MyHelper
-{
+{  
+    // Get the 'completed' booking status
+    public static function BkCreatedStaus() {
+        return "bk_created";
+    }  
+
+    // Get the 'completed' container status
+    public static function CntnrCreatedStaus() {
+        return "cntnr_created";
+    }  
+
     // Get the hyphen separated phone number
     public static function GetHyphenedPhoneNo($digitalNo) {
         $len = strlen($digitalNo);
