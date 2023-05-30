@@ -7,7 +7,12 @@
 		} else if ($oprand == "user") {	// This is another special case for system_user_main as there are 2 words: system and user. I don't want to change file names for consistance reason.
 			$backPath = '<a class="text-primary" href="'.route('system_user_main').'" style="margin-right: 10px;">Back</a>';
 		} else if ($oprand == "container") {	// This is another special case for container_main as the container_main not exists; I have to go to the special URL
-			$backPath = '<a class="text-primary" href="'.route('booking_add', ['bookingTab'=>'containerinfo-tab']).'" style="margin-right: 10px;">Back</a>';
+			if (isset($_GET['id'])) {
+				$id = $_GET['id'];
+			} else {
+				$id = session('id');
+			}
+			$backPath = '<a class="text-primary" href="'.route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$id]).'" style="margin-right: 10px;">Back</a>';
 		} else {
 			$tmpPath = $oprand.'_main';
 			$backPath = '<a class="text-primary" href="'.route($tmpPath).'" style="margin-right: 10px;">Back</a>';

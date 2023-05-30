@@ -316,6 +316,7 @@ Route::get('container_selected', function (Request $request) {
 
 Route::get('/container_delete/{id}', function ($id) {
 	$container = Container::where('id', $id)->first();
+	$bookingId = Booking::where('bk_job_no', $container->cntnr_job_no)->first()->id;
 	$containerName = $container->cntnr_name;
 	$container->cntnr_status = 'deleted';
 	$res = $container->save();
@@ -323,7 +324,7 @@ Route::get('/container_delete/{id}', function ($id) {
 	if(!$res) {
 		return redirect()->route('op_result.container')->with('status', ' <span style="color:red">Failed to delete driver '.$containerName.'!</span>');
 	} else {
-		return redirect()->route('op_result.container')->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been deleted successfully.');
+		return redirect()->route('op_result.container', ['id'=>$bookingId])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been deleted successfully.');
 	}
 })->middleware(['auth'])->name('container_delete');
 
