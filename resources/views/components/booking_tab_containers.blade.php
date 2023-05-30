@@ -9,12 +9,16 @@
 
 	if (isset($_GET['id'])) {
 		$id = $_GET['id'];
+		$booking = \App\Models\Booking::where('id', $id)->first();
+		$containers = \App\Models\Container::where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->get();
+		$cntnr_job_no = $booking->bk_job_no;
+		//$containers = \App\Models\Container::where('cntnr_job_no', 'LIKE', 'ML%')->orderBy('cntnr_job_no', 'asc')->distinct()->get(['cntnr_job_no']);
 	} else {
 		$id = '';
+		$containers = [];
+		$cntnr_job_no = "";
 	}
 
- 	$containers = \App\Models\Container::where('cntnr_job_no', 'ML001526')->where('cntnr_status', '<>', 'deleted')->get();
-	//$containers = \App\Models\Container::where('cntnr_job_no', 'LIKE', 'ML%')->orderBy('cntnr_job_no', 'asc')->distinct()->get(['cntnr_job_no']);
 
 	// Title Line
 	$outContents = "<div class=\"container mw-100\">";
@@ -201,7 +205,7 @@
 			<div class="row">
 				<div class="col-2"><label class="col-form-label">Booking Number:&nbsp;</label></div>
 				<div class="col-4">
-					<input class=form-control mt-1 my-text-height type=text id=cntnr_booking_no name=cntnr_booking_no>
+					<input class=form-control mt-1 my-text-height type=text id=cntnr_job_no name=cntnr_job_no>
 				</div>
 				<div class="col-2"><button class="btn btn-primary my-1 type=button" onclick="AddNewContainer(event)">Add this Container</button></div>
 				<div class="col-4"><input type="hidden" class="form-control mt-1 my-text-height" type="text"></div>
@@ -253,13 +257,13 @@
 		function AddNewContainer(e) {
 			e.preventDefault();
 			var token = "{{ csrf_token() }}";
-			var cntnr_job_no = 'ML001526';
+			var cntnr_job_no = {!! json_encode($cntnr_job_no) !!};
 			var cntnr_name = document.getElementById("cntnr_name").value;
 			var cntnr_goods_desc = document.getElementById("cntnr_goods_desc").value;
 			$.ajax({
 				url: '/ontainer_add',
 				type: 'POST',
-				data: {_token:token, cntnr_name:cntnr_name,	cntnr_goods_desc:cntnr_goods_desc},    // the _token:token is for Laravel
+				data: {_token:token, cntnr_job_no:cntnr_job_no, cntnr_name:cntnr_name,	cntnr_goods_desc:cntnr_goods_desc},    // the _token:token is for Laravel
 				success: function(dataRetFromPHP) {
 					location.href = location.href;
 				}

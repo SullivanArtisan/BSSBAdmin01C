@@ -1,22 +1,24 @@
 <?php
 	use App\Models\Container;
-?>
+	use App\Models\Booking;
+    ?>
 
 @extends('layouts.home_page_base')
 <style>
 .my-text-height {height:75%;}
 </style>
 
-@section('goback')
-	<a class="text-primary" href="{{route('booking_add', ['bookingTab'=>'containerinfo-tab'])}}" style="margin-right: 10px;">Back</a>
-@show
-
 <?php
 	$id = $_GET['cntnrId'];
 	if ($id) {
 		$container = Container::where('id', $id)->first();
-	}
+		$booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
+    }
 ?>
+
+@section('goback')
+	<a class="text-primary" href="{{route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id])}}" style="margin-right: 10px;">Back</a>
+@show
 
 @if (!$id or !$container) {
 	@section('function_page')
@@ -197,7 +199,7 @@
                         <div class="row mx-2">
                             <div class="col-2"><label class="col-form-label">Booking Number:&nbsp;</label></div>
                             <div class="col-4">
-                                <input class=form-control mt-1 my-text-height type=text id=cntnr_booking_no name=cntnr_booking_no value="{{$container->cntnr_booking_no}}">
+                                <input class=form-control mt-1 my-text-height type=text id=cntnr_job_no name=cntnr_job_no value="{{$container->cntnr_job_no}}">
                             </div>
                             <div class="col-2"><label class="col-form-label">&nbsp;</label></div>
                             <div class="col-4"><input type="hidden" class="form-control mt-1 my-text-height" type="text"></div>
@@ -207,7 +209,7 @@
 							<div class="col">
 								<div class="row">
 									<button class="btn btn-warning mx-4" type="submit">Update</button>
-									<button class="btn btn-secondary mx-3" type="button"><a href="{{route('booking_add', ['bookingTab'=>'containerinfo-tab'])}}">Cancel</a></button>
+									<button class="btn btn-secondary mx-3" type="button"><a href="{{route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id])}}">Cancel</a></button>
 								</div>
 							</div>
 							<div class="col"></div>

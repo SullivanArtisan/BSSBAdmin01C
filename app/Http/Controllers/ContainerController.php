@@ -12,7 +12,7 @@ class ContainerController extends Controller
     public function add(Request $request)
     {
 		$container = new Container;
-		$container->cntnr_job_no        = "ML001526";
+		$container->cntnr_job_no        = $request->cntnr_job_no;
 		$container->cntnr_name          = $request->cntnr_name;
 		$container->cntnr_goods_desc    = $request->cntnr_goods_desc;
 		$container->cntnr_status        = MyHelper::CntnrCreatedStaus();
@@ -35,7 +35,7 @@ class ContainerController extends Controller
 		
 		$container = Container::where('id', $request->id)->first();
 		// $container->cntnr_job_no              = $request->cntnr_job_no;
-		$container->cntnr_booking_no               = $request->cntnr_booking_no;
+		// $container->cntnr_booking_no               = $request->cntnr_booking_no;
 		$container->cntnr_name              = $request->cntnr_name;
 		$container->cntnr_size              = $request->cntnr_size;
 		if ($request->cntnr_droponly == 'on') {
