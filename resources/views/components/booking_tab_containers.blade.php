@@ -65,7 +65,7 @@
 				//$outContents .= $container->cntnr_job_no;
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
-				$outContents .= "<button class=\"btn btn-secondary btn-sm my-1\" type=\"button\"><a href=\"".route('booking_main')."\">Edit Movements</a></button>";
+				$outContents .= "<button class=\"btn btn-secondary btn-sm my-1\" type=\"button\"><a href=\"".route('booking_add', ['bookingTab'=>'movementinfo-tab', 'id'=>$booking->id])."\">Edit Movements</a></button>";
 			$outContents .= "</div>";
 		$outContents .= "</div>";
 		echo $outContents;
@@ -221,18 +221,21 @@
 				var bookingTab = {!! json_encode($booking_tab) !!};
 				var id = {!! json_encode($id) !!};
 
-				if (bookingTab != '' && id != '') {
+				if (bookingTab == 'containerinfo-tab' && id != '') {
 					document.getElementById('bookingdetail-tab').removeAttribute('class');
 					document.getElementById('bookingdetail-tab').classList.add('nav-link');
 					document.getElementById('containerinfo-tab').removeAttribute('class');
 					document.getElementById('containerinfo-tab').classList.add('nav-link');
-					document.getElementById('containerinfo-tab').classList.add('active');
-					document.getElementById('movement-tab').removeAttribute('class');
-					document.getElementById('movement-tab').classList.add('nav-link');
+					document.getElementById('containerinfo-tab').classList.add('active');				// <---- active
+					document.getElementById('movementinfo-tab').removeAttribute('class');
+					document.getElementById('movementinfo-tab').classList.add('nav-link');
+					document.getElementById('dispatchinfo-tab').removeAttribute('class');
+					document.getElementById('dispatchinfo-tab').classList.add('nav-link');
 
 					document.getElementById('bookingdetail-tab').setAttribute("aria-checked", false);
-					document.getElementById('containerinfo-tab').setAttribute("aria-checked", true);
-					document.getElementById('movement-tab').setAttribute("aria-checked", false);
+					document.getElementById('containerinfo-tab').setAttribute("aria-checked", true);	// <---- active
+					document.getElementById('movementinfo-tab').setAttribute("aria-checked", false);
+					document.getElementById('dispatchinfo-tab').setAttribute("aria-checked", false);
 
 					document.getElementById('bookingdetail').removeAttribute('class');
 					document.getElementById('bookingdetail').classList.add('tab-pane');
@@ -240,17 +243,20 @@
 
 					document.getElementById('containerinfo').removeAttribute('class');
 					document.getElementById('containerinfo').classList.add('tab-pane');
-					document.getElementById('containerinfo').classList.add('fade');
 					document.getElementById('containerinfo').classList.add('show');
-					document.getElementById('containerinfo').classList.add('active');
+					document.getElementById('containerinfo').classList.add('fade');						// <---- active
+					document.getElementById('containerinfo').classList.add('active');					// <---- active
 
-					document.getElementById('movement').removeAttribute('class');
-					document.getElementById('movement').classList.add('tab-pane');
-					document.getElementById('movement').classList.add('show');
+					document.getElementById('movementinfo').removeAttribute('class');
+					document.getElementById('movementinfo').classList.add('tab-pane');
+					document.getElementById('movementinfo').classList.add('show');
+
+					document.getElementById('dispatchinfo').removeAttribute('class');
+					document.getElementById('dispatchinfo').classList.add('tab-pane');
+					document.getElementById('dispatchinfo').classList.add('show');
 				}
 			});
 		});
-
 	</script>	
 
 	<script>

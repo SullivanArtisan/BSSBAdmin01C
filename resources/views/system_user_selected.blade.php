@@ -137,12 +137,17 @@
 							<div class="col"><input class="form-range form-control" type="range" name="ops_code"></div>
 							-->
 							<div class="col">
-								<input list="ops_code" name="ops_code" id="opsCodeInput" class="form-control mt-1 my-text-height" value="{{$userDetails->ops_code}}">
-								<datalist id="ops_code">
-								<option value="Local">
-								<option value="Highway">
-								<option value="Admin">
-								</datalist>
+								<?php
+								$tagHead = "<input list=\"ops_code\" name=\"ops_code\" id=\"opscodeinput\" class=\"form-control mt-1 my-text-height\" value=\"{{".$userDetails->ops_code."}}\"";
+								$tagTail = "><datalist id=\"ops_code\">";
+
+								$allTypes = MyHelper::GetAllOpsCodes();
+								foreach($allTypes as $eachType) {
+									$tagTail.= "<option value=".str_replace(' ', '&nbsp;', $eachType).">";
+								}
+								$tagTail.= "</datalist>";
+								echo $tagHead."placeholder=\"\" value=\"\"".$tagTail;
+								?>
 							</div>
 						</div>
 						<div class="row">

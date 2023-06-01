@@ -57,12 +57,17 @@
                     <div class="row">
                         <div class="col"><label class="col-form-label">Ops Code:&nbsp;</label></div>
 						<div class="col">
-							<input list="ops_code" name="ops_code" id="opsCodeInput" class="form-control mt-1 my-text-height">
-							<datalist id="ops_code">
-							<option value="Local">
-							<option value="Highway">
-							<option value="Admin">
-							</datalist>
+                            <?php
+                            $tagHead = "<input list=\"ops_code\" name=\"ops_code\" id=\"opscodeinput\" class=\"form-control mt-1 my-text-height\" ";
+                            $tagTail = "><datalist id=\"ops_code\">";
+
+                            $allTypes = MyHelper::GetAllOpsCodes();
+                            foreach($allTypes as $eachType) {
+                                $tagTail.= "<option value=".str_replace(' ', '&nbsp;', $eachType).">";
+                            }
+                            $tagTail.= "</datalist>";
+                            echo $tagHead."placeholder=\"\" value=\"\"".$tagTail;
+                            ?>
 						</div>
                         <div class="col"><label class="col-form-label">Cargo Weight:&nbsp;</label></div>
                         <div class="col"><input type="number" style="margin-top:3%" id="cargo_weight" name="cargo_weight"></div>

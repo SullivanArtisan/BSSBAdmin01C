@@ -303,6 +303,8 @@ Route::get('/booking_add', function () {
 //Route::post('booking_add', [BookingController::class, 'add'])->name('booking_add');
 
 //////// For Containers
+// Although the 'add' function is triggered by the Ajax function directly of the "Add this Container" button instead of the normal form's POST method through web.php's route,
+// we STILL need the route for the "add" operation. DON'T KNOW WHY!!
 Route::post('ontainer_add', [ContainerController::class, 'add'])->name('ontainer_add');
 // Route::post('ontainer_add', function (Request $request) {
 // 	Log::info("HOHOHO: ". $request->cntnr_name);

@@ -158,19 +158,20 @@
 		<div class="col"><label class="col-form-label">Ops Code:&nbsp;</label></div>
 		<div class="col">
 			<?php
-				if(isset($dbTable)) {
-					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_ops_code\" name=\"dvr_ops_code\" value=\"".$dbTable->dvr_ops_code."\">";
-                    echo "<input list=\"dvr_ops_code\" name=\"dvr_ops_code\" id=\"opsCodeInput\" class=\"form-control mt-1 my-text-height\" value=\"".$dbTable->dvr_ops_code."\">";
-				} else {
-					//echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"dvr_ops_code\" name=\"dvr_ops_code\">";
-                    echo "<input list=\"dvr_ops_code\" name=\"dvr_ops_code\" id=\"opsCodeInput\" class=\"form-control mt-1 my-text-height\">";
-				}
+			if(isset($dbTable)) {
+				$tagHead = "<input list=\"dvr_ops_code\" name=\"dvr_ops_code\" id=\"opsCodeInput\" class=\"form-control mt-1 my-text-height\" value=\"".$dbTable->dvr_ops_code."\" ";
+			} else {
+				$tagHead = "<input list=\"dvr_ops_code\" name=\"dvr_ops_code\" id=\"opsCodeInput\" class=\"form-control mt-1 my-text-height\" ";
+			}
+			$tagTail = "><datalist id=\"dvr_ops_code\">";
+
+			$allTypes = MyHelper::GetAllOpsCodes();
+			foreach($allTypes as $eachType) {
+				$tagTail.= "<option value=".str_replace(' ', '&nbsp;', $eachType).">";
+			}
+			$tagTail.= "</datalist>";
+			echo $tagHead."placeholder=\"\" value=\"\"".$tagTail;
 			?>
-            <datalist id="dvr_ops_code">
-            <option value="Local">
-            <option value="Highway">
-            <option value="Admin">
-            </datalist>
 		</div>
 	</div>
 	<div class="row">

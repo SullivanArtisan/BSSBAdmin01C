@@ -94,14 +94,17 @@
 						<!--
                         <div class="col"><input class="form-range form-control" type="range" name="ops_code"></div>
 						-->
-						<div class="col">
-							<input list="ops_code" name="ops_code" id="opsCodeInput" class="form-control mt-1 my-text-height">
-							<datalist id="ops_code">
-							<option value="Local">
-							<option value="Highway">
-							<option value="Admin">
-							</datalist>
-						</div>
+						<?php
+						$tagHead = "<div class=\"col\"><input list=\"ops_code\" name=\"ops_code\" id=\"opscodeinput\" class=\"form-control mt-1 my-text-height\"";
+						$tagTail = "><datalist id=\"ops_code\">";
+
+						$allTypes = MyHelper::GetAllOpsCodes();
+						foreach($allTypes as $eachType) {
+							$tagTail.= "<option value=".str_replace(' ', '&nbsp;', $eachType).">";
+						}
+						$tagTail.= "</datalist></div>";
+						echo $tagHead."placeholder=\"\" value=\"\"".$tagTail;
+						?>
                     </div>
                     <div class="row">
                         <div class="col"><label class="col-form-label">Address:&nbsp;</label></div>
@@ -128,7 +131,7 @@
 						<div class="col">
 							<div class="row">
 								<div class="col-9 pr-0"><input class="form-control mt-1 my-text-height" type="text" id="picture_file" name="picture_file"></div>
-								<div class="col-3 pl-2"><button class="btn btn-secondary btn-sm mt-1" type="button" onclick="KeepInput()"><a href="{{route('system_user_pic_upload', 'noId=1)}}">Upload</a></button></div>
+								<div class="col-3 pl-2"><button class="btn btn-secondary btn-sm mt-1" type="button" onclick="KeepInput()"><a href="{{route('system_user_pic_upload', 'noId=1')}}">Upload</a></button></div>
 							</div>
 						</div>
                     </div>

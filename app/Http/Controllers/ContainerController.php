@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Log;
 use App\Helper\MyHelper;
 use Illuminate\Http\Request;
 use App\Models\Container;
+use App\Models\Booking;
+use App\Models\Movement;
 
 class ContainerController extends Controller
 {
@@ -18,12 +20,19 @@ class ContainerController extends Controller
 		$container->cntnr_status        = MyHelper::CntnrCreatedStaus();
 		$saved = $container->save();
 		
-		if(!$saved) {
-            //Log::info("HOHOHO: ". $request->cntnr_goods_desc);
-            return redirect()->route('op_result.customer')->with('status', 'The customer,  <span style="font-weight:bold;font-style:italic;color:blue">'."HOHOHO".'</span>, has been updated successfully.');
-		} else {
-            //Log::info("HAHAHA: ". $request->cntnr_name);
-			return view('home_page');
+		$booking = Booking::where('bk_job_no', $request->cntnr_job_no)->first();
+        // Log::info("JobType: ". $booking->bk_job_type);
+
+        // Because the 'add' function is triggered by the Ajax function directly of the "Add this Container" button instead of the normal form's POST method through web.php's route,
+        // the page's redirection in the following conditions is useless. 
+        // In fact, the page's redirection is controlled in the callback function of Ajax function in the "Add this Container" button
+        if(!$saved) {
+            // return redirect()->route('booking_add', ['bookingResult'=>' <span style="color:red">(Failed to add the new container!)</span>', 'bookingTab'=>'containerinfo-tab', 'id'=>$booking->id]);
+        } else {
+            //$totalMoves = Movement::where('cntnr_job_no', $container->cntnr_job_no)->get()->count();
+
+            $this->CreateInitialMovements($booking->id, $container->id, $container->cntnr_name, $booking->bk_job_type);
+            // return view('home_page');
 		}
     }
 
@@ -72,4 +81,95 @@ class ContainerController extends Controller
 			return redirect()->route('op_result.container')->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been updated successfully.');
 		}
     }
+
+    private function CreateInitialMovements(String $jobId, String $cntnrId, String $cntnrName, String $jobType) {
+        $jobType = str_replace("\xc2\xa0", ' ', $jobType);
+        Log::info("JobType: ".$jobType." | ".MyHelper::$allJobTypes[2]);
+        if ($jobType == MyHelper::$allJobTypes[0]) {   // Import ==> 4 movements
+            $movement = new Movement;
+            $movement->mvmt_bk_id    = $jobId;
+            $movement->mvmt_cntnr_name  = $cntnrName;
+            $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_1";
+            $movement->mvmt_type        = MyHelper::$allMovementTypes[4];       // Port Pickup
+            $saved = $movement->save();
+
+            $movement = new Movement;
+            $movement->mvmt_bk_id    = $jobId;
+            $movement->mvmt_cntnr_name  = $cntnrName;
+            $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_2";
+            $movement->mvmt_type        = MyHelper::$allMovementTypes[7];       // Customer Drop
+            $saved = $movement->save();
+
+            $movement = new Movement;
+            $movement->mvmt_bk_id    = $jobId;
+            $movement->mvmt_cntnr_name  = $cntnrName;
+            $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_3";
+            $movement->mvmt_type        = MyHelper::$allMovementTypes[6];       // Customer Pickup
+            $saved = $movement->save();
+
+            $movement = new Movement;
+            $movement->mvmt_bk_id    = $jobId;
+            $movement->mvmt_cntnr_name  = $cntnrName;
+            $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_4";
+            $movement->mvmt_type        = MyHelper::$allMovementTypes[15];       // Empty Drop
+            $saved = $movement->save();
+        } else if ($jobType == MyHelper::$allJobTypes[1]) {   // Export ==> 4 movements
+            $movement = new Movement;
+            $movement->mvmt_bk_id    = $jobId;
+            $movement->mvmt_cntnr_name  = $cntnrName;
+            $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_1";
+            $movement->mvmt_type        = MyHelper::$allMovementTypes[14];       // Empty Pickup
+            $saved = $movement->save();
+
+            $movement = new Movement;
+            $movement->mvmt_bk_id    = $jobId;
+            $movement->mvmt_cntnr_name  = $cntnrName;
+            $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_2";
+            $movement->mvmt_type        = MyHelper::$allMovementTypes[7];       // Customer Drop
+            $saved = $movement->save();
+
+            $movement = new Movement;
+            $movement->mvmt_bk_id    = $jobId;
+            $movement->mvmt_cntnr_name  = $cntnrName;
+            $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_3";
+            $movement->mvmt_type        = MyHelper::$allMovementTypes[6];       // Customer Pickup
+            $saved = $movement->save();
+
+            $movement = new Movement;
+            $movement->mvmt_bk_id    = $jobId;
+            $movement->mvmt_cntnr_name  = $cntnrName;
+            $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_4";
+            $movement->mvmt_type        = MyHelper::$allMovementTypes[5];       // Port Drop
+            $saved = $movement->save();
+        } else if ($jobType == MyHelper::$allJobTypes[2]) {   // Empty Repo ==> 2 movements
+            $movement = new Movement;
+            $movement->mvmt_bk_id    = $jobId;
+            $movement->mvmt_cntnr_name  = $cntnrName;
+            $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_1";
+            $movement->mvmt_type        = MyHelper::$allMovementTypes[0];       // Container Pickup
+            $saved = $movement->save();
+
+            $movement = new Movement;
+            $movement->mvmt_bk_id    = $jobId;
+            $movement->mvmt_cntnr_name  = $cntnrName;
+            $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_2";
+            $movement->mvmt_type        = MyHelper::$allMovementTypes[1];       // Container Drop
+            $saved = $movement->save();
+        } else {   // Yard Move or Other or CBSA    ==> 2 movements 
+            $movement = new Movement;
+            $movement->mvmt_bk_id    = $jobId;
+            $movement->mvmt_cntnr_name  = $cntnrName;
+            $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_1";
+            $movement->mvmt_type        = "";                                   // ?
+            $saved = $movement->save();
+
+            $movement = new Movement;
+            $movement->mvmt_bk_id    = $jobId;
+            $movement->mvmt_cntnr_name  = $cntnrName;
+            $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_2";
+            $movement->mvmt_type        = "";                                   // ?
+            $saved = $movement->save();
+        }
+    }
+
 }

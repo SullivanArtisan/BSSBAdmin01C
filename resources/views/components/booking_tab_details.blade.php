@@ -22,13 +22,29 @@
 								<div class="col-2"><label class="col-form-label">Job Type:&nbsp;</label><span class="text-danger">*</span></div>
 								<div class="col-4">
 									<?php
-									echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"bk_job_type\" name=\"bk_job_type\">";
+									$tagHead = "<input list=\"bk_job_type\" name=\"bk_job_type\" id=\"bkjobtypeinput\" onchange=\"JobTypeSelected()\" class=\"form-control mt-1 my-text-height\" ";
+									$tagTail = "><datalist id=\"bk_job_type\">";
+
+									$allTypes = MyHelper::GetAllJobTypes();
+									foreach($allTypes as $eachType) {
+										$tagTail.= "<option value=".str_replace(' ', '&nbsp;', $eachType).">";
+									}
+									$tagTail.= "</datalist>";
+									echo $tagHead."placeholder=\"\" value=\"\"".$tagTail;
 									?>
 								</div>
 								<div class="col-2"><label class="col-form-label">OPS Code:&nbsp;</label></div>
 								<div class="col-4">
 									<?php
-									echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"bk_ops_code\" name=\"bk_ops_code\">";
+									$tagHead = "<input list=\"bk_ops_code\" name=\"bk_ops_code\" id=\"bkopscodeinput\" class=\"form-control mt-1 my-text-height\" ";
+									$tagTail = "><datalist id=\"bk_ops_code\">";
+
+									$allTypes = MyHelper::GetAllOpsCodes();
+									foreach($allTypes as $eachType) {
+										$tagTail.= "<option value=".str_replace(' ', '&nbsp;', $eachType).">";
+									}
+									$tagTail.= "</datalist>";
+									echo $tagHead."placeholder=\"\" value=\"\"".$tagTail;
 									?>
 								</div>
 							</div>
@@ -213,13 +229,29 @@
 								<div class="col-2"><label class="col-form-label">Movement Type:&nbsp;</label></div>
 								<div class="col-4">
 									<?php
-									echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"bk_pickup_movement_type\" name=\"bk_pickup_movement_type\">";
+									$tagHead = "<input list=\"bk_pickup_movement_type\" name=\"bk_pickup_movement_type\" id=\"bkpickupmovementtypeinput\" class=\"form-control mt-1 my-text-height\" ";
+									$tagTail = "><datalist id=\"bk_pickup_movement_type\">";
+
+									$allTypes = MyHelper::GetCommonMovementTypes();
+									foreach($allTypes as $eachType) {
+										$tagTail.= "<option value=".str_replace(' ', '&nbsp;', $eachType).">";
+									}
+									$tagTail.= "</datalist>";
+									echo $tagHead."placeholder=\"\" value=\"\"".$tagTail;
 									?>
 								</div>
 								<div class="col-2"><label class="col-form-label">Movement Type:&nbsp;</label></div>
 								<div class="col-4">
 									<?php
-									echo "<input class=\"form-control mt-1 my-text-height\" type=\"text\" id=\"bk_delivery_movement_type\" name=\"bk_delivery_movement_type\">";
+									$tagHead = "<input list=\"bk_delivery_movement_type\" name=\"bk_delivery_movement_type\" id=\"bkdeliverymovementtypeinput\" class=\"form-control mt-1 my-text-height\" ";
+									$tagTail = "><datalist id=\"bk_delivery_movement_type\">";
+
+									$allTypes = MyHelper::GetCommonMovementTypes();
+									foreach($allTypes as $eachType) {
+										$tagTail.= "<option value=".str_replace(' ', '&nbsp;', $eachType).">";
+									}
+									$tagTail.= "</datalist>";
+									echo $tagHead."placeholder=\"\" value=\"\"".$tagTail;
 									?>
 								</div>
 							</div>
@@ -411,3 +443,35 @@
 			</div>
 		</div>
 	</div>
+
+	<script>
+		function JobTypeSelected() {
+			selType = document.getElementById("bkjobtypeinput").value.normalize('NFKD');
+			if (selType == {!! json_encode(MyHelper::$allJobTypes[0]) !!} ) {	
+				// User selected "Import" job type
+				document.getElementById("bkpickupmovementtypeinput").value = {!! json_encode(MyHelper::$allMovementTypes[4]) !!};		// Set pickup movement type to "Port Pickup"
+				document.getElementById("bkdeliverymovementtypeinput").value = {!! json_encode(MyHelper::$allMovementTypes[7]) !!};		// Set delivery movement type to "Customer Drop"
+			} else if (selType == {!! json_encode(MyHelper::$allJobTypes[1]) !!} ) {	
+				// User selected "Export" job type
+				document.getElementById("bkpickupmovementtypeinput").value = {!! json_encode(MyHelper::$allMovementTypes[6]) !!};		// Set pickup movement type to "Customer Pickup"
+				document.getElementById("bkdeliverymovementtypeinput").value = {!! json_encode(MyHelper::$allMovementTypes[5]) !!};		// Set delivery movement type to "Port Drop"
+			} else if (selType == {!! json_encode( MyHelper::$allJobTypes[2]) !!} ) {	
+				// User selected "Empty Repo" job type
+				document.getElementById("bkpickupmovementtypeinput").value = {!! json_encode(MyHelper::$allMovementTypes[0]) !!};		// Set pickup movement type to "Container Pickup"
+				document.getElementById("bkdeliverymovementtypeinput").value = {!! json_encode(MyHelper::$allMovementTypes[1]) !!};		// Set delivery movement type to "Container Drop"
+			} else if (selType == {!! json_encode(MyHelper::$allJobTypes[3]) !!} ) {	
+				// User selected "Yard Move" job type
+				document.getElementById("bkpickupmovementtypeinput").value = "";
+				document.getElementById("bkdeliverymovementtypeinput").value = "";
+			} else if (selType == {!! json_encode(MyHelper::$allJobTypes[4]) !!} ) {	
+				// User selected "Other" job type
+				document.getElementById("bkpickupmovementtypeinput").value = ""; 	// {!! json_encode(MyHelper::$allMovementTypes[6]) !!};		// Set pickup movement type to "Customer Pickup"
+				document.getElementById("bkdeliverymovementtypeinput").value = "";	// {!! json_encode(MyHelper::$allMovementTypes[5]) !!};		// Set delivery movement type to "Port Drop"
+			} else if (selType == {!! json_encode(MyHelper::$allJobTypes[5]) !!} ) {	
+				// User selected "CBSA" job type
+				document.getElementById("bkpickupmovementtypeinput").value = "";
+				document.getElementById("bkdeliverymovementtypeinput").value = "";
+			} else {
+			}
+		}
+	</script>
