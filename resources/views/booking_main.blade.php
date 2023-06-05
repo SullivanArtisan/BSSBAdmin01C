@@ -76,10 +76,10 @@
 			if (!isset($_GET['page'])) {
 				$sortKeyInput = session('sort_key_booking', '');
 				if ($sortKeyInput == '') {
-					$sortKeyInput = 'dvr_no';
+					$sortKeyInput = 'bk_job_no';
 				} 
 			} else {
-				$sortKeyInput = session('sort_key_booking', 'dvr_no');
+				$sortKeyInput = session('sort_key_booking', 'bk_job_no');
 			}
 		}
 			
@@ -94,10 +94,10 @@
 				session(['sort_order' => 'asc']);
 				$sort_icon = 'asc';
 			}
-			$bookings = \App\Models\Booking::orderBy($_GET['sort_key_booking'], session('sort_order', 'asc'))->paginate(10);
+			$bookings = \App\Models\Booking::orderBy($_GET['sort_key_booking'], session('sort_order', 'asc'))->where('bk_status', null)->orwhere('bk_status', '<>', 'deleted')->paginate(10);
 			session(['sort_key_booking' => $sortKeyInput]);
 		} else {
-			$bookings = \App\Models\Booking::orderBy($sortKey, $sortOrder)->paginate(10);
+			$bookings = \App\Models\Booking::orderBy($sortKey, $sortOrder)->where('bk_status', null)->orwhere('bk_status', '<>', 'deleted')->paginate(10);
 		}
 				
 		// Title Line
@@ -191,42 +191,42 @@
             $cmpny_finish = \App\Models\Company::where('id', $booking->bk_delivery_cmpny_id)->get();
             $outContents = "<div class=\"row\">";
                 $outContents .= "<div class=\"col-1\">";
-					$outContents .= "<a href=\"booking_selected?jobId=$booking->bk_job_no\">";
+					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
 					$outContents .= $booking->bk_job_no;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-1\">";
-					$outContents .= "<a href=\"booking_selected?jobId=$booking->bk_job_no\">";
+					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
 					$outContents .= $booking->bk_cstm_account_no;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-3\">";
-					$outContents .= "<a href=\"booking_selected?jobId=$booking->bk_job_no\">";
+					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
 					$outContents .= $booking->bk_cstm_account_name;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-1\">";
-					$outContents .= "<a href=\"booking_selected?jobId=$booking->bk_job_no\">";
+					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
 					$outContents .= $booking->bk_job_type;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 				$outContents .= "<div class=\"col-2\">";
-					$outContents .= "<a href=\"booking_selected?jobId=$booking->bk_job_no\">";
+					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
 					$outContents .= $cmpny_start;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 				$outContents .= "<div class=\"col-2\">";
-					$outContents .= "<a href=\"booking_selected?jobId=$booking->bk_job_no\">";
+					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
 					$outContents .= $cmpny_finish;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 				$outContents .= "<div class=\"col-1\">";
-					$outContents .= "<a href=\"booking_selected?jobId=$booking->bk_job_no\">";
+					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
 					$outContents .= $booking->bk_status;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 				$outContents .= "<div class=\"col-1\">";
-					$outContents .= "<a href=\"booking_selected?jobId=$booking->bk_job_no\">";
+					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
 					$outContents .= $booking->bk_total_containers;
 					$outContents .= "</a>";
 				$outContents .= "</div>";

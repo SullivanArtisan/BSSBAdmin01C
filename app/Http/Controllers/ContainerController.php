@@ -41,8 +41,28 @@ class ContainerController extends Controller
 		$validated = $request->validate([
 			//'cntnr_name'              => 'required',
 		]);
+
+        if (isset($request->id)) {
+            $id = $request->id;
+            Log::Info('ID = '.$request->id);
+        } else {
+            Log::Info('ID = null');
+        }
+        if (isset($request->prevPage)) {
+            $prevPage = $request->prevPage;
+            Log::Info('prevPage = '.$request->prevPage);
+        } else {
+            Log::Info('prevPage = null');
+        }
+        if (isset($request->selJobId)) {
+            $selJobId = $request->selJobId;
+            Log::Info('selJobId = '.$request->selJobId);
+        } else {
+            Log::Info('selJobId = null');
+        }
+        Log::Info('================================================================');
 		
-		$container = Container::where('id', $request->id)->first();
+		$container = Container::where('id', $id)->first();
 		// $container->cntnr_job_no              = $request->cntnr_job_no;
 		// $container->cntnr_booking_no               = $request->cntnr_booking_no;
 		$container->cntnr_name              = $request->cntnr_name;
@@ -78,8 +98,12 @@ class ContainerController extends Controller
 		if(!$saved) {
 			return redirect()->route('op_result.container')->with('status', ' <span style="color:red">Data has NOT been updated!</span>');
 		} else {
-			return redirect()->route('op_result.container')->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been updated successfully.');
-		}
+            if (!isset($request->prevPage)) {
+                return redirect()->route('op_result.container', ['id'=>$request->id])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been updated successfully.');
+            } else {
+                return redirect()->route('op_result.container', ['id'=>$request->id, 'prevPage'=>$prevPage, 'selJobId'=>$selJobId])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been updated successfully.');
+            }
+        }
     }
 
     private function CreateInitialMovements(String $jobId, String $cntnrId, String $cntnrName, String $jobType) {

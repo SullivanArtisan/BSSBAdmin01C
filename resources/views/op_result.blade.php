@@ -2,17 +2,21 @@
 
 @section('goback')
 	<?php
-		if ($oprand == "unit") {		// This is a special case for power_unit_main as there are 2 words: power and unit. I don't want to change file names for consistance reason.
+	use App\Models\Booking;
+	use App\Models\Container;
+
+	if ($oprand == "unit") {		// This is a special case for power_unit_main as there are 2 words: power and unit. I don't want to change file names for consistance reason.
 			$backPath = '<a class="text-primary" href="'.route('power_unit_main').'" style="margin-right: 10px;">Back</a>';
 		} else if ($oprand == "user") {	// This is another special case for system_user_main as there are 2 words: system and user. I don't want to change file names for consistance reason.
 			$backPath = '<a class="text-primary" href="'.route('system_user_main').'" style="margin-right: 10px;">Back</a>';
 		} else if ($oprand == "container") {	// This is another special case for container_main as the container_main not exists; I have to go to the special URL
-			if (isset($_GET['id'])) {
-				$id = $_GET['id'];
+			if (!isset($_GET['prevPage'])) {
+				$container = Container::where('id', $_GET['id'])->first();
+				$booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
+				$backPath = '<a class="text-primary" href="'.route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id]).'" style="margin-right: 10px;">Back</a>';
 			} else {
-				$id = session('id');
+				$backPath = '<a class="text-primary" href="'.route('booking_selected', ['bookingTab'=>'containerinfo-tab', 'selJobId'=>$_GET['selJobId']]).'" style="margin-right: 10px;">Back</a>';
 			}
-			$backPath = '<a class="text-primary" href="'.route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$id]).'" style="margin-right: 10px;">Back</a>';
 		} else {
 			$tmpPath = $oprand.'_main';
 			$backPath = '<a class="text-primary" href="'.route($tmpPath).'" style="margin-right: 10px;">Back</a>';

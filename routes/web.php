@@ -300,6 +300,19 @@ Route::get('/booking_add', function () {
     return view('booking_add');
 })->middleware(['auth'])->name('booking_add');
 
+Route::get('/booking_delete/{id}', function ($id) {
+	$booking = Booking::where('id', $id)->first();
+	$bkJobNo = $booking->bk_job_no;
+	$booking->bk_status = 'deleted';
+	$res = $booking->save();
+					
+	if(!$res) {
+		return redirect()->route('op_result.booking')->with('status', ' <span style="color:red">Failed to delete booking job '.$bkJobNo.'!</span>');
+	} else {
+		return redirect()->route('op_result.booking', ['id'=>$id])->with('status', 'The booking job,  <span style="font-weight:bold;font-style:italic;color:blue">'.$bkJobNo.'</span>, has been deleted successfully.');
+	}
+})->middleware(['auth'])->name('booking_delete');
+
 //Route::post('booking_add', [BookingController::class, 'add'])->name('booking_add');
 
 //////// For Containers

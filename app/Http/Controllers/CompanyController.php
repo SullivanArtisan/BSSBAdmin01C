@@ -67,7 +67,7 @@ class CompanyController extends Controller
         if(!$saved) {
             return redirect()->route('op_result.company')->with('status', ' <span style="color:red">Data has NOT been updated!</span>');
         } else {
-            return redirect()->route('op_result.company')->with('status', 'The steamship line,  <span style="font-weight:bold;font-style:italic;color:blue">'.$company->cmpny_name.'</span>, has been updated successfully.');
+            return redirect()->route('op_result.company')->with('status', 'The company,  <span style="font-weight:bold;font-style:italic;color:blue">'.$company->cmpny_name.'</span>, has been updated successfully.');
         }
     }
 }

@@ -14,9 +14,14 @@
 		$cntnr_job_no = $booking->bk_job_no;
 		//$containers = \App\Models\Container::where('cntnr_job_no', 'LIKE', 'ML%')->orderBy('cntnr_job_no', 'asc')->distinct()->get(['cntnr_job_no']);
 	} else {
-		$id = '';
-		$containers = [];
-		$cntnr_job_no = "";
+		if (isset($_GET['selJobId'])) {		// Enter this page from booking_selected.blade
+			$containers = \App\Models\Container::where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->get();
+			$cntnr_job_no = $booking->bk_job_no;
+		} else {
+			$id = '';
+			$containers = [];
+			$cntnr_job_no = "";
+		}
 	}
 
 
@@ -51,7 +56,13 @@
 		$listed_containers++;
 		$outContents = "<div class=\"row\">";
 			$outContents .= "<div class=\"col-3\">";
-				$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no])."\">";
+				if (!isset($_GET['selJobId'])) {
+					Log::Info('To select container from AAAA');
+					$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no])."\">";
+				} else {
+					Log::Info('To select container from BBBB');
+					$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
+				}
 				$outContents .= $container->cntnr_name;
 				$outContents .= "</a>";
 			$outContents .= "</div>";
@@ -77,7 +88,6 @@
 	echo $outContents;
 	?>
 
-	<!-- A division for a new container details -->
 	<div class="card my-4">
 		<div class="card-body">
 			<div class="row">
@@ -227,15 +237,9 @@
 					document.getElementById('containerinfo-tab').removeAttribute('class');
 					document.getElementById('containerinfo-tab').classList.add('nav-link');
 					document.getElementById('containerinfo-tab').classList.add('active');				// <---- active
-					document.getElementById('movementinfo-tab').removeAttribute('class');
-					document.getElementById('movementinfo-tab').classList.add('nav-link');
-					document.getElementById('dispatchinfo-tab').removeAttribute('class');
-					document.getElementById('dispatchinfo-tab').classList.add('nav-link');
 
 					document.getElementById('bookingdetail-tab').setAttribute("aria-checked", false);
 					document.getElementById('containerinfo-tab').setAttribute("aria-checked", true);	// <---- active
-					document.getElementById('movementinfo-tab').setAttribute("aria-checked", false);
-					document.getElementById('dispatchinfo-tab').setAttribute("aria-checked", false);
 
 					document.getElementById('bookingdetail').removeAttribute('class');
 					document.getElementById('bookingdetail').classList.add('tab-pane');
@@ -246,14 +250,6 @@
 					document.getElementById('containerinfo').classList.add('show');
 					document.getElementById('containerinfo').classList.add('fade');						// <---- active
 					document.getElementById('containerinfo').classList.add('active');					// <---- active
-
-					document.getElementById('movementinfo').removeAttribute('class');
-					document.getElementById('movementinfo').classList.add('tab-pane');
-					document.getElementById('movementinfo').classList.add('show');
-
-					document.getElementById('dispatchinfo').removeAttribute('class');
-					document.getElementById('dispatchinfo').classList.add('tab-pane');
-					document.getElementById('dispatchinfo').classList.add('show');
 				}
 			});
 		});

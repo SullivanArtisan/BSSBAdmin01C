@@ -11,13 +11,27 @@
 <?php
 	$id = $_GET['cntnrId'];
 	if ($id) {
+        Log::Info('In select container AAAA');
 		$container = Container::where('id', $id)->first();
 		$booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
+    }
+
+    if (isset($_GET['prevPage'])) {
+        Log::Info('In select container BBBB');
+        $prevPage = $_GET['prevPage'];
+        $retParam = ['id'=>$id, 'prevPage'=>$prevPage, 'selJobId'=>$_GET['selJobId']];
     }
 ?>
 
 @section('goback')
-	<a class="text-primary" href="{{route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id])}}" style="margin-right: 10px;">Back</a>
+    <?php
+        if (!isset($_GET['prevPage'])) {
+            $toThisLink = "<a class=\"text-primary\" href=\"".route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id])."\" style=\"margin-right: 10px;\">Back</a>";
+        } else {
+            $toThisLink = "<a class=\"text-primary\" href=\"".route($prevPage, ['selJobId'=>$_GET['selJobId']])."\" style=\"margin-right: 10px;\">Back</a>";
+        }
+        echo $toThisLink;
+    ?>
 @show
 
 @if (!$id or !$container) {
@@ -63,7 +77,11 @@
 			@endif
 			<div class="row">
 				<div class="col">
+                    @if (!isset($prevPage))
 					<form method="post" action="{{route('op_result.container_update', ['id'=>$id])}}">
+                    @else
+					<form method="post" action="{{route('op_result.container_update', $retParam)}}">
+                    @endif
 						@csrf
 						<div class="row mx-2">
 							<div class="col-2"><label class="col-form-label">Container:&nbsp;</label></div>
@@ -209,7 +227,14 @@
 							<div class="col">
 								<div class="row">
 									<button class="btn btn-warning mx-4" type="submit">Update</button>
-									<button class="btn btn-secondary mx-3" type="button"><a href="{{route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id])}}">Cancel</a></button>
+                                    <?php
+                                        if (!isset($_GET['prevPage'])) {
+                                            $toThisLink = "<button class=\"btn btn-secondary mx-3\" type=\"button\"><a href=\"".route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id])."\">Cancel</a></button>";
+                                        } else {
+                                            $toThisLink = "<button class=\"btn btn-secondary mx-3\" type=\"button\"><a href=\"".route($_GET['prevPage'], ['selJobId'=>$_GET['selJobId']])."\">Cancel</a></button>";
+                                        }
+                                        echo $toThisLink;
+                                    ?>
 								</div>
 							</div>
 							<div class="col"></div>

@@ -73,16 +73,6 @@
                         <a class="nav-link" id="containerinfo-tab" data-toggle="tab" href="#containerinfo" role="tab" aria-controls="containerinfo" aria-selected="false">Container Details</a>
 						@endif
                     </li>
-                    <li class="nav-item">
-						@if ($booking_tab == 'movementinfo-tab')
-                        <a class="nav-link active " id="movementinfo-tab" data-toggle="tab" href="#movementinfo" role="tab" aria-controls="movementinfo" aria-selected="true">Container Details</a>
-						@else
-                        <a class="nav-link" id="movementinfo-tab" data-toggle="tab" href="#movementinfo" role="tab" aria-controls="movementinfo" aria-selected="false">Movement Details</a>
-						@endif
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="dispatchinfo-tab" data-toggle="tab" href="#dispatchinfo" role="tab" aria-controls="dispatchinfo" aria-selected="false">Dispatch</a>
-                    </li>
                 </ul>
 
                 <div class="tab-content" id="myTabContent">
@@ -100,18 +90,6 @@
                     <div class="tab-pane fade" id="containerinfo" role="tabpanel" aria-labelledby="containerinfo-tab">
 					@endif
                         @include('components.booking_tab_containers')
-                    </div>
-
-					@if ($booking_tab == 'movementinfo-tab')
-                    <div class="tab-pane fade show active" id="movementinfo" role="tabpanel" aria-labelledby="movementinfo-tab">
-					@else
-                    <div class="tab-pane fade" id="movementinfo" role="tabpanel" aria-labelledby="movementinfo-tab">
-					@endif
-                        @include('components.booking_tab_movements')
-                    </div>
-
-					<div class="tab-pane fade" id="dispatch" role="tabpanel" aria-labelledby="dispatchinfo-tab">
-                        @include('components.booking_tab_dispatch')
                     </div>
                 </div>
 				<div class="row my-3">
@@ -145,15 +123,9 @@
 					document.getElementById('bookingdetail-tab').classList.add('active');				// <---- active
 					document.getElementById('containerinfo-tab').removeAttribute('class');
 					document.getElementById('containerinfo-tab').classList.add('nav-link');
-					document.getElementById('movementinfo-tab').removeAttribute('class');
-					document.getElementById('movementinfo-tab').classList.add('nav-link');
-					document.getElementById('dispatchinfo-tab').removeAttribute('class');
-					document.getElementById('dispatchinfo-tab').classList.add('nav-link');
 
 					document.getElementById('bookingdetail-tab').setAttribute("aria-checked", true);	// <---- active
 					document.getElementById('containerinfo-tab').setAttribute("aria-checked", false);
-					document.getElementById('movementinfo-tab').setAttribute("aria-checked", false);
-					document.getElementById('dispatchinfo-tab').setAttribute("aria-checked", false);
 
 					document.getElementById('bookingdetail').removeAttribute('class');
 					document.getElementById('bookingdetail').classList.add('tab-pane');
@@ -164,14 +136,6 @@
 					document.getElementById('containerinfo').removeAttribute('class');
 					document.getElementById('containerinfo').classList.add('tab-pane');
 					document.getElementById('containerinfo').classList.add('show');
-
-					document.getElementById('movementinfo').removeAttribute('class');
-					document.getElementById('movementinfo').classList.add('tab-pane');
-					document.getElementById('movementinfo').classList.add('show');
-
-					document.getElementById('dispatchinfo').removeAttribute('class');
-					document.getElementById('dispatchinfo').classList.add('tab-pane');
-					document.getElementById('dispatchinfo').classList.add('show');
 				}
 			});
 		});
