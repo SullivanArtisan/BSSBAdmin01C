@@ -30,6 +30,94 @@ use App\Models\SteamShipLine;
 use App\Models\Company;
 use App\Models\Booking;
 use App\Models\Container;
+use App\Models\Movement;
+
+function ChangeMovName($job_id, $cntnr_id, $mvmt_id, $include) {
+	$pivotMovName = "J_".$job_id."_C_".$cntnr_id."_M_".$mvmt_id;
+	$movement = Movement::where('mvmt_name', $pivotMovName)->first();
+	$container = Container::where('id', $cntnr_id)->first();
+
+	if ($movement && $container) {
+		$movs = Movement::where('mvmt_cntnr_name', $movement->mvmt_cntnr_name)->get();
+
+		foreach($movs as $mov) {
+			$mNameArr = explode('_', $mov->mvmt_name);
+			if ($mov->mvmt_name > $pivotMovName) {
+				$mov->mvmt_name = "J_".$job_id."_C_".$cntnr_id."_M_".($mNameArr[5]+2);
+				$mov->mvmt_order = $mNameArr[5]+2;
+				$saved = $mov->save();
+			}
+		}
+
+		if ($include) {
+			$movement->mvmt_name = "J_".$job_id."_C_".$cntnr_id."_M_".($mvmt_id+2);
+			$movement->mvmt_order = $mvmt_id+2;
+			$saved = $movement->save();
+		}
+	}
+}
+
+function InsertThisMovement($sel_mvmt_op, $job_id, $cntnr_id, $mvmt_id, $max_mov_id) {
+		$container = Container::where('id', $cntnr_id)->first();
+	if ($container) {
+		if (str_contains(strtolower($sel_mvmt_op), 'above')) {
+			ChangeMovName($job_id, $cntnr_id, $mvmt_id, true);
+			$mvmt_name1 = "J_".$job_id."_C_".$cntnr_id."_M_".($mvmt_id);
+			$mvmt_name2 = "J_".$job_id."_C_".$cntnr_id."_M_".($mvmt_id+1);
+			$mvmt_order1= $mvmt_id;
+			$mvmt_order2= $mvmt_id+1;
+		} else if (str_contains(strtolower($sel_mvmt_op), 'below')) {
+			ChangeMovName($job_id, $cntnr_id, $mvmt_id, false);
+			$mvmt_name1 = "J_".$job_id."_C_".$cntnr_id."_M_".($mvmt_id+1);
+			$mvmt_name2 = "J_".$job_id."_C_".$cntnr_id."_M_".($mvmt_id+2);
+			$mvmt_order1= $mvmt_id+1;
+			$mvmt_order2= $mvmt_id+2;
+		}
+
+		if (str_contains(strtolower($sel_mvmt_op), 'drop')) {
+			$mvmt_cmpny_name = "";
+			$mvmt_type1 = "";
+			$mvmt_type2 = "";
+			$mvmt_cmpny_city = "";
+		}  else if (str_contains(strtolower($sel_mvmt_op), 'hlcs')) {
+			$mvmt_cmpny_name = "HARBOUR LINK";
+			$mvmt_type1 = "Harbourlink Drop";
+			$mvmt_type2 = "Harbourlink Pickup";
+			$mvmt_cmpny_city = "DELTA";
+		}  else if (str_contains(strtolower($sel_mvmt_op), 'chassis yard')) {
+			$mvmt_cmpny_name = "CHASSIS YARD";
+			$mvmt_type1 = "Harbourlink Drop";
+			$mvmt_type2 = "Harbourlink Pickup";
+			$mvmt_cmpny_city = "DELTA";
+		}  else if (str_contains(strtolower($sel_mvmt_op), 'dead run')) {
+			$mvmt_cmpny_name = "";
+			$mvmt_type1 = "Dead Run";
+			$mvmt_type2 = "Dead Run";
+			$mvmt_cmpny_city = "";
+		}
+
+		$movement = new Movement;
+		$movement->mvmt_bk_id    = $job_id;
+		$movement->mvmt_cntnr_name  = $container->cntnr_name;
+		$movement->mvmt_name        = $mvmt_name1;
+		$movement->mvmt_order       = $mvmt_order1;
+		$movement->mvmt_type        = $mvmt_type1;
+		$movement->mvmt_cmpny_name  = $mvmt_cmpny_name;
+		$movement->mvmt_cmpny_city  = $mvmt_cmpny_city;
+		$saved = $movement->save();
+
+		$movement = new Movement;
+		$movement->mvmt_bk_id    = $job_id;
+		$movement->mvmt_cntnr_name  = $container->cntnr_name;
+		$movement->mvmt_name        = $mvmt_name2;
+		$movement->mvmt_order       = $mvmt_order2;
+		$movement->mvmt_type        = $mvmt_type2;
+		$movement->mvmt_cmpny_name  = $mvmt_cmpny_name;
+		$movement->mvmt_cmpny_city  = $mvmt_cmpny_city;
+		$saved = $movement->save();
+	}
+}
+
 
 /*
 |--------------------------------------------------------------------------
@@ -240,7 +328,6 @@ Route::get('/customer_accprice_delete/{id}', function ($id) {
 
 Route::post('/customer_accprice_result', [CstmAccountPriceController::class, 'store'])->name('customer_accprice_add');
 Route::post('/customer_update2', function () {
-	Log::info("HEHEHE");
 	route('customer_accprice_add');
 })->name('customer_update2');
 
@@ -339,9 +426,30 @@ Route::get('/container_delete/{id}', function ($id) {
 	if(!$res) {
 		return redirect()->route('op_result.container')->with('status', ' <span style="color:red">Failed to delete driver '.$containerName.'!</span>');
 	} else {
-		return redirect()->route('op_result.container', ['id'=>$bookingId])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been deleted successfully.');
+		return redirect()->route('op_result.container', ['id'=>$bookingId, 'prevPage'=>"unknown", 'selJobId'=>$bookingId])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been deleted successfully.');
+		// return redirect()->route('op_result.container', ['id'=>$bookingId])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been deleted successfully.');
 	}
 })->middleware(['auth'])->name('container_delete');
+
+//////// For Movements
+Route::get('/movements_selected', function () {
+    return view('movements_selected');
+})->middleware(['auth'])->name('movements_selected');
+
+Route::post('/movement_ins_or_del', function (Request $request) {
+	$sel_mvmt_op = $_POST['sel_mvmt_op'];
+	$job_id = $_POST['job_id'];
+	$cntnr_id = $_POST['cntnr_id'];
+	$mvmt_id = $_POST['mvmt_id'];
+	$max_mov_id = $_POST['max_mov_id'];
+	// Log::info("max_mov_id: ". $max_mov_id);
+	if (str_contains(strtolower($sel_mvmt_op), 'insert')) {
+		InsertThisMovement($sel_mvmt_op, $job_id, $cntnr_id, $mvmt_id, $max_mov_id);
+	}
+	if (str_contains(strtolower($sel_mvmt_op), 'delete')) {
+		$res=Movement::where('mvmt_name', "J_".$job_id."_C_".$cntnr_id."_M_".$mvmt_id)->delete();
+	}
+})->middleware(['auth'])->name('movement_ins_or_del');
 
 //////// For Driver Pay Prices
 Route::get('/driver_pay_prices_main', function () {

@@ -44,23 +44,13 @@ class ContainerController extends Controller
 
         if (isset($request->id)) {
             $id = $request->id;
-            Log::Info('ID = '.$request->id);
-        } else {
-            Log::Info('ID = null');
         }
         if (isset($request->prevPage)) {
             $prevPage = $request->prevPage;
-            Log::Info('prevPage = '.$request->prevPage);
-        } else {
-            Log::Info('prevPage = null');
         }
         if (isset($request->selJobId)) {
             $selJobId = $request->selJobId;
-            Log::Info('selJobId = '.$request->selJobId);
-        } else {
-            Log::Info('selJobId = null');
         }
-        Log::Info('================================================================');
 		
 		$container = Container::where('id', $id)->first();
 		// $container->cntnr_job_no              = $request->cntnr_job_no;
@@ -108,13 +98,13 @@ class ContainerController extends Controller
 
     private function CreateInitialMovements(String $jobId, String $cntnrId, String $cntnrName, String $jobType) {
         $jobType = str_replace("\xc2\xa0", ' ', $jobType);
-        Log::info("JobType: ".$jobType." | ".MyHelper::$allJobTypes[2]);
         if ($jobType == MyHelper::$allJobTypes[0]) {   // Import ==> 4 movements
             $movement = new Movement;
             $movement->mvmt_bk_id    = $jobId;
             $movement->mvmt_cntnr_name  = $cntnrName;
             $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_1";
             $movement->mvmt_type        = MyHelper::$allMovementTypes[4];       // Port Pickup
+            $movement->mvmt_order       = 1;
             $saved = $movement->save();
 
             $movement = new Movement;
@@ -122,6 +112,7 @@ class ContainerController extends Controller
             $movement->mvmt_cntnr_name  = $cntnrName;
             $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_2";
             $movement->mvmt_type        = MyHelper::$allMovementTypes[7];       // Customer Drop
+            $movement->mvmt_order       = 2;
             $saved = $movement->save();
 
             $movement = new Movement;
@@ -129,6 +120,7 @@ class ContainerController extends Controller
             $movement->mvmt_cntnr_name  = $cntnrName;
             $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_3";
             $movement->mvmt_type        = MyHelper::$allMovementTypes[6];       // Customer Pickup
+            $movement->mvmt_order       = 3;
             $saved = $movement->save();
 
             $movement = new Movement;
@@ -136,6 +128,7 @@ class ContainerController extends Controller
             $movement->mvmt_cntnr_name  = $cntnrName;
             $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_4";
             $movement->mvmt_type        = MyHelper::$allMovementTypes[15];       // Empty Drop
+            $movement->mvmt_order       = 4;
             $saved = $movement->save();
         } else if ($jobType == MyHelper::$allJobTypes[1]) {   // Export ==> 4 movements
             $movement = new Movement;
@@ -143,6 +136,7 @@ class ContainerController extends Controller
             $movement->mvmt_cntnr_name  = $cntnrName;
             $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_1";
             $movement->mvmt_type        = MyHelper::$allMovementTypes[14];       // Empty Pickup
+            $movement->mvmt_order       = 1;
             $saved = $movement->save();
 
             $movement = new Movement;
@@ -150,6 +144,7 @@ class ContainerController extends Controller
             $movement->mvmt_cntnr_name  = $cntnrName;
             $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_2";
             $movement->mvmt_type        = MyHelper::$allMovementTypes[7];       // Customer Drop
+            $movement->mvmt_order       = 2;
             $saved = $movement->save();
 
             $movement = new Movement;
@@ -157,6 +152,7 @@ class ContainerController extends Controller
             $movement->mvmt_cntnr_name  = $cntnrName;
             $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_3";
             $movement->mvmt_type        = MyHelper::$allMovementTypes[6];       // Customer Pickup
+            $movement->mvmt_order       = 3;
             $saved = $movement->save();
 
             $movement = new Movement;
@@ -164,6 +160,7 @@ class ContainerController extends Controller
             $movement->mvmt_cntnr_name  = $cntnrName;
             $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_4";
             $movement->mvmt_type        = MyHelper::$allMovementTypes[5];       // Port Drop
+            $movement->mvmt_order       = 4;
             $saved = $movement->save();
         } else if ($jobType == MyHelper::$allJobTypes[2]) {   // Empty Repo ==> 2 movements
             $movement = new Movement;
@@ -171,6 +168,7 @@ class ContainerController extends Controller
             $movement->mvmt_cntnr_name  = $cntnrName;
             $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_1";
             $movement->mvmt_type        = MyHelper::$allMovementTypes[0];       // Container Pickup
+            $movement->mvmt_order       = 1;
             $saved = $movement->save();
 
             $movement = new Movement;
@@ -178,13 +176,31 @@ class ContainerController extends Controller
             $movement->mvmt_cntnr_name  = $cntnrName;
             $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_2";
             $movement->mvmt_type        = MyHelper::$allMovementTypes[1];       // Container Drop
+            $movement->mvmt_order       = 2;
             $saved = $movement->save();
-        } else {   // Yard Move or Other or CBSA    ==> 2 movements 
+        } else if ($jobType == MyHelper::$allJobTypes[4]) {   // Other ==> 2 movements
+            $movement = new Movement;
+            $movement->mvmt_bk_id    = $jobId;
+            $movement->mvmt_cntnr_name  = $cntnrName;
+            $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_1";
+            $movement->mvmt_type        = MyHelper::$allMovementTypes[6];       // Customer Pickup
+            $movement->mvmt_order       = 1;
+            $saved = $movement->save();
+
+            $movement = new Movement;
+            $movement->mvmt_bk_id    = $jobId;
+            $movement->mvmt_cntnr_name  = $cntnrName;
+            $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_2";
+            $movement->mvmt_type        = MyHelper::$allMovementTypes[5];       // Port Drop
+            $movement->mvmt_order       = 2;
+            $saved = $movement->save();
+        } else {   // Yard Move or CBSA    ==> 2 movements 
             $movement = new Movement;
             $movement->mvmt_bk_id    = $jobId;
             $movement->mvmt_cntnr_name  = $cntnrName;
             $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_1";
             $movement->mvmt_type        = "";                                   // ?
+            $movement->mvmt_order       = 1;
             $saved = $movement->save();
 
             $movement = new Movement;
@@ -192,6 +208,7 @@ class ContainerController extends Controller
             $movement->mvmt_cntnr_name  = $cntnrName;
             $movement->mvmt_name        = "J_".$jobId."_C_".$cntnrId."_M_2";
             $movement->mvmt_type        = "";                                   // ?
+            $movement->mvmt_order       = 2;
             $saved = $movement->save();
         }
     }

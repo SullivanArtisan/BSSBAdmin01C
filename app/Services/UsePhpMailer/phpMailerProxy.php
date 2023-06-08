@@ -10,7 +10,6 @@ use PHPMailer\PHPMailer\Exception;
 class PhpMailerProxy
 {
 	public function SendBasicEmail(String $smtpUserName, String $smtpPass, String $mailFromAddr, String $mailFromName, String $mailToAddr, String $subject, String $contents) {
-		Log::info('Schedule going to send email2....');
 		$mail = new PHPMailer(true);
 
 		//Enable SMTP debugging.
@@ -42,7 +41,6 @@ class PhpMailerProxy
 
 		try {
 			$mail->send();
-			Log::info("Message2 has been sent successfully");
 		} catch (Exception $e) {
 			Log::info("Mailer Error2: " . $mail->ErrorInfo);
 		}

@@ -57,10 +57,8 @@
 		$outContents = "<div class=\"row\">";
 			$outContents .= "<div class=\"col-3\">";
 				if (!isset($_GET['selJobId'])) {
-					Log::Info('To select container from AAAA');
 					$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no])."\">";
 				} else {
-					Log::Info('To select container from BBBB');
 					$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
 				}
 				$outContents .= $container->cntnr_name;
@@ -76,7 +74,7 @@
 				//$outContents .= $container->cntnr_job_no;
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
-				$outContents .= "<button class=\"btn btn-secondary btn-sm my-1\" type=\"button\"><a href=\"".route('booking_add', ['bookingTab'=>'movementinfo-tab', 'id'=>$booking->id])."\">Edit Movements</a></button>";
+				$outContents .= "<button class=\"btn btn-secondary btn-sm my-1\" type=\"button\"><a href=\"".route('movements_selected', ['cntnrId'=>$container->id])."\">Edit Movements</a></button>";
 			$outContents .= "</div>";
 		$outContents .= "</div>";
 		echo $outContents;

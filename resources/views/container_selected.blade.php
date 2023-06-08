@@ -1,7 +1,7 @@
 <?php
 	use App\Models\Container;
 	use App\Models\Booking;
-    ?>
+?>
 
 @extends('layouts.home_page_base')
 <style>
@@ -11,13 +11,11 @@
 <?php
 	$id = $_GET['cntnrId'];
 	if ($id) {
-        Log::Info('In select container AAAA');
 		$container = Container::where('id', $id)->first();
 		$booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
     }
 
     if (isset($_GET['prevPage'])) {
-        Log::Info('In select container BBBB');
         $prevPage = $_GET['prevPage'];
         $retParam = ['id'=>$id, 'prevPage'=>$prevPage, 'selJobId'=>$_GET['selJobId']];
     }
