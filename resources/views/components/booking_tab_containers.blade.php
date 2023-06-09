@@ -54,7 +54,11 @@
 	foreach ($containers as $container) {
 		$selected_container = $container->id;
 		$listed_containers++;
-		$outContents = "<div class=\"row\">";
+		if ($listed_containers % 2) {
+			$outContents = "<div class=\"row\" style=\"background-color:Lavender\">";
+		} else {
+			$outContents = "<div class=\"row\" style=\"background-color:PaleGreen\">";
+		}
 			$outContents .= "<div class=\"col-3\">";
 				if (!isset($_GET['selJobId'])) {
 					$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no])."\">";

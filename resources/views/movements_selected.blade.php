@@ -77,9 +77,9 @@
             }
 
             if ($total_movs % 2) {
-                $outContents = "<div class=\"row my-2\" id=\"".$mov->mvmt_name."\" name=\"".$mov->mvmt_name."\" onclick=\"selectThisMov(this)\" oncontextmenu=\"doMenuItemOnThisMovement(this)\" style=\"background-color:Lavender\">";
+                $outContents = "<div class=\"row my-2\" id=\"".$mov->mvmt_name."\" name=\"".$mov->mvmt_name."\" onclick=\"selectThisMov(this)\" oncontextmenu=\"doMenuItemOnThisMovement(this)\" style=\"background-color:Lavender; cursor: alias;\">";
             } else {
-                $outContents = "<div class=\"row my-2\" id=\"".$mov->mvmt_name."\" name=\"".$mov->mvmt_name."\" onclick=\"selectThisMov(this)\" oncontextmenu=\"doMenuItemOnThisMovement(this)\" style=\"background-color:PaleGreen\">";
+                $outContents = "<div class=\"row my-2\" id=\"".$mov->mvmt_name."\" name=\"".$mov->mvmt_name."\" onclick=\"selectThisMov(this)\" oncontextmenu=\"doMenuItemOnThisMovement(this)\" style=\"background-color:PaleGreen; cursor: alias;\">";
             }
                 $outContents .= "<div class=\"col-2\">";
                     $outContents .= $mov->mvmt_name;
@@ -276,7 +276,7 @@
         for (var mov of allMovs) {
             const el = document.getElementById(mov);
             if (el) {
-                if (el.id == movName) {
+                if (el.id == movName) {     // when the page is reloaded
                     prevElForLeft = el;
                     prevTextColorForLeft = el.style.color;
                     el.style.color = "Orange"; 
@@ -355,7 +355,7 @@
         menuElement.style.top = y + "px";
     }
 
-    function doThisMenuItem(el) {
+    function doThisMenuItem(el) {       // when an option of the right-click pop-up menu is chosen
         if((el.innerHTML == 'Delete this Movement') && !confirm("Are you sure to delete this movement?")) {
             event.preventDefault();
         } else {
@@ -373,7 +373,7 @@
         }
     }
 
-    function selectThisMov(el) {
+    function selectThisMov(el) {        // for left-click at a movement row
         if (prevElForLeft != null && prevTextColorForLeft != null) {
             prevElForLeft.style.color = prevTextColorForLeft; 
         }
@@ -384,7 +384,7 @@
         location.href = '/movements_selected?cntnrId='+{!!json_encode($cntnrId)!!}+'&movName='+el.id;
     }
 
-    function doMenuItemOnThisMovement(el) {
+    function doMenuItemOnThisMovement(el) {     // for right-click at a movement row
         selectedMov = el.id;
         // alert("doMenuItemOnThisMovement : " + el.id);
     }
