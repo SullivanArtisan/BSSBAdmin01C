@@ -9,10 +9,18 @@
 	$cntnrId = $_GET['cntnrId'];
     $container = Container::where('id', $cntnrId)->first();
     $booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
+    $go_back_url = route('booking_selected', ['selJobId='.$booking->id]);
+    if (isset($_GET['movName'])) {
+        $movName = $_GET['movName'];
+        $movement = Movement::where('mvmt_name', $_GET['movName'])->first();
+    } else {
+        $movName = "";
+        $movement = "";
+    }
 ?>
 
 @section('goback')
-	<a class="text-primary" href="{{route('booking_selected', ['selJobId='.$booking->id])}}" style="margin-right: 10px;">Back</a>
+	<a class="text-primary" href="{{$go_back_url}}" style="margin-right: 10px;">Back</a>
 @show
 
 @section('function_page')
@@ -20,6 +28,7 @@
         <div class="row m-4">
             <div>
 				<h2 class="text-muted pl-2">Movements of Container <span class="text-primary font-italic">{{$container->cntnr_name}}</span> in Job <span class="text-primary font-italic">{{$container->cntnr_job_no}}</span></h2>
+                <p class="text-muted pl-2">To insert/delete movement(s), right click on a specific movement and choose the desired option.</p>
             </div>
         </div>
     </div>
@@ -56,6 +65,11 @@
         $all_movements = [];
 		foreach ($movs as $mov) {
             $total_movs++;
+            if ($total_movs == 1 && !$movement) {
+                $movement = $mov;
+                $movName = $mov->mvmt_name;
+            }
+
             array_push($all_movements, $mov->mvmt_name);
             $mvmt_name_array = explode('_', $mov->mvmt_name);
             if ($mvmt_name_array[5] > $max_mov_id) {
@@ -97,110 +111,114 @@
 <div class="card my-4" id="#demo1Box" name="#demo1Box">
 		<div class="card-body">
 			<div class="row">
-				<h5 id="sel_mov" name="sel_mov" class="card-title ml-2">Movement Details: </h5>
+				<h5 id="sel_mov" name="sel_mov" class="card-title ml-2">Movement Details: (of <span class="text-primary font-italic">{{isset($movName)?$movName:''}}&nbsp;</span>)</h5>
 			</div>
-			<div class="row">
-				<div class="col-2"><label class="col-form-label">Work Date:&nbsp;</label></div>
-				<div class="col-4">
-					<input class=form-control mt-1 my-text-height type=date id=mvmt_operation_date name=mvmt_operation_date>
-				</div>
-				<div class="col-2"><label class="col-form-label">Work Time:&nbsp;</label></div>
-				<div class="col-4">
-					<input class=form-control mt-1 my-text-height type=time id=mvmt_operation_time_since name=mvmt_operation_time_since>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-2"><label class="col-form-label">Reservation No:&nbsp;</label></div>
-				<div class="col-4">
-					<input class=form-control mt-1 my-text-height type=text id=mvmt_reserv_no name=mvmt_reserv_no>
-				</div>
-                <div class="col-2"><label class="col-form-label">OPS Code:&nbsp;</label></div>
-                <div class="col-4">
-                    <?php
-                    $tagHead = "<input list=\"mvmt_ops_code\" name=\"mvmt_ops_code\" id=\"bkopscodeinput\" class=\"form-control mt-1 my-text-height\" ";
-                    $tagTail = "><datalist id=\"mvmt_ops_code\">";
+            <form method="post" action="{{url('movement_update')}}">
+				@csrf
+                <div class="row">
+                    <div class="col-2"><label class="col-form-label">Work Date:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=date id=mvmt_operation_date name=mvmt_operation_date value="{{isset($movement)?$movement->mvmt_operation_date:''}}">
+                    </div>
+                    <div class="col-2"><label class="col-form-label">Work Time:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=time id=mvmt_operation_time_since name=mvmt_operation_time_since value="{{isset($movement)?$movement->mvmt_operation_time_since:''}}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2"><label class="col-form-label">Reservation No:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=text id=mvmt_reserv_no name=mvmt_reserv_no value="{{isset($movement)?$movement->mvmt_reserv_no:''}}">
+                    </div>
+                    <div class="col-2"><label class="col-form-label">OPS Code:&nbsp;</label></div>
+                    <div class="col-4">
+                        <?php
+                        $tagHead = "<input list=\"mvmt_ops_code\" name=\"mvmt_ops_code\" id=\"bkopscodeinput\" class=\"form-control mt-1 my-text-height\" ";
+                        $tagTail = "><datalist id=\"mvmt_ops_code\">";
 
-                    $allTypes = MyHelper::GetAllOpsCodes();
-                    foreach($allTypes as $eachType) {
-                        $tagTail.= "<option value=".str_replace(' ', '&nbsp;', $eachType).">";
-                    }
-                    $tagTail.= "</datalist>";
-                    // if (isset($_GET['selJobId'])) {
-                    //     echo $tagHead."placeholder=\"".$booking->bk_ops_code."\" value=\"".$booking->bk_ops_code."\"".$tagTail;
-                    // } else {
-                        echo $tagHead."placeholder=\"\" value=\"\"".$tagTail;
-                    // }
-                    ?>
+                        $allTypes = MyHelper::GetAllOpsCodes();
+                        foreach($allTypes as $eachType) {
+                            $tagTail.= "<option value=".str_replace(' ', '&nbsp;', $eachType).">";
+                        }
+                        $tagTail.= "</datalist>";
+                        // if (isset($_GET['selJobId'])) {
+                        //     echo $tagHead."placeholder=\"".$booking->bk_ops_code."\" value=\"".$booking->bk_ops_code."\"".$tagTail;
+                        // } else {
+                            echo $tagHead."placeholder=\"\" value=\"\"".$tagTail;
+                        // }
+                        ?>
+                    </div>
                 </div>
-			</div>
-			<div class="row">
-				<div class="col-2"><label class="col-form-label">Company:&nbsp;</label></div>
-				<div class="col-4">
-					<input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_name name=mvmt_cmpny_name>
-				</div>
-                <div class="col-2"><label class="col-form-label">Address:&nbsp;</label></div>
-                <div class="col-4">
-                    <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_address_1 name=mvmt_cmpny_address_1>
+                <div class="row">
+                    <div class="col-2"><label class="col-form-label">Company:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_name name=mvmt_cmpny_name value="{{isset($movement)?$movement->mvmt_cmpny_name:''}}">
+                    </div>
+                    <div class="col-2"><label class="col-form-label">Address:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_address_1 name=mvmt_cmpny_address_1 value="{{isset($movement)?$movement->mvmt_cmpny_address_1:''}}">
+                    </div>
                 </div>
-			</div>
-			<div class="row">
-				<div class="col-2"><label class="col-form-label">City:&nbsp;</label></div>
-				<div class="col-4">
-					<input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_city name=mvmt_cmpny_city>
-				</div>
-                <div class="col-2"><label class="col-form-label">Province:&nbsp;</label></div>
-                <div class="col-4">
-                    <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_province name=mvmt_cmpny_province>
+                <div class="row">
+                    <div class="col-2"><label class="col-form-label">City:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_city name=mvmt_cmpny_city value="{{isset($movement)?$movement->mvmt_cmpny_city:''}}">
+                    </div>
+                    <div class="col-2"><label class="col-form-label">Province:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_province name=mvmt_cmpny_province value="{{isset($movement)?$movement->mvmt_cmpny_province:''}}">
+                    </div>
                 </div>
-			</div>
-			<div class="row">
-				<div class="col-2"><label class="col-form-label">Post Code:&nbsp;</label></div>
-				<div class="col-4">
-					<input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_postcode name=mvmt_cmpny_postcode>
-				</div>
-                <div class="col-2"><label class="col-form-label">Country:&nbsp;</label></div>
-                <div class="col-4">
-                    <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_country name=mvmt_cmpny_country>
+                <div class="row">
+                    <div class="col-2"><label class="col-form-label">Post Code:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_postcode name=mvmt_cmpny_postcode value="{{isset($movement)?$movement->mvmt_cmpny_postcode:''}}">
+                    </div>
+                    <div class="col-2"><label class="col-form-label">Country:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_country name=mvmt_cmpny_country value="{{isset($movement)?$movement->mvmt_cmpny_country:''}}">
+                    </div>
                 </div>
-			</div>
-			<div class="row">
-				<div class="col-2"><label class="col-form-label">Movement Type:&nbsp;</label></div>
-				<div class="col-4">
-					<input class=form-control mt-1 my-text-height type=text id=mvmt_type name=mvmt_type>
-				</div>
-                <div class="col-2"><label class="col-form-label">Contact:&nbsp;</label></div>
-                <div class="col-4">
-                    <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_contact name=mvmt_cmpny_contact>
+                <div class="row">
+                    <div class="col-2"><label class="col-form-label">Movement Type:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=text id=mvmt_type name=mvmt_type value="{{isset($movement)?$movement->mvmt_type:''}}">
+                    </div>
+                    <div class="col-2"><label class="col-form-label">Contact:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_contact name=mvmt_cmpny_contact value="{{isset($movement)?$movement->mvmt_cmpny_contact:''}}">
+                    </div>
                 </div>
-			</div>
-			<div class="row">
-				<div class="col-2"><label class="col-form-label">Telephone:&nbsp;</label></div>
-				<div class="col-4">
-					<input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_tel name=mvmt_cmpny_tel>
-				</div>
-                <div class="col-2"><label class="col-form-label">Email:&nbsp;</label></div>
-                <div class="col-4">
-                    <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_email name=mvmt_cmpny_email>
+                <div class="row">
+                    <div class="col-2"><label class="col-form-label">Telephone:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_tel name=mvmt_cmpny_tel value="{{isset($movement)?$movement->mvmt_cmpny_tel:''}}">
+                    </div>
+                    <div class="col-2"><label class="col-form-label">Email:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_email name=mvmt_cmpny_email value="{{isset($movement)?$movement->mvmt_cmpny_email:''}}">
+                    </div>
                 </div>
-			</div>
-			<div class="row">
-				<div class="col-2"><label class="col-form-label">Description:&nbsp;</label></div>
-				<div class="col-4">
-					<input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_desc name=mvmt_cmpny_desc>
-				</div>
-                <div class="col-2"><label class="col-form-label">Zone:&nbsp;</label></div>
-                <div class="col-4">
-                    <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_zone name=mvmt_cmpny_zone>
+                <div class="row">
+                    <div class="col-2"><label class="col-form-label">Description:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_desc name=mvmt_cmpny_desc value="{{isset($movement)?$movement->mvmt_cmpny_desc:''}}">
+                    </div>
+                    <div class="col-2"><label class="col-form-label">Zone:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_zone name=mvmt_cmpny_zone value="{{isset($movement)?$movement->mvmt_cmpny_zone:''}}">
+                    </div>
                 </div>
-			</div>
-			<div class="row">
-				<div class="col-2"><label class="col-form-label">Driver:&nbsp;</label></div>
-				<div class="col-4">
-					<input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_dvr_no name=mvmt_cmpny_dvr_no>
-				</div>
-				<div class="col-2"><button class="btn btn-primary my-1 type=button" onclick="UpdateThisMovement(event)">Update</button></div>
-				<div class="col-4"><input type="hidden" class="form-control mt-1 my-text-height" type="text"></div>
-			</div>
+                <div class="row">
+                    <div class="col-2"><label class="col-form-label">Driver:&nbsp;</label></div>
+                    <div class="col-4">
+                        <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_dvr_no name=mvmt_cmpny_dvr_no>
+                    </div>
+                    <div class="col-1"><button class="btn btn-warning my-1 type=button" type="submit">Update</button></div>
+                    <div class="col-1"><button class="btn btn-secondary my-1 type=button" onclick="GoBack(event)">Cancel</button></div>
+                    <div class="col-4"><input type="hidden" class="form-control mt-1 my-text-height" id="mvmt_name" name="mvmt_name" value="{{isset($movement)?$movement->mvmt_name:''}}"></div>
+                </div>
+            </form>
 		</div>	
 	</div>	
 
@@ -245,6 +263,7 @@
 <script>
     _currentMenuVisible = null;
     var selectedMov = null;
+    var movName = {!!json_encode($movName)!!}
     var totalMovs = {!!json_encode($total_movs)!!}
     var allMovs = {!!json_encode($all_movements)!!};
     var maxMvmtId = {!!json_encode($max_mov_id)!!};
@@ -257,6 +276,12 @@
         for (var mov of allMovs) {
             const el = document.getElementById(mov);
             if (el) {
+                if (el.id == movName) {
+                    prevElForLeft = el;
+                    prevTextColorForLeft = el.style.color;
+                    el.style.color = "Orange"; 
+                }
+
                 el.addEventListener('contextmenu', e => {
                     if (prevEl != null && prevTextColor != null) {
                         prevEl.style.color = prevTextColor; 
@@ -335,7 +360,6 @@
             event.preventDefault();
         } else {
             var movementName = selectedMov.split("_");
-            // alert("User is doing=> " + el.innerHTML + " for movement=> " + movementName[1] + "/" + movementName[3] + "/" + movementName[5]);
             var token = "{{ csrf_token() }}";
             $.ajax({
                 url: '/movement_ins_or_del',
@@ -357,10 +381,16 @@
         prevTextColorForLeft = el.style.color;
         el.style.color = "Orange";
         document.getElementById('sel_mov').innerHTML = 'Movement Details: (for ' + el.id + ')';
+        location.href = '/movements_selected?cntnrId='+{!!json_encode($cntnrId)!!}+'&movName='+el.id;
     }
 
     function doMenuItemOnThisMovement(el) {
         selectedMov = el.id;
         // alert("doMenuItemOnThisMovement : " + el.id);
+    }
+
+    function GoBack(e) {
+        e.preventDefault();
+        window.location = {!!json_encode($go_back_url)!!};
     }
 </script>

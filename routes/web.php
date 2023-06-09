@@ -436,13 +436,39 @@ Route::get('/movements_selected', function () {
     return view('movements_selected');
 })->middleware(['auth'])->name('movements_selected');
 
+Route::post('/movement_update', function (Request $request) {
+	// Log::info("QQQQ: ". $_POST['mvmt_name']);
+	$mov = Movement::where('mvmt_name', $_POST['mvmt_name'])->first();
+	if ($mov) {
+		$mov->mvmt_operation_date 		= $_POST['mvmt_operation_date'];
+		$mov->mvmt_operation_time_since	= $_POST['mvmt_operation_time_since'];
+		$mov->mvmt_reserv_no 			= $_POST['mvmt_reserv_no'];
+		$mov->mvmt_ops_code 			= $_POST['mvmt_ops_code'];
+		$mov->mvmt_cmpny_name 			= $_POST['mvmt_cmpny_name'];
+		$mov->mvmt_cmpny_address_1 		= $_POST['mvmt_cmpny_address_1'];
+		$mov->mvmt_cmpny_city 			= $_POST['mvmt_cmpny_city'];
+		$mov->mvmt_cmpny_province 		= $_POST['mvmt_cmpny_province'];
+		$mov->mvmt_cmpny_postcode 		= $_POST['mvmt_cmpny_postcode'];
+		$mov->mvmt_cmpny_country 		= $_POST['mvmt_cmpny_country'];
+		$mov->mvmt_type 				= $_POST['mvmt_type'];
+		$mov->mvmt_cmpny_contact 		= $_POST['mvmt_cmpny_contact'];
+		$mov->mvmt_cmpny_tel 			= $_POST['mvmt_cmpny_tel'];
+		$mov->mvmt_cmpny_email 			= $_POST['mvmt_cmpny_email'];
+		$mov->mvmt_cmpny_desc 			= $_POST['mvmt_cmpny_desc'];
+		$mov->mvmt_cmpny_zone 			= $_POST['mvmt_cmpny_zone'];
+		$mov->mvmt_cmpny_dvr_no 			= $_POST['mvmt_cmpny_dvr_no'];
+	}
+	$mov->save();
+
+    return redirect()->back();
+})->middleware(['auth'])->name('movement_update');
+
 Route::post('/movement_ins_or_del', function (Request $request) {
 	$sel_mvmt_op = $_POST['sel_mvmt_op'];
 	$job_id = $_POST['job_id'];
 	$cntnr_id = $_POST['cntnr_id'];
 	$mvmt_id = $_POST['mvmt_id'];
 	$max_mov_id = $_POST['max_mov_id'];
-	// Log::info("max_mov_id: ". $max_mov_id);
 	if (str_contains(strtolower($sel_mvmt_op), 'insert')) {
 		InsertThisMovement($sel_mvmt_op, $job_id, $cntnr_id, $mvmt_id, $max_mov_id);
 	}
