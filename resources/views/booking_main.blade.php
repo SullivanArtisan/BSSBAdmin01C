@@ -154,10 +154,10 @@
 			$outContents .= "<div class=\"col-2\">";
 				$outContents .= "Finish";
 			$outContents .= "</div>";
-			$outContents .= "<div class=\"col-1\">";
+			$outContents .= "<div class=\"col-1 mt-1\">";
 				$sortParms = "?sort_key_booking=bk_status&sort_time=".time();
 				$outContents .= "<a href=\"booking_main".$sortParms."\">";
-				$outContents .= "Status";
+				$outContents .= "<small>Status</small>";
 				if ($sortKeyInput != 'bk_status') {
 					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
 				} else {
@@ -189,6 +189,7 @@
 		foreach ($bookings as $booking) {
             $cmpny_start = \App\Models\Company::where('id', $booking->bk_pickup_cmpny_id)->get();
             $cmpny_finish = \App\Models\Company::where('id', $booking->bk_delivery_cmpny_id)->get();
+			$containers = \App\Models\Container::where('cntnr_job_no', $booking->bk_job_no)->get();
             $outContents = "<div class=\"row\">";
                 $outContents .= "<div class=\"col-1\">";
 					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
@@ -222,12 +223,15 @@
 				$outContents .= "</div>";
 				$outContents .= "<div class=\"col-1\">";
 					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
-					$outContents .= $booking->bk_status;
+					
+					$total_cntnrs = 0;
+					$sent_cntnrs  = 0;
+					$outContents .= "<small>".$booking->bk_status."</small>";
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 				$outContents .= "<div class=\"col-1\">";
 					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
-					$outContents .= $booking->bk_total_containers;
+					$outContents .= "<small>".$booking->bk_total_containers."</small>";
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 			$outContents .= "</div><hr class=\"m-1\"/>";

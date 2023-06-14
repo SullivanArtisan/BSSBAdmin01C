@@ -17,6 +17,12 @@
 			} else {
 				$backPath = '<a class="text-primary" href="'.route('booking_selected', ['bookingTab'=>'containerinfo-tab', 'selJobId'=>$_GET['selJobId']]).'" style="margin-right: 10px;">Back</a>';
 			}
+		} else if ($oprand == "dispatch") {
+			// if (!isset($_GET['cntnrId'])) {
+				$backPath = '<a class="text-primary" href="'.route('dispatch_main').'" style="margin-right: 10px;">Back</a>';
+			// } else {
+			// 	$backPath = '<a class="text-primary" href="'.route('dispatch_container', ['cntnrId'=>$_GET['cntnrId']]).'" style="margin-right: 10px;">Back</a>';
+			// }
 		} else {
 			$tmpPath = $oprand.'_main';
 			$backPath = '<a class="text-primary" href="'.route($tmpPath).'" style="margin-right: 10px;">Back</a>';

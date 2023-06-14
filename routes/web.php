@@ -155,7 +155,7 @@ Route::get('/register', function () {
     return view('register');
 })->name('register');
 
-//////// For System Users
+//////////////////////////////// For System Users ////////////////////////////////
 Route::get('/system_user_main', function () {
     return view('system_user_main');
 })->middleware(['auth'])->name('system_user_main');
@@ -201,7 +201,7 @@ Route::get('sendhtmlemail', [MailController::class, 'html_email']);
 
 Route::get('sendattachmentemail', [MailController::class, 'attachment_email']);
 
-//////// For Power Units
+//////////////////////////////// For Power Units ////////////////////////////////
 Route::get('/power_unit_main', function () {
     return view('power_unit_main');
 })->middleware(['auth'])->name('power_unit_main');
@@ -230,7 +230,7 @@ Route::get('/power_unit_delete', function () {
 	}
 })->middleware(['auth'])->name('power_unit_delete');
 
-//////// For Zones
+//////////////////////////////// For Zones ////////////////////////////////
 Route::get('/zone_main', function () {
     return view('zone_main');
 })->middleware(['auth'])->name('zone_main');
@@ -258,7 +258,7 @@ Route::get('/zone_delete/{id}', function ($id) {
 	}
 })->middleware(['auth'])->name('zone_delete');
 
-//////// For Terminals
+//////////////////////////////// For Terminals ////////////////////////////////
 Route::get('/terminal_main', function () {
     return view('terminal_main');
 })->middleware(['auth'])->name('terminal_main');
@@ -286,7 +286,7 @@ Route::get('/terminal_delete/{id}', function ($id) {
 	}
 })->middleware(['auth'])->name('terminal_delete');
 
-//////// For Customers
+//////////////////////////////// For Customers ////////////////////////////////
 Route::get('/customer_main', function () {
     return view('customer_main');
 })->middleware(['auth'])->name('customer_main');
@@ -344,7 +344,7 @@ Route::get('/customer_accprice_add', function () {
 
 Route::post('/customer_accprice_update', [CstmAccountPriceController::class, 'update'])->name('customer_accprice_update');
 
-//////// For Drivers
+//////////////////////////////// For Drivers ////////////////////////////////
 Route::get('/driver_main', function () {
     return view('driver_main');
 })->middleware(['auth'])->name('driver_main');
@@ -374,7 +374,7 @@ Route::get('/driver_delete/{id}', function ($id) {
 	}
 })->middleware(['auth'])->name('driver_delete');
 
-//////// For Bookings
+//////////////////////////////// For Bookings ////////////////////////////////
 Route::get('/booking_main', function () {
     return view('booking_main');
 })->middleware(['auth'])->name('booking_main');
@@ -400,38 +400,71 @@ Route::get('/booking_delete/{id}', function ($id) {
 	}
 })->middleware(['auth'])->name('booking_delete');
 
-//Route::post('booking_add', [BookingController::class, 'add'])->name('booking_add');
+//////////////////////////////// For Dispatch ////////////////////////////////
+Route::get('/dispatch_main', function () {
+    return view('dispatch_main');
+})->middleware(['auth'])->name('dispatch_main');
 
-//////// For Containers
+Route::get('/dispatch_container', function () {
+	if (!isset($_GET['driverId'])) {
+		return view('dispatch_container');
+	} else {
+		$cntnrId = $_GET['cntnrId'];
+		$driverId = $_GET['driverId'];
+        $container = Container::where('id', $cntnrId)->first();
+        $driver = Driver::where('id', $driverId)->first();
+		$result = ContainerController::AssignContainerToDriver($driverId, $cntnrId);
+		if(!$result) {
+			return redirect()->route('op_result.dispatch')->with('status', ' <span style="color:red">Container has NOT been dipatched!</span>');
+		} else {
+            return redirect()->route('op_result.dispatch', ['cntnrId'=>$cntnrId])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been dipatched to the driver '.$driver->dvr_no.' successfully.');
+        }
+	}
+})->middleware(['auth'])->name('dispatch_container');
+
+//////////////////////////////// For Containers ////////////////////////////////
 // Although the 'add' function is triggered by the Ajax function directly of the "Add this Container" button instead of the normal form's POST method through web.php's route,
 // we STILL need the route for the "add" operation. DON'T KNOW WHY!!
-Route::post('ontainer_add', [ContainerController::class, 'add'])->name('ontainer_add');
-// Route::post('ontainer_add', function (Request $request) {
-// 	Log::info("HOHOHO: ". $request->cntnr_name);
-// 	echo "<p>HOHOHO</p>";
-// })->middleware(['auth'])->name('ontainer_add');
+Route::post('container_add', [ContainerController::class, 'add'])->name('container_add');
 
 Route::get('container_selected', function (Request $request) {
     return view('container_selected');
-	//echo ($cntnrId.' ;'.$cntnrJobNo);
 })->middleware(['auth'])->name('container_selected');
+
+Route::get('container_to_dispatch/{cntnrId}', function ($cntnrId) {
+	$container = Container::where('id', $cntnrId)->first();
+	$booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
+	$containerName = $container->cntnr_name;
+	$container->cntnr_status = MyHelper::CntnrSentStaus();
+	$res = $container->save();
+					
+	if(!$res) {
+		return redirect()->route('op_result.container')->with('status', ' <span style="color:red">Failed to send container '.$containerName.' to dispatch!</span>');
+	} else {
+		ContainerController::UpdateBookingStatus($booking);
+		return redirect()->route('op_result.container', ['id'=>$booking->id, 'prevPage'=>"unknown", 'selJobId'=>$booking->id])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been sent to dispatch successfully.');
+	}
+})->middleware(['auth'])->name('container_to_dispatch');
 
 Route::get('/container_delete/{id}', function ($id) {
 	$container = Container::where('id', $id)->first();
-	$bookingId = Booking::where('bk_job_no', $container->cntnr_job_no)->first()->id;
+	$booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
+	$totalContainers = $booking->bk_total_containers;
 	$containerName = $container->cntnr_name;
 	$container->cntnr_status = 'deleted';
 	$res = $container->save();
 					
 	if(!$res) {
-		return redirect()->route('op_result.container')->with('status', ' <span style="color:red">Failed to delete driver '.$containerName.'!</span>');
+		return redirect()->route('op_result.container')->with('status', ' <span style="color:red">Failed to delete container '.$containerName.'!</span>');
 	} else {
-		return redirect()->route('op_result.container', ['id'=>$bookingId, 'prevPage'=>"unknown", 'selJobId'=>$bookingId])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been deleted successfully.');
-		// return redirect()->route('op_result.container', ['id'=>$bookingId])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been deleted successfully.');
+		$booking->bk_total_containers = --$totalContainers;
+		$saved = $booking->save();
+
+		return redirect()->route('op_result.container', ['id'=>$booking->id, 'prevPage'=>"unknown", 'selJobId'=>$booking->id])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been deleted successfully.');
 	}
 })->middleware(['auth'])->name('container_delete');
 
-//////// For Movements
+//////////////////////////////// For Movements ////////////////////////////////
 Route::get('/movements_selected', function () {
     return view('movements_selected');
 })->middleware(['auth'])->name('movements_selected');
@@ -477,7 +510,7 @@ Route::post('/movement_ins_or_del', function (Request $request) {
 	}
 })->middleware(['auth'])->name('movement_ins_or_del');
 
-//////// For Driver Pay Prices
+//////////////////////////////// For Driver Pay Prices ////////////////////////////////
 Route::get('/driver_pay_prices_main', function () {
     return view('driver_pay_prices_main');
 })->middleware(['auth'])->name('driver_pay_prices_main');
@@ -506,7 +539,7 @@ Route::get('/driver_pay_prices_delete/{id}', function ($id) {
 	}
 })->middleware(['auth'])->name('driver_pay_prices_delete');
 
-//////// For Chassis
+//////////////////////////////// For Chassis ////////////////////////////////
 Route::get('/chassis_main', function () {
     return view('chassis_main');
 })->middleware(['auth'])->name('chassis_main');
@@ -536,7 +569,7 @@ Route::get('/chassis_delete/{id}', function ($id) {
 	}
 })->middleware(['auth'])->name('chassis_delete');
 
-//////// For Steamship Lines
+//////////////////////////////// For Steamship Lines ////////////////////////////////
 Route::get('/ssl_main', function () {
     return view('ssl_main');
 })->middleware(['auth'])->name('ssl_main');
@@ -566,7 +599,7 @@ Route::get('/ssl_delete/{id}', function ($id) {
 	}
 })->middleware(['auth'])->name('ssl_delete');
 
-//////// For Companies Addresses
+//////////////////////////////// For Companies Addresses ////////////////////////////////
 Route::get('/company_main', function () {
     return view('company_main');
 })->middleware(['auth'])->name('company_main');
@@ -597,7 +630,7 @@ Route::get('/company_delete/{id}', function ($id) {
 })->middleware(['auth'])->name('company_delete');
 
 
-//////// For All Results
+//////////////////////////////// For All Results ////////////////////////////////
 Route::name('op_result.')->group(function () {
 	Route::get('op_result_terminal', function () {
 		return view('op_result')->withOprand('terminal');
@@ -646,6 +679,10 @@ Route::name('op_result.')->group(function () {
 	Route::get('op_result_container', function () {
 		return view('op_result')->withOprand('container');
 	})->middleware(['auth'])->name('container');
+
+	Route::get('op_result_dispatch', function () {
+		return view('op_result')->withOprand('dispatch');
+	})->middleware(['auth'])->name('dispatch');
 
 	Route::post('/terminal_result', [TerminalController::class, 'store'])->name('terminal_add');
 	Route::post('/terminal_update', [TerminalController::class, 'update'])->name('terminal_update');

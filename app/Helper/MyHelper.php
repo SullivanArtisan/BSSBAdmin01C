@@ -2,6 +2,9 @@
 
 namespace App\Helper;
 
+use App\Models\Booking;
+use App\Models\Container;
+
 class MyHelper
 {  
     // All OPS Codes
@@ -42,15 +45,36 @@ class MyHelper
         return($commonMTs);
     }  
 
+    //============================================== for bookings status =============================================
     // Get the 'created' booking status
     public static function BkCreatedStaus() {
         return "bk_created";
     }  
 
+    // Get the 'completed' booking status
+    public static function BkCompletedStaus() {
+        return "completed";
+    }  
+
+    //============================================== for containers status =============================================
     // Get the 'created' container status
     public static function CntnrCreatedStaus() {
         return "cntnr_created";
     }  
+
+    // Get the 'sent' container status
+    public static function CntnrSentStaus() {
+        return "cntnr_sent";
+    }  
+
+    // Get the 'dispatched' container status
+    public static function CntnrDispatchedStaus() {
+        return "cntnr_dispatched";
+    }  
+
+
+
+
 
     // Get the hyphen separated phone number
     public static function GetHyphenedPhoneNo($digitalNo) {

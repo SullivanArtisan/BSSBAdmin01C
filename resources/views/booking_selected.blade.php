@@ -49,7 +49,7 @@ use App\Models\Booking;
 		<div>
 			<div class="row m-4">
 				<div>
-					<h2 class="text-muted pl-2">Booking: {{$booking->bk_job_no}}</h2>
+					<h2 class="text-muted pl-2">Booking: {{$booking->bk_job_no}} (Status: {{$booking->bk_status}} )</h2>
 				</div>
 				<div class="col-1 my-auto ml-5">
 					<button class="btn btn-danger me-2" type="button"><a href="{{route('booking_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>

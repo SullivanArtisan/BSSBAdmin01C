@@ -8,9 +8,56 @@ use Illuminate\Http\Request;
 use App\Models\Container;
 use App\Models\Booking;
 use App\Models\Movement;
+use App\Models\Driver;
 
 class ContainerController extends Controller
 {
+    // Update the booking job's status
+    public static function UpdateBookingStatus($booking) {
+        $containers = Container::where('cntnr_job_no', $booking->bk_job_no)->get();
+        
+        $total_cntnrs = 0;
+        $sent_cntnrs  = 0;
+        foreach ($containers as $container) {
+            if ($container->cntnr_status == MyHelper::CntnrCreatedStaus()) {
+                $total_cntnrs++;
+            } else if ($container->cntnr_status == MyHelper::CntnrSentStaus() || $container->cntnr_status == MyHelper::CntnrDispatchedStaus()) {
+                $total_cntnrs++;
+                $sent_cntnrs++;
+            }
+        }
+
+        if ($sent_cntnrs == 0) {
+            // do nothing
+        } else if ($sent_cntnrs < $total_cntnrs) { 
+            $booking->bk_status = $sent_cntnrs."/".$total_cntnrs." Sent";
+        } else if ($sent_cntnrs == $total_cntnrs) {
+            $booking->bk_status = "0/".$total_cntnrs." ".MyHelper::BkCompletedStaus();
+        } else {
+            // don't know yet
+        }
+
+        $booking->save();
+    } 
+ 
+    // Assign the container to the driver
+    public static function AssignContainerToDriver($driverId, $cntnrId) {
+        $driver = Driver::where('id', $driverId)->first();
+        $container = Container::where('id', $cntnrId)->first();
+        
+        $container->cntnr_dvr_no        = $driver->dvr_no;
+        $container->cntnr_pwr_unit_no_1 = $driver->dvr_pwr_unit_no_1;
+        $container->cntnr_pwr_unit_no_2 = $driver->dvr_pwr_unit_no_2;
+        $container->cntnr_status        = MyHelper::CntnrDispatchedStaus();
+        $saved = $container->save();
+		
+		if(!$saved) {
+			return redirect()->route('op_result.dispatch')->with('status', ' <span style="color:red">Container has NOT been dipatched!</span>');
+		} else {
+            return redirect()->route('op_result.dispatch', ['cntnrId'=>$cntnrId])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been dipatched to the driver '.$driver->dvr_no.' successfully.');
+        }
+    } 
+ 
     public function add(Request $request)
     {
 		$container = new Container;
@@ -21,7 +68,7 @@ class ContainerController extends Controller
 		$saved = $container->save();
 		
 		$booking = Booking::where('bk_job_no', $request->cntnr_job_no)->first();
-        // Log::info("JobType: ". $booking->bk_job_type);
+        $totalContainers = $booking->bk_total_containers;
 
         // Because the 'add' function is triggered by the Ajax function directly of the "Add this Container" button instead of the normal form's POST method through web.php's route,
         // the page's redirection in the following conditions is useless. 
@@ -29,7 +76,10 @@ class ContainerController extends Controller
         if(!$saved) {
             // return redirect()->route('booking_add', ['bookingResult'=>' <span style="color:red">(Failed to add the new container!)</span>', 'bookingTab'=>'containerinfo-tab', 'id'=>$booking->id]);
         } else {
-            //$totalMoves = Movement::where('cntnr_job_no', $container->cntnr_job_no)->get()->count();
+            $totalContainers++;
+            $booking->bk_total_containers = $totalContainers;
+            $saved = $booking->save();
+            this->UpdateBookingStatus($booking);
 
             $this->CreateInitialMovements($booking->id, $container->id, $container->cntnr_name, $booking->bk_job_type);
             // return view('home_page');
@@ -88,6 +138,7 @@ class ContainerController extends Controller
 		if(!$saved) {
 			return redirect()->route('op_result.container')->with('status', ' <span style="color:red">Data has NOT been updated!</span>');
 		} else {
+            this->UpdateBookingStatus($booking);
             if (!isset($request->prevPage)) {
                 return redirect()->route('op_result.container', ['id'=>$request->id])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been updated successfully.');
             } else {

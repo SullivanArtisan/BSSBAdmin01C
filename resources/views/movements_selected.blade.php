@@ -26,9 +26,16 @@
 @section('function_page')
     <div>
         <div class="row m-4">
+            <div class="row">
+                <div class="col-11">
+				    <h2 class="text-muted pl-2">Movements of Container <span class="text-primary font-italic">{{$container->cntnr_name}}</span> in Job <span class="text-primary font-italic">{{$container->cntnr_job_no}}</span></h2>
+                </div>
+                <div class="col-1">
+                    <button class="btn btn-primary my-1 type=button"><a href="{{route('container_to_dispatch', ['cntnrId'=>$container->id])}}" onclick="return myConfirmation();">Send to Dispatch</a></button>
+                </div>
+            </div>
             <div>
-				<h2 class="text-muted pl-2">Movements of Container <span class="text-primary font-italic">{{$container->cntnr_name}}</span> in Job <span class="text-primary font-italic">{{$container->cntnr_job_no}}</span></h2>
-                <p class="text-muted pl-2">To insert/delete movement(s), right click on a specific movement and choose the desired option.</p>
+               <p class="text-muted pl-2">To insert/delete movement(s), right click on a specific movement and choose the desired option.</p>
             </div>
         </div>
     </div>
@@ -392,5 +399,10 @@
     function GoBack(e) {
         e.preventDefault();
         window.location = {!!json_encode($go_back_url)!!};
+    }
+
+    function myConfirmation(e) {
+        if(!confirm("Are you sure to send this cntainer to dispatch?"))
+			event.preventDefault();
     }
 </script>

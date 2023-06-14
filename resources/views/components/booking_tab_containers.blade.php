@@ -28,8 +28,11 @@
 	// Title Line
 	$outContents = "<div class=\"container mw-100\">";
 	$outContents .= "<div class=\"row bg-info text-white fw-bold mb-2\">";
-		$outContents .= "<div class=\"col-3 mt-1 align-middle\">";
+		$outContents .= "<div class=\"col-2 mt-1 align-middle\">";
 			$outContents .= "Container ID";
+		$outContents .= "</div>";
+		$outContents .= "<div class=\"col-2 mt-1 align-middle\">";
+			$outContents .= "Status";
 		$outContents .= "</div>";
 		$outContents .= "<div class=\"col-2 mt-1 align-middle\">";
 			$outContents .= "Size";
@@ -59,7 +62,7 @@
 		} else {
 			$outContents = "<div class=\"row\" style=\"background-color:PaleGreen\">";
 		}
-			$outContents .= "<div class=\"col-3\">";
+			$outContents .= "<div class=\"col-2\">";
 				if (!isset($_GET['selJobId'])) {
 					$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no])."\">";
 				} else {
@@ -67,6 +70,9 @@
 				}
 				$outContents .= $container->cntnr_name;
 				$outContents .= "</a>";
+			$outContents .= "</div>";
+			$outContents .= "<div class=\"col-2\">";
+				$outContents .= $container->cntnr_status;
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
 				$outContents .= $container->cntnr_size;
@@ -265,7 +271,7 @@
 			var cntnr_name = document.getElementById("cntnr_name").value;
 			var cntnr_goods_desc = document.getElementById("cntnr_goods_desc").value;
 			$.ajax({
-				url: '/ontainer_add',
+				url: '/container_add',
 				type: 'POST',
 				data: {_token:token, cntnr_job_no:cntnr_job_no, cntnr_name:cntnr_name,	cntnr_goods_desc:cntnr_goods_desc},    // the _token:token is for Laravel
 				success: function(dataRetFromPHP) {
