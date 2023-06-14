@@ -402,7 +402,7 @@ Route::get('/booking_delete/{id}', function ($id) {
 
 //////////////////////////////// For Dispatch ////////////////////////////////
 Route::get('/dispatch_main', function () {
-    return view('dispatch_main');
+	return view('dispatch_main');
 })->middleware(['auth'])->name('dispatch_main');
 
 Route::get('/dispatch_container', function () {
@@ -417,6 +417,11 @@ Route::get('/dispatch_container', function () {
 		if(!$result) {
 			return redirect()->route('op_result.dispatch')->with('status', ' <span style="color:red">Container has NOT been dipatched!</span>');
 		} else {
+			$rec_email	= $driver->dvr_email;
+			$rec_name 	= $driver->dvr_name;
+			$subject 	= "A container job (of ".$container->cntnr_name.") is ready for you!";
+			$body 	 	= "Hi ".$rec_name.",\r\n\r\nThe container ".$container->cntnr_name." is ready for your attention and operation. Please click <a href=\"http://bssbadmin01c.test\">here</a> for the details.\r\n\r\n";
+			MyHelper::SendThisEmail($rec_email, $rec_name, $subject, $body);
             return redirect()->route('op_result.dispatch', ['cntnrId'=>$cntnrId])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been dipatched to the driver '.$driver->dvr_no.' successfully.');
         }
 	}

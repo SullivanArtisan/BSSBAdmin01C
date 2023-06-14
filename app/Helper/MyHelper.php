@@ -2,6 +2,10 @@
 
 namespace App\Helper;
 
+use Illuminate\Support\Facades\Log;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 use App\Models\Booking;
 use App\Models\Container;
 
@@ -104,6 +108,39 @@ class MyHelper
         }
 
         return $numericPhoneNo;
+    } 
+
+    // Send an email ....
+    public static function SendThisEmail($rec_email, $rec_name, $subject, $body) {
+        $mail = new PHPMailer(true);
+        $mail->isSMTP();            
+        $mail->Host = "smtp.gmail.com";
+        $mail->SMTPAuth = true;                          
+        //Provide username and password     
+        $mail->Username = "nuecosoftware@gmail.com";                 
+        $mail->Password = "uqxsdttvfmajplvh";                           
+        //If SMTP requires TLS encryption then set it
+        $mail->SMTPSecure = "tls";                           
+        //Set TCP port to connect to
+        $mail->Port = 587;                                   
+    
+        $mail->From = "nuecosoftware@gmail.com";
+        $mail->FromName = "Qusar Dispatching Administrator";
+    
+        $mail->addAddress($rec_email, $rec_name);
+    
+        $mail->isHTML(false);
+    
+        $mail->Subject = $subject;
+        $mail->Body = $body."\r\n\r\n\r\nRegards,\r\n\r\n".$mail->FromName;
+        // $mail->AltBody = "This is the plain text version of the email content";
+    
+        try {
+            $mail->send();
+            Log::Info("Message has been sent successfully");
+        } catch (Exception $e) {
+            Log::Info("Mailer Error: " . $mail->ErrorInfo);
+        }
     } 
 }
 
