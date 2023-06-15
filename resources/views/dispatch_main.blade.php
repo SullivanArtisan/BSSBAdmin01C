@@ -45,7 +45,11 @@
 		  min-height: 200px;
 		  height: auto;
 		  padding: 10px 14px;
-		}	
+		}
+        
+        div.newpointer {
+            cursor: pointer;
+        }
 	</style>
 
     <div>
@@ -112,7 +116,7 @@
         $prevJobNo = "";
         $cntnrCountOfThisJob = 0;
 		foreach ($bookings as $booking) {
-            $containers = \App\Models\Container::orderBy('cntnr_job_no', 'asc')->where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->get();
+            $containers = \App\Models\Container::orderBy('cntnr_job_no', 'asc')->where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', MyHelper::CntnrSentStaus())->get();
             $totalCntnrsOfThisJob = $booking->bk_total_containers;
             foreach ($containers as $container) {
                 $movement = \App\Models\Movement::orderBy('mvmt_order', 'asc')->where('mvmt_cntnr_name', $container->cntnr_name)->first();
@@ -122,7 +126,7 @@
                 }
                 $cntnrCountOfThisJob++;
 
-                $outContents = "<div id=\"".$container->id."\" class=\"row\" onclick=\"doDispatch(this)\" ondblclick=\"doCntnrDetails()\">";
+                $outContents = "<div id=\"".$container->id."\" class=\"newpointer row\" onclick=\"doDispatch(this)\" ondblclick=\"doCntnrDetails()\">";
                 $outContents .= "<div class=\"col-1\">";
                     $outContents .= $container->cntnr_pwr_unit_no_1;
                 $outContents .= "</div>";

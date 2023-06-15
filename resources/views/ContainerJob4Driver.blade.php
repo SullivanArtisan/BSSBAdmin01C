@@ -40,13 +40,8 @@ use App\Http\Controllers\ContainerController;
         $finishedJob->ccntnr_job_id = $booking->id;
         $finishedJob->ccntnr_dvr_id = $driverId;
         $finishedJob->ccntnr_finished_on = date("Y-m-d H:i:s");
+        $finishedJob->ccntnr_received = 'N';
         $finishedJob->save();
-
-        $container->cntnr_status = MyHelper::CntnrCompletedStaus();
-        $container->cntnr_completed_on = date("Y-m-d H:i:s");
-        $container->save();
-
-        ContainerController::UpdateBookingStatus($booking);
 
         $complete = $_GET['complete'];
     }

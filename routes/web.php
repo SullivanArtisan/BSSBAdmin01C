@@ -31,6 +31,7 @@ use App\Models\Company;
 use App\Models\Booking;
 use App\Models\Container;
 use App\Models\Movement;
+use App\Models\container_completed;
 
 function ChangeMovName($job_id, $cntnr_id, $mvmt_id, $include) {
 	$pivotMovName = "J_".$job_id."_C_".$cntnr_id."_M_".$mvmt_id;
@@ -743,5 +744,9 @@ Route::get('ContainerJob4Driver', function () {
 	$cntnrId 	= $_GET['cntnrId'];
 	return view('ContainerJob4Driver', ['driverId'=>$driverId, 'cntnrId'=>$cntnrId]);
 })->middleware(['auth'])->name('ContainerJob4Driver');
+
+//////////////////////////////// For Kernel's schedule function to receive and process the completed jobs periodically ////////////////////////////////
+Route::get('ReceiveCompletedContainerJobs', function () {		// This route is moved to the Kernel.php
+})->middleware(['auth'])->name('ReceiveCompletedContainerJobs');
 
 require __DIR__.'/auth.php';
