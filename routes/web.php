@@ -420,7 +420,7 @@ Route::get('/dispatch_container', function () {
 			$rec_email	= $driver->dvr_email;
 			$rec_name 	= $driver->dvr_name;
 			$subject 	= "A container job (of ".$container->cntnr_name.") is ready for you!";
-			$body 	 	= "Hi ".$rec_name.",\r\n\r\nThe container ".$container->cntnr_name." is ready for your attention and operation. Please click <a href=\"http://bssbadmin01c.test\">here</a> for the details.\r\n\r\n";
+			$body 	 	= "Hi ".$rec_name.",\r\n\r\nThe container ".$container->cntnr_name." is ready for your attention and operation. Please click http://bssbadmin01c.test/ContainerJob4Driver?driverId=".$driverId."&cntnrId=".$cntnrId." for the details.\r\n\r\n";
 			MyHelper::SendThisEmail($rec_email, $rec_name, $subject, $body);
             return redirect()->route('op_result.dispatch', ['cntnrId'=>$cntnrId])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been dipatched to the driver '.$driver->dvr_no.' successfully.');
         }
@@ -736,5 +736,12 @@ Route::name('op_result.')->group(function () {
 });
 
 //////// For Misc
+
+//////////////////////////////// For Drivers to Complete the Job ////////////////////////////////
+Route::get('ContainerJob4Driver', function () {
+	$driverId	= $_GET['driverId'];
+	$cntnrId 	= $_GET['cntnrId'];
+	return view('ContainerJob4Driver', ['driverId'=>$driverId, 'cntnrId'=>$cntnrId]);
+})->middleware(['auth'])->name('ContainerJob4Driver');
 
 require __DIR__.'/auth.php';

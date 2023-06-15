@@ -18,17 +18,23 @@ class ContainerController extends Controller
         
         $total_cntnrs = 0;
         $sent_cntnrs  = 0;
+        $completed_cntnrs  = 0;
         foreach ($containers as $container) {
             if ($container->cntnr_status == MyHelper::CntnrCreatedStaus()) {
                 $total_cntnrs++;
             } else if ($container->cntnr_status == MyHelper::CntnrSentStaus() || $container->cntnr_status == MyHelper::CntnrDispatchedStaus()) {
                 $total_cntnrs++;
                 $sent_cntnrs++;
+            } else if ($container->cntnr_status == MyHelper::CntnrCompletedStaus()) {
+                $total_cntnrs++;
+                $completed_cntnrs++;
             }
         }
 
         if ($sent_cntnrs == 0) {
             // do nothing
+        } else if ($completed_cntnrs > 0) { 
+            $booking->bk_status = $completed_cntnrs."/".$total_cntnrs." ".MyHelper::BkCompletedStaus();
         } else if ($sent_cntnrs < $total_cntnrs) { 
             $booking->bk_status = $sent_cntnrs."/".$total_cntnrs." Sent";
         } else if ($sent_cntnrs == $total_cntnrs) {

@@ -76,6 +76,11 @@ class MyHelper
         return "cntnr_dispatched";
     }  
 
+    // Get the 'completed' container status
+    public static function CntnrCompletedStaus() {
+        return "cntnr_completed";
+    }  
+
 
 
 
@@ -125,7 +130,7 @@ class MyHelper
         $mail->Port = 587;                                   
     
         $mail->From = "nuecosoftware@gmail.com";
-        $mail->FromName = "Qusar Dispatching Administrator";
+        $mail->FromName = "Quasar Dispatching Administrator";
     
         $mail->addAddress($rec_email, $rec_name);
     
