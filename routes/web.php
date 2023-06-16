@@ -746,7 +746,7 @@ Route::get('ContainerJob4Driver', function () {
 })->middleware(['auth'])->name('ContainerJob4Driver');
 
 //////////////////////////////// For Kernel's schedule function to receive and process the completed jobs periodically ////////////////////////////////
-Route::get('ReceiveCompletedContainerJobs', function () {		// This route is moved to the Kernel.php
+Route::get('ReceiveCompletedContainerJobs', function () {		// This route's function is moved to the schedule() in Kernel.php
 })->middleware(['auth'])->name('ReceiveCompletedContainerJobs');
 
 require __DIR__.'/auth.php';

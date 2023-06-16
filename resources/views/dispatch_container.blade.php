@@ -185,27 +185,27 @@
 		foreach ($drivers as $driver) {
             $outContents = "<div class=\"row\">";
                 $outContents .= "<div class=\"col-1\">";
-					$outContents .= "<a href=\"dispatch_container?driverId=$driver->id&cntnrId=$cntnrId\">";
+					$outContents .= "<a href=\"dispatch_container?driverId=$driver->id&cntnrId=$cntnrId\" onclick=\"return myConfirmation();\">";
 					$outContents .= $driver->dvr_no;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-2\">";
-                    $outContents .= "<a href=\"dispatch_container?driverId=$driver->id&cntnrId=$cntnrId\">";
+                    $outContents .= "<a href=\"dispatch_container?driverId=$driver->id&cntnrId=$cntnrId\" onclick=\"return myConfirmation();\">";
                     $outContents .= $driver->dvr_name;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-4\">";
-                    $outContents .= "<a href=\"dispatch_container?driverId=$driver->id&cntnrId=$cntnrId\">";
+                    $outContents .= "<a href=\"dispatch_container?driverId=$driver->id&cntnrId=$cntnrId\" onclick=\"return myConfirmation();\">";
                     $outContents .= $driver->dvr_address.", ".$driver->dvr_city.", ".$driver->dvr_province;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-2\">";
-                    $outContents .= "<a href=\"dispatch_container?driverId=$driver->id&cntnrId=$cntnrId\">";
+                    $outContents .= "<a href=\"dispatch_container?driverId=$driver->id&cntnrId=$cntnrId\" onclick=\"return myConfirmation();\">";
                     $outContents .= MyHelper::GetHyphenedPhoneNo($driver->dvr_cell_phone);
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 				$outContents .= "<div class=\"col-3\">";
-                    $outContents .= "<a href=\"dispatch_container?driverId=$driver->id&cntnrId=$cntnrId\">";
+                    $outContents .= "<a href=\"dispatch_container?driverId=$driver->id&cntnrId=$cntnrId\" onclick=\"return myConfirmation();\">";
                     $outContents .= $driver->dvr_email;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
@@ -232,5 +232,10 @@
 			url = url.replace('::', param);
 			document.location.href=url;
 		}
+	}
+
+	function myConfirmation() {
+		if(!confirm("Are you sure to assign this job to this driver?"))
+			event.preventDefault();
 	}
 </script>
