@@ -91,7 +91,7 @@ use App\Models\Booking;
 						<div class="w-25"></div>
 						<div class="col">
 							<div class="row">
-								<button class="btn btn-success mx-4" type="submit">Save</button>
+								<button class="btn btn-success mx-4" type="submit" onclick="return CheckMatchedZones();">Save</button>
 								<!--
 								<button class="btn btn-secondary mx-3" type="button"><a href="{{route('home_page')}}">Cancel</a></button>
 								-->
@@ -109,6 +109,24 @@ use App\Models\Booking;
 			function myConfirmation() {
 				if(!confirm("Are you sure to delete this booking job?"))
 				event.preventDefault();
+			}
+
+			function CheckMatchedZones() {
+				var originalPickupZone		 = document.getElementById('original_pickup_zone').value;
+				var originalDeliveryZone	= document.getElementById('original_delivery_zone').value;
+				var inputPickupZone 		= document.getElementById('bk_pickup_cmpny_zone').value;
+				var inputDeliveryZone 		= document.getElementById('bk_delivery_cmpny_zone').value;
+
+				if (originalPickupZone != inputPickupZone) {
+					if(!confirm("The pickup location's zone doesn't match its pricing zone. Continue?")) {
+						event.preventDefault();
+					}
+				}
+				if (originalDeliveryZone != inputDeliveryZone) {
+					if(!confirm("The delivery location's zone doesn't match its pricing zone. Continue?")) {
+						event.preventDefault();
+					}
+				}
 			}
 		</script>
 	@endsection

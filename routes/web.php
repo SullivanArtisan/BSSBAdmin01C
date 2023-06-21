@@ -31,6 +31,7 @@ use App\Models\Company;
 use App\Models\Booking;
 use App\Models\Container;
 use App\Models\Movement;
+use App\Models\ContainerSurcharge;
 use App\Models\container_completed;
 
 function ChangeMovName($job_id, $cntnr_id, $mvmt_id, $include) {
@@ -469,6 +470,32 @@ Route::get('/container_delete/{id}', function ($id) {
 		return redirect()->route('op_result.container', ['id'=>$booking->id, 'prevPage'=>"unknown", 'selJobId'=>$booking->id])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been deleted successfully.');
 	}
 })->middleware(['auth'])->name('container_delete');
+
+Route::get('/container_charges_main', function () {
+    return view('container_charges_main');
+})->middleware(['auth'])->name('container_charges_main');
+
+Route::post('/container_surcharge_add', function (Request $request) {
+	$cntnr_surcharge = new ContainerSurcharge;
+	if ($cntnr_surcharge) {
+		$cntnr_surcharge->cntnrsurchrg_cntnr_id 		= $_POST['cntnrsurchrg_cntnr_id'];
+		$cntnr_surcharge->cntnrsurchrg_type 			= $_POST['cntnrsurchrg_type'];
+		$cntnr_surcharge->cntnrsurchrg_desc 			= $_POST['cntnrsurchrg_desc'];
+		$cntnr_surcharge->cntnrsurchrg_3rd_pty_inv_no	= $_POST['cntnrsurchrg_3rd_pty_inv_no'];
+		$cntnr_surcharge->cntnrsurchrg_quantity 		= $_POST['cntnrsurchrg_quantity'];
+		$cntnr_surcharge->cntnrsurchrg_rate 			= $_POST['cntnrsurchrg_rate'];
+		$cntnr_surcharge->cntnrsurchrg_charge 			= $_POST['cntnrsurchrg_charge'];
+		$cntnr_surcharge->cntnrsurchrg_override 		= $_POST['cntnrsurchrg_override'];
+	}
+	if(strlen($cntnr_surcharge->cntnrsurchrg_quantity)==0)
+		{$cntnr_surcharge->cntnrsurchrg_quantity = 0;}
+	if(strlen($cntnr_surcharge->cntnrsurchrg_rate)==0)
+		{$cntnr_surcharge->cntnrsurchrg_rate = 0;}
+	if(strlen($cntnr_surcharge->cntnrsurchrg_charge)==0)
+		{$cntnr_surcharge->cntnrsurchrg_charge = 0;}
+
+	$cntnr_surcharge->save();
+})->middleware(['auth'])->name('container_surcharge_add');
 
 //////////////////////////////// For Movements ////////////////////////////////
 Route::get('/movements_selected', function () {

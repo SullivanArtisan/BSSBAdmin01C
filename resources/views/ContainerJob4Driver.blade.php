@@ -34,7 +34,7 @@ use App\Http\Controllers\ContainerController;
         $cntnrName = $container->cntnr_name;
 
         if (isset($_GET['driverNote'])) {
-            $container->cntnr_driver_notes = $_GET['driverNote'];
+            $container->cntnr_driver_notes = $container->cntnr_driver_notes."\r\n".$_GET['driverNote'];
             $container->save();
         }
     }
@@ -61,9 +61,9 @@ use App\Http\Controllers\ContainerController;
         </div>
         <div>
             @if ($complete == '')
-                <h2>Hi, {{$driverName}}, the following job is for you to complete. Drive safely!</h2>
+                <h2>Hi, <span style="font-family: Times New Roman; color:tomato">{{$driverName}}</span>, the following job is for you to complete. Drive safely!</h2>
             @else
-                <h2>Hi, {{$driverName}}, you've just notified the dispatcher</br> that you completed the job for container: {{$cntnrName}}</br></br>Thank you!</h2>
+                <h2>Hi, <span style="font-family: Times New Roman; color:tomato">{{$driverName}}</span>, you've just notified the dispatcher</br> that you completed the job for container: {{$cntnrName}}</br></br>Thank you!</h2>
             @endif
         </div>
         @if ($complete == '')
@@ -154,11 +154,11 @@ use App\Http\Controllers\ContainerController;
                 <div class="card-body" style="background: #DCDCDC;">
                     <h4 class="card-title">Dispatcher Notes:</h4>
                     <div class="row mx-2">
-                        <div class="col-12"><input readonly class="w-100 mb-1" type="text" value="{{$container->cntnr_dispatcher_notes}}"></div>
+                        <div class="col-12"><textarea readonly class="w-100 mb-1 text-danger fw-bold" type="text" rows="4">{{$container->cntnr_dispatcher_notes}}</textarea></div>
                     </div>
                     <h4 class="card-title mt-2">Driver Notes:</h4>
                     <div class="row mx-2">
-                        <div class="col-12"><input readonly class="w-100 mb-1" type="text" value="{{$container->cntnr_driver_notes}}"></div>
+                        <div class="col-12"><textarea readonly class="w-100 mb-1" type="text" rows="4">{{$container->cntnr_driver_notes}}</textarea></div>
                     </div>
                 </div>
             </div>

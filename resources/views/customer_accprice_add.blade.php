@@ -98,7 +98,7 @@
 						<div class="col"><input class="form-control mt-1 my-text-height" type="number" id="cstm_account_charge" name="cstm_account_charge" step="any"></div>
 					</div>
 					<div class="row">
-						<div class="col"><label class="col-form-label">Fuel Surcharge:&nbsp;</label></div>
+						<div class="col"><label class="col-form-label">Fuel Surcharge:&nbsp;<span class="text-danger">(Eg: 10% shall be 0.10)</span></label></div>
 						<div class="col"><input class="form-control mt-1 my-text-height" type="number" id="cstm_account_fuel_surcharge" name="cstm_account_fuel_surcharge" step="any"></div>
 						<div class="col"><label class="col-form-label">Override:&nbsp;</label></div>
 						<div class="col"><input type="checkbox" style="margin-top:3%" id="cstm_account_surcharge_override" name="cstm_account_surcharge_override"></div>

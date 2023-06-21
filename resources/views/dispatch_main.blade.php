@@ -196,7 +196,7 @@
     function doCntnrDetails() {     // click button twice
         clearTimeout(timer);
         status = 0;
-        alert("To doCntnrDetails!");
+        alert("This function is under construction!");
     }
     </script>
 @endsection

@@ -81,6 +81,17 @@ class MyHelper
         return "cntnr_completed";
     }  
 
+    //============================================== for dbg log types =============================================
+    // Get the 'created' booking status
+    public static function DbgErrorType() {
+        return "dbg_error";
+    }  
+
+    // Get the 'completed' booking status
+    public static function DbgInfoType() {
+        return "dbg_info";
+    }  
+
 
 
 

@@ -1,3 +1,7 @@
+<?php
+	$zones = App\Models\Zone::all()->sortBy('zone_name');
+	$companies = App\Models\Company::all()->sortBy('cmpny_name');
+?>
 
 <div class="row">
 		<div class="col-8">
@@ -107,11 +111,29 @@
 							<div class="row">
 								<div class="col-2"><label class="col-form-label">Company:&nbsp;</label><span class="text-danger">*</span></div>
 								<div class="col-4">
-									<input class="form-control mt-1 my-text-height" type="text" id="bk_pickup_cmpny_name" name="bk_pickup_cmpny_name" value="{{isset($booking)?$booking->bk_pickup_cmpny_name:''}}">
+									<!-- <input class="form-control mt-1 my-text-height" type="text" id="bk_pickup_cmpny_name" name="bk_pickup_cmpny_name" value="{{isset($booking)?$booking->bk_pickup_cmpny_name:''}}"> -->
+									<input list="bk_pickup_cmpny_name_li" name="bk_pickup_cmpny_name" id="bk_pickup_cmpny_name" class="form-control mt-1 my-text-height" value="{{isset($booking)?$booking->bk_pickup_cmpny_name:''}}">
+									<datalist id="bk_pickup_cmpny_name_li">
+									<?php
+										foreach ($companies as $company) {
+											echo "<option value=\"".$company->cmpny_name."\">";
+										}
+									?>
+									</datalist></input>
+									<input type="hidden" id="original_pickup_zone" name="original_pickup_zone" value="{{isset($booking)?$booking->bk_pickup_cmpny_zone:''}}">
 								</div>
 								<div class="col-2"><label class="col-form-label">Company:&nbsp;</label><span class="text-danger">*</span></div>
 								<div class="col-4">
-									<input class="form-control mt-1 my-text-height" type="text" id="bk_delivery_cmpny_name" name="bk_delivery_cmpny_name" value="{{isset($booking)?$booking->bk_delivery_cmpny_name:''}}">
+									<!-- <input class="form-control mt-1 my-text-height" type="text" id="bk_delivery_cmpny_name" name="bk_delivery_cmpny_name" value="{{isset($booking)?$booking->bk_delivery_cmpny_name:''}}"> -->
+									<input list="bk_delivery_cmpny_name_li" name="bk_delivery_cmpny_name" id="bk_delivery_cmpny_name" class="form-control mt-1 my-text-height" value="{{isset($booking)?$booking->bk_delivery_cmpny_name:''}}">
+									<datalist id="bk_delivery_cmpny_name_li">
+									<?php
+										foreach ($companies as $company) {
+											echo "<option value=\"".$company->cmpny_name."\">";
+										}
+									?>
+									</datalist></input>
+									<input type="hidden" id="original_delivery_zone" name="original_delivery_zone" value="{{isset($booking)?$booking->bk_delivery_cmpny_zone:''}}">
 								</div>
 							</div>
 							<div class="row">
@@ -265,11 +287,27 @@
 							<div class="row">
 								<div class="col-2"><label class="col-form-label">Pricing Zone:&nbsp;<span class="text-danger">*</span></label></div>
 								<div class="col-4">
-									<input class="form-control mt-1 my-text-height" type="text" id="bk_pickup_cmpny_zone" name="bk_pickup_cmpny_zone" value="{{isset($booking)?$booking->bk_pickup_cmpny_zone:''}}">
+									<!-- <input class="form-control mt-1 my-text-height" type="text" id="bk_pickup_cmpny_zone" name="bk_pickup_cmpny_zone" value="{{isset($booking)?$booking->bk_pickup_cmpny_zone:''}}"> -->
+									<input list="bk_pickup_cmpny_zone_li" name="bk_pickup_cmpny_zone" id="bk_pickup_cmpny_zone" class="form-control mt-1 my-text-height" value="{{isset($booking)?$booking->bk_pickup_cmpny_zone:''}}">
+									<datalist id="bk_pickup_cmpny_zone_li">
+									<?php
+										foreach ($zones as $zone) {
+											echo "<option value=\"".$zone->zone_name."\">";
+										}
+									?>
+									</datalist></input>
 								</div>
 								<div class="col-2"><label class="col-form-label">Pricing Zone:&nbsp;<span class="text-danger">*</span></label></div>
 								<div class="col-4">
-									<input class="form-control mt-1 my-text-height" type="text" id="bk_delivery_cmpny_zone" name="bk_delivery_cmpny_zone" value="{{isset($booking)?$booking->bk_delivery_cmpny_zone:''}}">
+									<!-- <input class="form-control mt-1 my-text-height" type="text" id="bk_delivery_cmpny_zone" name="bk_delivery_cmpny_zone" value="{{isset($booking)?$booking->bk_delivery_cmpny_zone:''}}"> -->
+									<input list="bk_delivery_cmpny_zone_li" name="bk_delivery_cmpny_zone" id="bk_delivery_cmpny_zone" class="form-control mt-1 my-text-height" value="{{isset($booking)?$booking->bk_delivery_cmpny_zone:''}}">
+									<datalist id="bk_delivery_cmpny_zone_li">
+									<?php
+										foreach ($zones as $zone) {
+											echo "<option value=\"".$zone->zone_name."\">";
+										}
+									?>
+									</datalist></input>
 								</div>
 							</div>
 						</div>
@@ -361,7 +399,7 @@
 						</div>
 					</div>
 					<div class="row ml-1 mt-1">
-						<div><label class="col-form-label">Driver's Notes:&nbsp(Goes to PDA on each leg of job);</label></div>
+						<div><label class="col-form-label">Driver's Notes:&nbsp(Goes to PDA on each leg of job)</label></div>
 					</div>
 					<div class="row">
 						<div class="col-12">

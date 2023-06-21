@@ -57,8 +57,11 @@
 				<div>
 					<h2 class="text-muted pl-2">Container: {{$container->cntnr_name}} (Status: {{$container->cntnr_status}})</h2>
 				</div>
-				<div class="col my-auto ml-5">
+				<div class="col ml-5">
 					<button class="btn btn-danger me-2" type="button"><a href="{{route('container_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>
+				</div>
+				<div class="col">
+					<button class="btn btn-primary me-2" type="button"><a href="{{route('container_charges_main', ['cntnrId'=>$id, 'cntnrJobNo'=>$container->cntnr_job_no, 'prevPage'=>'booking_selected', 'selJobId'=>$booking->id])}}">Charges</a></button>
 				</div>
 				<div class="col"></div>
 			</div>

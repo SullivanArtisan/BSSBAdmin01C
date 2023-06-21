@@ -40,7 +40,7 @@ class CstmAccountPriceController extends Controller
 		$validated = $request->validate([
 			'cstm_account_from' => 'required',
 			'cstm_account_to' => 'required',
-			'cstm_account_charge' => 'required',
+			// 'cstm_account_charge' => 'required',
 		]);
 		$id = $_GET['id'];
 		$customer = Customer::where('id', $id)->first();

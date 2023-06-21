@@ -94,6 +94,7 @@ class ContainerController extends Controller
 
     public function update(Request $request)
     {
+        Log::Info("HAHAHA");
 		$validated = $request->validate([
 			//'cntnr_name'              => 'required',
 		]);
@@ -144,7 +145,8 @@ class ContainerController extends Controller
 		if(!$saved) {
 			return redirect()->route('op_result.container')->with('status', ' <span style="color:red">Data has NOT been updated!</span>');
 		} else {
-            this->UpdateBookingStatus($booking);
+            $booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
+            $this->UpdateBookingStatus($booking);
             if (!isset($request->prevPage)) {
                 return redirect()->route('op_result.container', ['id'=>$request->id])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been updated successfully.');
             } else {
