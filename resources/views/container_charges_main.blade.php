@@ -95,9 +95,8 @@
 
                 <?php
                     foreach ($surcharges as $surcharge) {
-                        $surcharges_count++;
                         $refreshUrlWithSurchargeId = route('container_charges_main', ['cntnrId'=>$container->id, 'cntnrJobNo'=>$container->cntnr_job_no, 'prevPage'=>'booking_selected', 'selJobId'=>$booking->id, 'surchargeId'=>$surcharge->id]);
-                        $outContents = "<div id=\"scid".$surcharge->id."\" class=\"newpointer row ml-2\" onclick=\"doDispatch(this)\" ondblclick=\"\">";
+                        $outContents = "<div id=\"scid".$surcharges_count."\" name=\"".$surcharge->id."\" class=\"newpointer row ml-2\" onclick=\"doDispatch(this)\" ondblclick=\"\">";
                         $outContents .= "<div class=\"col-6\">";
                             $outContents .= "<a href=\"".$refreshUrlWithSurchargeId."\">";
                                 $outContents .= $surcharge->cntnrsurchrg_type;
@@ -119,6 +118,7 @@
                         {{ 					
                             echo $outContents;;
                         }}
+                        $surcharges_count++;
                     }
                 ?>
                 <div class="row bg-secondary text-white fw-bold ml-2 mt-5">
@@ -208,6 +208,22 @@
         var chargeRate = 0;
         var chargeCharge = 0;
         var chargeOvrd = 'F';
+
+        window.onload = function() {
+            var surchargesCount = {!! json_encode($surcharges_count) !!};
+            var parmSurchargeId = {!! json_encode($parmSurchargeId) !!};
+            for (let idx = 0; idx < surchargesCount; idx++) {
+                var elementId = "scid"+idx;
+                scElement = document.getElementById(elementId);
+
+                var elementName = scElement.getAttribute("name");
+                if (elementName == parmSurchargeId) {
+                    scElement.style.backgroundColor = 'lightgrey';
+                } else {
+                    scElement.style.backgroundColor = '';
+                }
+            }
+        }
 
         function prepareSurchargeDetails() {
             token = "{{ csrf_token() }}";
