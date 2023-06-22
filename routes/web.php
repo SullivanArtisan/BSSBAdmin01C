@@ -497,6 +497,33 @@ Route::post('/container_surcharge_add', function (Request $request) {
 	$cntnr_surcharge->save();
 })->middleware(['auth'])->name('container_surcharge_add');
 
+Route::post('/container_surcharge_update', function (Request $request) {
+	$cntnr_surcharge = ContainerSurcharge::where('id', $_POST['cntnrsurchrg_id'])->first();
+	if ($cntnr_surcharge) {
+		$cntnr_surcharge->cntnrsurchrg_cntnr_id 		= $_POST['cntnrsurchrg_cntnr_id'];
+		$cntnr_surcharge->cntnrsurchrg_type 			= $_POST['cntnrsurchrg_type'];
+		$cntnr_surcharge->cntnrsurchrg_desc 			= $_POST['cntnrsurchrg_desc'];
+		$cntnr_surcharge->cntnrsurchrg_3rd_pty_inv_no	= $_POST['cntnrsurchrg_3rd_pty_inv_no'];
+		$cntnr_surcharge->cntnrsurchrg_quantity 		= $_POST['cntnrsurchrg_quantity'];
+		$cntnr_surcharge->cntnrsurchrg_rate 			= $_POST['cntnrsurchrg_rate'];
+		$cntnr_surcharge->cntnrsurchrg_charge 			= $_POST['cntnrsurchrg_charge'];
+		$cntnr_surcharge->cntnrsurchrg_override 		= $_POST['cntnrsurchrg_override'];
+	}
+	if(strlen($cntnr_surcharge->cntnrsurchrg_quantity)==0)
+		{$cntnr_surcharge->cntnrsurchrg_quantity = 0;}
+	if(strlen($cntnr_surcharge->cntnrsurchrg_rate)==0)
+		{$cntnr_surcharge->cntnrsurchrg_rate = 0;}
+	if(strlen($cntnr_surcharge->cntnrsurchrg_charge)==0)
+		{$cntnr_surcharge->cntnrsurchrg_charge = 0;}
+
+	$cntnr_surcharge->save();
+})->middleware(['auth'])->name('container_surcharge_update');
+
+
+Route::post('/container_surcharge_delete', function (Request $request) {
+	ContainerSurcharge::where('id', $_POST['cntnrsurchrg_id'])->delete();
+})->middleware(['auth'])->name('container_surcharge_delete');
+
 //////////////////////////////// For Movements ////////////////////////////////
 Route::get('/movements_selected', function () {
     return view('movements_selected');
