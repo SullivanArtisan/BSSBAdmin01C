@@ -127,7 +127,7 @@
                     <div class="col">Container Rate:<span class="ml-5 text-warning">${{$containerCharge}}</span></div>
                 </div> 
             </div>
-            <div class="col bg-light mx-3">
+            <div class="col mx-3" id="charge_details">
                 <form method="post" action="{{route('op_result.container_update', ['id'=>$booking->id])}}">
                     <div class="row mx-2 mt-2">
                         <div class="col-3"><label class="col-form-label">Type:&nbsp;</label></div>
@@ -222,6 +222,13 @@
                 } else {
                     scElement.style.backgroundColor = '';
                 }
+            }
+
+            var elChgDetails = document.getElementById('charge_details');
+            if (parmSurchargeId == 0) {
+                elChgDetails.style.backgroundColor = 'white';
+            } else {
+                elChgDetails.style.backgroundColor = 'lightgrey';
             }
         }
 
