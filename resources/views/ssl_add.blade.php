@@ -31,7 +31,7 @@
                 <form method="post" action="{{route('op_result.ssl_add')}}">
 					@csrf
 						<div class="row mx-2">
-                            <div class="col"><label class="col-form-label">SSL Name:&nbsp;</label></div>
+                            <div class="col"><label class="col-form-label">SSL Name:&nbsp;</label><span class="text-danger">*</span></div>
 							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="ssl_name"></div>
                             <div class="col"><label class="col-form-label">SSL Description:&nbsp;</label></div>
 							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="ssl_description"></div>

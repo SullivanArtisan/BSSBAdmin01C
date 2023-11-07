@@ -66,7 +66,7 @@
 
 	<!-- row 3 -->
 	<div class="row">
-		<div class="col"><label class="col-form-label">Driver License No.:&nbsp;</label></div>
+		<div class="col"><label class="col-form-label">Driver License No.:&nbsp;</label><span class="text-danger">*</span></div>
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {

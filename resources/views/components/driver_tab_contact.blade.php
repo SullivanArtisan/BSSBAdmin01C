@@ -11,7 +11,7 @@
 ?>
 
 	<div class="row">
-		<div class="col"><label class="col-form-label">PowerUnit No. 1:&nbsp;</label></div>
+		<div class="col"><label class="col-form-label">PowerUnit No. 1:&nbsp;</label><span class="text-danger">*</span></div>
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
@@ -33,7 +33,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col"><label class="col-form-label">Name:&nbsp;</label></div>
+		<div class="col"><label class="col-form-label">Name:&nbsp;</label><span class="text-danger">*</span></div>
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
@@ -43,7 +43,7 @@
 				}
 			?>
 		</div>
-		<div class="col"><label class="col-form-label">Driver No.:&nbsp;</label></div>
+		<div class="col"><label class="col-form-label">Driver No.:&nbsp;</label><span class="text-danger">*</span></div>
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
@@ -145,7 +145,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col"><label class="col-form-label">Email:&nbsp;</label></div>
+		<div class="col"><label class="col-form-label">Email:&nbsp;</label><span class="text-danger">*</span></div>
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {

@@ -31,25 +31,25 @@
                 <form method="post" action="{{route('op_result.power_unit_add')}}">
 					@csrf
                     <div class="row">
-                        <div class="col"><label class="col-form-label">Unit ID:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">Unit ID:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" id="unit_id" name="unit_id"></div>
                         <div class="col"><label class="col-form-label">Year:&nbsp;</label></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="number" id="year" name="year"></div>
                     </div>
                     <div class="row">
-                        <div class="col"><label class="col-form-label">Make:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">Make:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1v" type="text" id="make" name="make"></div>
                         <div class="col"><label class="col-form-label">Color:&nbsp;</label></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" id="color" name="color"></div>
                     </div>
                     <div class="row">
-                        <div class="col"><label class="col-form-label">Plate Number:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">Plate Number:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" id="plate_number" name="plate_number"></div>
                         <div class="col"><label class="col-form-label">Seniority:&nbsp;</label></div>
                         <div class="col"><input type="text" style="margin-top:3%" id="seniority" name="seniority"></div>
                     </div>
                     <div class="row">
-                        <div class="col"><label class="col-form-label">VIN:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">VIN:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" id="vin" name="vin"></div>
                         <div class="col"><label class="col-form-label">Max Licensed Weight:&nbsp;</label></div>
                         <div class="col"><input type="number" style="margin-top:3%" id="max_licensed_weight" name="max_licensed_weight"></div>

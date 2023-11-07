@@ -31,7 +31,7 @@
                 <form method="post" action="{{route('op_result.zone_add')}}">
 					@csrf
                     <div class="row">
-                        <div class="col"><label class="col-form-label">Zone Name:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">Zone Name:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" id="zone_name" name="zone_name"></div>
                         <div class="col"><label class="col-form-label">Zone Group:&nbsp;</label></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" id="zone_group" name="zone_group"></div>

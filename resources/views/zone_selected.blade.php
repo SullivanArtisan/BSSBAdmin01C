@@ -64,7 +64,7 @@
 					<form method="post" action="{{route('op_result.zone_update', ['id'=>$id])}}">
 						@csrf
 						<div class="row mx-2">
-							<div class="col-2"><label class="col-form-label">Zone:&nbsp;</label></div>
+							<div class="col-2"><label class="col-form-label">Zone:&nbsp;</label><span class="text-danger">*</span></div>
 							<div class="col-10"><input class="form-control mt-1 my-text-height" type="text" name="zone_name" value="{{$zone->zone_name}}"></div>
 						</div>
 						<div class="row mx-2">

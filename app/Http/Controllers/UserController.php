@@ -25,7 +25,7 @@ class UserController extends Controller
 		
 		$emailExists = User::where('email', $request->email)->first();
 		if ($emailExists) {
-			return redirect()->route('op_result.user')->with('status', ' <span style="color:red">Data cannot NOT be inserted as the email address exists already!</span>');
+			return redirect()->route('op_result.user')->with('status', ' <span style="color:red">Data cannot NOT be inserted as the email address exists already!'.$request->email.'</span>');
 		} else {
 			$user = new User;
 			$user->name = $request->name;

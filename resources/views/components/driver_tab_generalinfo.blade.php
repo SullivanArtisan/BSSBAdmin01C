@@ -199,7 +199,7 @@
 		</div>
 	</div>
 	<div class="row">
-        <div class="col"><label class="col-form-label">Driver Type:&nbsp;</label></div>
+        <div class="col"><label class="col-form-label">Driver Type:&nbsp;</label><span class="text-danger">*</span></div>
 		<div class="col">
 			<?php
                 if(isset($dbTable)) {
@@ -234,7 +234,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col"><label class="col-form-label">Start Date:&nbsp;</label></div>
+		<div class="col"><label class="col-form-label">Start Date:&nbsp;</label><span class="text-danger">*</span></div>
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {

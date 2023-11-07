@@ -10,12 +10,12 @@ class ChassisController extends Controller
     public function store(Request $request)
     {
 		$validated = $request->validate([
-			'code'              => 'required',
-			'currentlocation'   => 'required',
+			'chassis_number'     => 'required',
+			'current_location'   => 'required',
 		]);
 		
 		$chassis = new Chassis;
-		$chassis->code              = $request->code;
+		$chassis->code              = $request->chassis_number;
 		$chassis->vin               = $request->vin;
 		$chassis->year              = $request->year;
 		$chassis->type              = $request->type;
@@ -25,7 +25,7 @@ class ChassisController extends Controller
 		$chassis->lastdriver        = $request->lastdriver;
 		$chassis->container         = $request->container;
 		$chassis->genset            = $request->genset;
-		$chassis->currentlocation   = $request->currentlocation;
+		$chassis->currentlocation   = $request->current_location;
 		$chassis->dateupdated       = $request->dateupdated;
 		$chassis->pminspection      = $request->pminspection;
 		$chassis->cviinspection     = $request->cviinspection;
@@ -55,12 +55,12 @@ class ChassisController extends Controller
     public function update(Request $request)
     {
 		$validated = $request->validate([
-			'code'              => 'required',
-			'currentlocation'   => 'required',
+			'chassis_number'     => 'required',
+			'current_location'   => 'required',
 		]);
 		
 		$chassis = Chassis::where('id', $request->id)->first();
-		$chassis->code              = $request->code;
+		$chassis->code              = $request->chassis_number;
 		$chassis->vin               = $request->vin;
 		$chassis->year              = $request->year;
 		$chassis->type              = $request->type;
@@ -70,7 +70,7 @@ class ChassisController extends Controller
 		$chassis->lastdriver        = $request->lastdriver;
 		$chassis->container         = $request->container;
 		$chassis->genset            = $request->genset;
-		$chassis->currentlocation   = $request->currentlocation;
+		$chassis->currentlocation   = $request->current_location;
 		$chassis->dateupdated       = $request->dateupdated;
 		$chassis->pminspection      = $request->pminspection;
 		$chassis->cviinspection     = $request->cviinspection;

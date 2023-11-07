@@ -34,7 +34,7 @@
                 <form method="post" action="{{route('op_result.company_add')}}">
 					@csrf
                     <div class="row mx-2">
-                        <div class="col"><label class="col-form-label">Company Name:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">Company Name:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="cmpny_name"></div>
                         <div class="col"><label class="col-form-label">Zone:&nbsp;</label></div>
                         <div class="col">
@@ -49,15 +49,15 @@
                         </div>
                     </div>
                     <div class="row mx-2">
-                        <div class="col"><label class="col-form-label">Street Address:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">Street Address:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="cmpny_address"></div>
-                        <div class="col"><label class="col-form-label">City:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">City:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="cmpny_city"></div>
                     </div>
                     <div class="row mx-2">
-                        <div class="col"><label class="col-form-label">Province:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">Province:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="cmpny_province"></div>
-                        <div class="col"><label class="col-form-label">Post Code:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">Post Code:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" name="cmpny_postcode"></div>
                     </div>
                     <div class="row mx-2">

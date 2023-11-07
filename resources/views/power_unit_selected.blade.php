@@ -64,19 +64,19 @@
 					<form method="post" action="{{url('power_unit_update')}}">
 						@csrf
 						<div class="row mx-2">
-							<div class="col-2"><label class="col-form-label">Unit ID:&nbsp;</label></div>
+							<div class="col-2"><label class="col-form-label">Unit ID:&nbsp;</label><span class="text-danger">*</span></div>
 							<div class="col-10"><input class="form-control mt-1 my-text-height" type="text" name="unit_id" value="{{$unit->unit_id}}"></div>
 						</div>
 						<div class="row mx-2">
-							<div class="col-2"><label class="col-form-label">Make:&nbsp;</label></div>
+							<div class="col-2"><label class="col-form-label">Make:&nbsp;</label><span class="text-danger">*</span></div>
 							<div class="col-10"><input class="form-control mt-1 my-text-height" type="text" name="make" value="{{$unit->make}}"></div>
 						</div>
 						<div class="row mx-2">
-							<div class="col-2"><label class="col-form-label">Plate Number:&nbsp;</label></div>
+							<div class="col-2"><label class="col-form-label">Plate Number:&nbsp;</label><span class="text-danger">*</span></div>
 							<div class="col-10"><input class="form-control mt-1 my-text-height" type="text" name="plate_number" value="{{$unit->plate_number}}"></div>
 						</div>
 						<div class="row mx-2">
-							<div class="col-2"><label class="col-form-label">VIN:&nbsp;</label></div>
+							<div class="col-2"><label class="col-form-label">VIN:&nbsp;</label><span class="text-danger">*</span></div>
 							<div class="col-10"><input class="form-control mt-1 my-text-height" type="text" name="vin" value="{{$unit->vin}}"></div>
 						</div>
 						<div class="row mx-2">

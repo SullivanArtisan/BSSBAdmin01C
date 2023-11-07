@@ -64,8 +64,8 @@
 					<form method="post" action="{{route('op_result.chassis_update', ['id'=>$id])}}">
 						@csrf
 						<div class="row mx-2">
-							<div class="col"><label class="col-form-label">Chassis Number:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="code" value="{{$chassis->code}}"></div>
+							<div class="col"><label class="col-form-label">Chassis Number:&nbsp;</label><span class="text-danger">*</span></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="chassis_number" value="{{$chassis->code}}"></div>
 							<div class="col"><label class="col-form-label">VIN:&nbsp;</label></div>
 							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="vin" value="{{$chassis->vin}}"></div>
 						</div>
@@ -94,8 +94,8 @@
 							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="genset" value="{{$chassis->genset}}"></div>
 						</div>
 						<div class="row mx-2">
-							<div class="col"><label class="col-form-label">Current Location:&nbsp;</label></div>
-							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="currentlocation" value="{{$chassis->currentlocation}}"></div>
+							<div class="col"><label class="col-form-label">Current Location:&nbsp;</label><span class="text-danger">*</span></div>
+							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="current_location" value="{{$chassis->currentlocation}}"></div>
 							<div class="col"><label class="col-form-label">Last Updated:&nbsp;</label></div>
 							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="dateupdated" value="{{$chassis->dateupdated}}"></div>
 						</div>

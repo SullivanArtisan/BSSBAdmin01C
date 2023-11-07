@@ -1,5 +1,5 @@
 	<div class="row">
-		<div class="col"><label class="col-form-label">Social Insurance No.:&nbsp;</label></div>
+		<div class="col"><label class="col-form-label">Social Insurance No.:&nbsp;</label><span class="text-danger">*</span></div>
 		<div class="col">
             <?php
 				if(isset($dbTable)) {

@@ -49,7 +49,11 @@
 				$picPath = Session::get('uploadPath');
 				Session::forget(['uploadPath']);
 			} else {
-				$picPath = $userDetails->picture_file;
+				if ($userDetails->picture_file) {
+					$picPath = $userDetails->picture_file;
+				} else {
+					$picPath = "";
+				}
 			}
 		?>
 		<div>
@@ -78,19 +82,19 @@
 					<form method="post" action="{{url('system_user_update')}}">
 						@csrf
 						<div class="row">
-							<div class="col"><label class="col-form-label">Name:&nbsp;</label></div>
+							<div class="col"><label class="col-form-label">Name:&nbsp;</label><span class="text-danger">*</span></div>
 							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="name" value="{{$user->name}}"></div>
-							<div class="col"><label class="col-form-label">Current Office:&nbsp;</label></div>
+							<div class="col"><label class="col-form-label">Current Office:&nbsp;</label><span class="text-danger">*</span></div>
 							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="current_office" value="{{$userDetails->current_office}}"></div>
 						</div>
 						<div class="row">
-							<div class="col"><label class="col-form-label">Email:&nbsp;</label></div>
+							<div class="col"><label class="col-form-label">Email:&nbsp;</label><span class="text-danger">*</span></div>
 							<div class="col"><input class="form-control mt-1v" type="email" name="email" value="{{$user->email}}"></div>
-							<div class="col"><label class="col-form-label">Default Office:&nbsp;</label></div>
+							<div class="col"><label class="col-form-label">Default Office:&nbsp;</label><span class="text-danger">*</span></div>
 							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="default_office" value="{{$userDetails->default_office}}"></div>
 						</div>
 						<div class="row">
-							<div class="col"><label class="col-form-label">Security Level:</label></div>
+							<div class="col"><label class="col-form-label">Security Level:</label><span class="text-danger">*</span></div>
 							<!--
 							<div class="col"><input class="form-range form-control" type="range" name="security_level_id"></div>
 							-->
@@ -112,13 +116,13 @@
 							<div class="col"><input type="checkbox" style="margin-top:3%" name="can_change_office" <?php if($userDetails->can_change_office) {echo "checked";}?>></div>
 						</div>
 						<div class="row">
-							<div class="col"><label class="col-form-label">Docket Prefix:&nbsp;</label></div>
+							<div class="col"><label class="col-form-label">Docket Prefix:&nbsp;</label><span class="text-danger">*</span></div>
 							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="docket_prefix" value="{{$user->docket_prefix}}"></div>
 							<div class="col"><label class="col-form-label">Startup Caps Lock On:&nbsp;</label></div>
 							<div class="col"><input type="checkbox" style="margin-top:3%" name="startup_caps_lock_on" <?php if($userDetails->startup_caps_lock_on) {echo "checked";}?>></div>
 						</div>
 						<div class="row">
-							<div class="col"><label class="col-form-label">Next Docket Number:&nbsp;&nbsp;</label></div>
+							<div class="col"><label class="col-form-label">Next Docket Number:&nbsp;&nbsp;</label><span class="text-danger">*</span></div>
 							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="next_docket_number" value="{{$user->next_docket_number}}"></div>
 							<div class="col"><label class="col-form-label">Startup Num Lock On:&nbsp;</label></div>
 							<div class="col"><input type="checkbox" style="margin-top:3%" name="startup_num_lock_on" <?php if($userDetails->startup_num_lock_on) {echo "checked";}?>></div>
@@ -173,18 +177,19 @@
 							<div class="col"><input class="form-control mt-1 my-text-height" type="text" name="work_phone" value="{{$user->work_phone}}"></div>
 							<div class="col" id="pic_holder"><label class="col-form-label">Picture File:&nbsp;</label></div>
 							<?php
-								$origin_pic_path_array = explode("/", $userDetails->picture_file);
-								$wanted_pic_path = url('')."/";
-								for ($i=1; $i<sizeof($origin_pic_path_array); $i++) {
-									$wanted_pic_path .= $origin_pic_path_array[$i];
-									if($i != sizeof($origin_pic_path_array)-1) {
-										$wanted_pic_path .= "/";
+								if (strlen($userDetails->picture_file) > 0) {
+									$origin_pic_path_array = explode("/", $userDetails->picture_file);
+									$wanted_pic_path = url('')."/";
+									for ($i=1; $i<sizeof($origin_pic_path_array); $i++) {
+										$wanted_pic_path .= $origin_pic_path_array[$i];
+										if($i != sizeof($origin_pic_path_array)-1) {
+											$wanted_pic_path .= "/";
+										}
 									}
+								} else {
+									$wanted_pic_path = "";
 								}
 							?>
-							<!--
-							<div class="col"><input class="form-control mt-1 my-text-height" type="text" id="picture_file" name="picture_file" value="{{$userDetails->picture_file}}" onmouseover="showImage('picture_file', '{{$wanted_pic_path}}')" onmouseout="hideImage('picture_file')"></div>
-							-->
 							<div class="col">
 								<div class="row">
 									<div class="col-9 pr-0"><input class="form-control mt-1 my-text-height" type="text" id="picture_file" name="picture_file" value="{{$userDetails->picture_file}}" onmouseover="showImage('picture_file', '{{$wanted_pic_path}}')" onmouseout="hideImage('picture_file')"></div>

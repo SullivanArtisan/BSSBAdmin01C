@@ -36,19 +36,19 @@
                 <form method="post" action="{{route('op_result.system_user_add')}}">
 					@csrf
                     <div class="row">
-                        <div class="col"><label class="col-form-label">Name:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">Name:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" id="name" name="name"></div>
-                        <div class="col"><label class="col-form-label">Current Office:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">Current Office:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" id="current_office" name="current_office"></div>
                     </div>
                     <div class="row">
-                        <div class="col"><label class="col-form-label">Email:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">Email:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1v" type="email" id="email" name="email"></div>
-                        <div class="col"><label class="col-form-label">Default Office:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">Default Office:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" id="default_office" name="default_office"></div>
                     </div>
                     <div class="row">
-                        <div class="col"><label class="col-form-label">Password:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">Password:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="password" id="password" name="password"></div>
                         <div class="col"><label class="col-form-label">Can Change Office:&nbsp;</label></div>
                         <div class="col"><input type="checkbox" style="margin-top:3%" id="can_change_office" name="can_change_office"></div>
@@ -60,7 +60,7 @@
                         <div class="col"><input type="checkbox" style="margin-top:3%" id="startup_caps_lock_on" name="startup_caps_lock_on"></div>
                     </div>
                     <div class="row">
-                        <div class="col"><label class="col-form-label">Security Level:</label></div>
+                        <div class="col"><label class="col-form-label">Security Level:</label><span class="text-danger">*</span></div>
 						<!--
                         <div class="col"><input class="form-range form-control" type="range" name="security_level_id"></div>
 						-->
@@ -82,13 +82,13 @@
                         <div class="col"><input type="checkbox" style="margin-top:3%" id="startup_num_lock_on" name="startup_num_lock_on"></div>
                     </div>
                     <div class="row">
-                        <div class="col"><label class="col-form-label">Docket Prefix:&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">Docket Prefix:&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" id="docket_prefix" name="docket_prefix"></div>
                         <div class="col"><label class="col-form-label">Startup Insert On:&nbsp;</label></div>
                         <div class="col"><input type="checkbox" style="margin-top:3%" id="startup_insert_on" name="startup_insert_on"></div>
                     </div>
                     <div class="row">
-                        <div class="col"><label class="col-form-label">Next Docket Number:&nbsp;&nbsp;</label></div>
+                        <div class="col"><label class="col-form-label">Next Docket Number:&nbsp;&nbsp;</label><span class="text-danger">*</span></div>
                         <div class="col"><input class="form-control mt-1 my-text-height" type="text" id="next_docket_number" name="next_docket_number"></div>
                         <div class="col"><label class="col-form-label">Ops Code:&nbsp;</label></div>
 						<!--

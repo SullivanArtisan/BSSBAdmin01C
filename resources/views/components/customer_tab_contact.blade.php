@@ -1,5 +1,5 @@
 	<div class="row">
-		<div class="col"><label class="col-form-label">Account Number:&nbsp;</label></div>
+		<div class="col"><label class="col-form-label">Account Number:&nbsp;</label><span class="text-danger">*</span></div>
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
@@ -21,7 +21,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col"><label class="col-form-label">Account Name:&nbsp;</label></div>
+		<div class="col"><label class="col-form-label">Account Name:&nbsp;</label><span class="text-danger">*</span></div>
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
@@ -43,7 +43,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col"><label class="col-form-label">Account Address:&nbsp;</label></div>
+		<div class="col"><label class="col-form-label">Account Address:&nbsp;</label><span class="text-danger">*</span></div>
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
@@ -65,7 +65,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col"><label class="col-form-label">Account City:&nbsp;</label></div>
+		<div class="col"><label class="col-form-label">Account City:&nbsp;</label><span class="text-danger">*</span></div>
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
@@ -87,7 +87,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col"><label class="col-form-label">Account Province:&nbsp;</label></div>
+		<div class="col"><label class="col-form-label">Account Province:&nbsp;</label><span class="text-danger">*</span></div>
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
@@ -109,7 +109,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col"><label class="col-form-label">Account Postcode:&nbsp;</label></div>
+		<div class="col"><label class="col-form-label">Account Postcode:&nbsp;</label><span class="text-danger">*</span></div>
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
