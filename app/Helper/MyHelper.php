@@ -8,6 +8,7 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 use App\Models\Booking;
 use App\Models\Container;
+use App\Models\StaffActions;
 
 class MyHelper
 {  
@@ -95,6 +96,41 @@ class MyHelper
 
 
 
+    // Record a staff's action
+    public static function LogStaffAction($staff_id, $action, $severity) {
+        $staff_act = new StaffActions;
+        if ($staff_act) {
+            $staff_act->staff_id = $staff_id;
+            $staff_act->staff_action = $action;
+            $staff_act->staff_action_severity = $severity;
+            
+            $saved = $staff_act->save();
+            if(!$saved) {
+                Log::Info("Failed to complete LogStaffAction() for staff ".$staff_id." with action: ".$action.".");
+            }
+        } else {
+            Log::Info("Failed to create a StaffActions object for staff ".$staff_id.".");
+        }
+        
+    }  
+
+    // Record a staff's action result
+    public static function LogStaffActionResult($staff_id, $result, $severity) {
+        $staff_act = new StaffActions;
+        if ($staff_act) {
+            $staff_act->staff_id = $staff_id;
+            $staff_act->staff_action_result = $result;
+            $staff_act->staff_action_severity = $severity;
+            
+            $saved = $staff_act->save();
+            if(!$saved) {
+                Log::Info("Failed to complete LogStaffActionResult() for staff ".$staff_id." with result: ".$result.".");
+            }
+        } else {
+            Log::Info("Failed to create a StaffActions object for staff ".$staff_id.".");
+        }
+        
+    }  
 
     // Get the hyphen separated phone number
     public static function GetHyphenedPhoneNo($digitalNo) {

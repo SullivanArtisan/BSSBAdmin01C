@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Helper\MyHelper;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -43,6 +44,7 @@ class LoginRequest extends FormRequest
      */
     public function authenticate()
     {
+        MyHelper::LogStaffAction(0, $this->throttleKey().' attempted to log in...', '');
         $this->ensureIsNotRateLimited();
 
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {

@@ -22,6 +22,14 @@
 </head>
 
 <body>
+    <?php
+    use Illuminate\Support\Facades\Log;
+    use App\Helper\MyHelper;
+    use Illuminate\Support\Facades\Session;
+
+    $config_lifetime = config('session.lifetime') * 60;
+    $login_time = Session::get('login_time');
+    ?>
 
     <div class="wrapper">
         <!-- Sidebar  -->
@@ -127,7 +135,7 @@
 						</div>
                         <ul class="nav navbar-nav ml-auto">
 							@yield('goback')
-							<form method="POST" action="{{ route('logout') }}" style="cursor: pointer">
+							<form method="POST" action="{{ route('logout') }}" id="form_logout" style="cursor: pointer">
 								@csrf
 
 								<a style="margin-right: 50px; text-decoration:underline;"  class="text-warning"
@@ -196,6 +204,34 @@
                 $('a[aria-expanded=true]').attr('aria-expanded', 'false');
             });
         });
+
+        var globalTimeout = setTimeout(ReloadAllJobMsgs, 1500);
+        function ReloadAllJobMsgs() {
+            // alert('NAME = '+document.getElementById('btn_check_new_msg').name);
+            var configLifetime = {!!json_encode($config_lifetime)!!};
+            var loginTime      = {!!json_encode($login_time)!!};
+            var secondsNow     = Date.now()/1000;
+
+            if (secondsNow > loginTime + configLifetime) {
+                clearTimeout(globalTimeout);
+                $.ajax({
+                    url: 'process_lifetime_expires',
+                    type: 'POST',
+                    data: {
+                        _token:"{{ csrf_token() }}", 
+                        from_role: '',
+                    },    // the _token:token is for Laravel
+                    success: function(dataRetFromPHP) {
+                        document.getElementById('form_logout').submit();
+                    },
+                    error: function(err) {
+                        document.getElementById('form_logout').submit();
+                    }
+                });
+            } else {
+            }
+
+        }
     </script>
 </body>
 

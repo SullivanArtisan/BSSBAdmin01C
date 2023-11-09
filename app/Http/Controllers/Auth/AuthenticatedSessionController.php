@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
+use App\Helper\MyHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,6 +33,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Logged in OK.', '');
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -43,12 +45,14 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request)
     {
+        $staff_id = Auth::user()->id;
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
+		MyHelper::LogStaffActionResult($staff_id, 'Logged out OK.', '');
         return redirect('/');
     }
 }
