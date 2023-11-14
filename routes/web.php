@@ -16,6 +16,7 @@ use App\Http\Controllers\SteamShipLineController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ContainerController;
+use App\Http\Controllers\PDFController;
 use App\Models\User;
 use App\Models\UserSysDetail;
 use App\Models\PowerUnit;
@@ -446,7 +447,7 @@ Route::get('/dispatch_container', function () {
 //////////////////////////////// For Containers ////////////////////////////////
 // Although the 'add' function is triggered by the Ajax function directly of the "Add this Container" button instead of the normal form's POST method through web.php's route,
 // we STILL need the route for the "add" operation. DON'T KNOW WHY!!
-Route::post('container_add', [ContainerController::class, 'add'])->name('container_add');
+Route::post('container_add', [ContainerController::class, 'add'])->middleware(['auth'])->name('container_add');
 
 Route::get('container_selected', function (Request $request) {
     return view('container_selected');
@@ -702,6 +703,9 @@ Route::get('/company_delete/{id}', function ($id) {
 		return redirect()->route('op_result.company')->with('status', 'The company,  <span style="font-weight:bold;font-style:italic;color:blue">'.$company_name.'</span>, has been deleted successfully.');
 	}
 })->middleware(['auth'])->name('company_delete');
+
+//////////////////////////////// For Misc. ////////////////////////////////
+Route::get('/generate_pdf', [PDFController::class, 'generatePDF'])->middleware(['auth'])->name('generate_pdf');
 
 
 //////////////////////////////// For All Results ////////////////////////////////

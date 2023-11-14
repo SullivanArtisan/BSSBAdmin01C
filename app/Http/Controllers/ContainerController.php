@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Helper\MyHelper;
 use Illuminate\Http\Request;
@@ -66,6 +67,7 @@ class ContainerController extends Controller
  
     public function add(Request $request)
     {
+        MyHelper::LogStaffAction(Auth::user()->id, 'Attempted to add a container '.$request->cntnr_name.' for job '.$request->cntnr_job_no, '');
 		$container = new Container;
 		$container->cntnr_job_no        = $request->cntnr_job_no;
 		$container->cntnr_name          = $request->cntnr_name;
@@ -80,14 +82,16 @@ class ContainerController extends Controller
         // the page's redirection in the following conditions is useless. 
         // In fact, the page's redirection is controlled in the callback function of Ajax function in the "Add this Container" button
         if(!$saved) {
+            MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to add container '.$request->cntnr_name.' for job '.$request->cntnr_job_no, '');
             // return redirect()->route('booking_add', ['bookingResult'=>' <span style="color:red">(Failed to add the new container!)</span>', 'bookingTab'=>'containerinfo-tab', 'id'=>$booking->id]);
         } else {
             $totalContainers++;
             $booking->bk_total_containers = $totalContainers;
             $saved = $booking->save();
-            this->UpdateBookingStatus($booking);
+            $this->UpdateBookingStatus($booking);
 
             $this->CreateInitialMovements($booking->id, $container->id, $container->cntnr_name, $booking->bk_job_type);
+            MyHelper::LogStaffActionResult(Auth::user()->id, 'Add container '.$request->cntnr_name.' for job '.$request->cntnr_job_no.' OK', '');
             // return view('home_page');
 		}
     }

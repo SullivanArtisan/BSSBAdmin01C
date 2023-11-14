@@ -175,6 +175,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 		// Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -231,6 +232,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 		'PhpMailerProxy' => App\Services\UsePhpMailer\PhpMailerProxyFacade::class, 
         'MyHelper' => App\Helper\MyHelper::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

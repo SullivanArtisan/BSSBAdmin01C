@@ -65,7 +65,7 @@
 							  <li><a href="{{route('driver_pay_prices_main')}}">Driver Pay Rates</a></li>
 							  <li><a href="#">Subhauler Pay Rates</a></li>
 							</ul>						
-                        <li> <a href="#">Invoicing</a> </li>
+                        <li> <a href="{{route('generate_pdf')}}">Invoicing</a> </li>
                         <li> <a href="#">Driver Pay</a> </li>
                         <li> <a href="{{route('ssl_main')}}">Steamship Line DB</a> </li>
                         <li> <a href="#addressSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Address DB</a> </li>
