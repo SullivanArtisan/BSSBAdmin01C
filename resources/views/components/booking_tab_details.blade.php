@@ -1,6 +1,13 @@
 <?php
 	$zones = App\Models\Zone::all()->sortBy('zone_name');
 	$companies = App\Models\Company::all()->sortBy('cmpny_name');
+	$customers = App\Models\Customer::all()->sortBy('cstm_account_no');
+	$cstm_names = [];
+	$cstm_account_nos = [];
+	foreach($customers as $customer) {
+		array_push($cstm_names, $customer->cstm_account_name);
+		array_push($cstm_account_nos, $customer->cstm_account_no);
+	}
 ?>
 
 <div class="row">
@@ -10,13 +17,53 @@
 					<div class="card">
           				<div class="card-body">
 						  	<div class="row">
+								<div class="col-2"><label class="col-form-label">Customer:&nbsp;</label><span class="text-danger">*</span></div>
+								<div class="col-4">
+									<!--
+									<input class="form-control mt-1 my-text-height" type="text" id="bk_cstm_account_name" name="bk_cstm_account_name" value="{{isset($booking)?$booking->bk_cstm_account_name:''}}">
+									-->
+									<?php
+									if (isset($_GET['selJobId'])) {
+										$tagHead = "<input readonly list=\"bk_cstm_account_name\" name=\"bk_cstm_account_name\" id=\"bkcstmaccountnameinput\" class=\"form-control mt-1 my-text-height\" ";
+									} else {
+										$tagHead = "<input list=\"bk_cstm_account_name\" name=\"bk_cstm_account_name\" id=\"bkcstmaccountnameinput\" onchange=\"CstmSelected()\" class=\"form-control mt-1 my-text-height\" ";
+									}
+										$tagTail = "><datalist id=\"bk_cstm_account_name\">";
+
+									foreach($cstm_names as $cstm_name) {
+										$tagTail.= "<option value=".str_replace(' ', '&nbsp;', $cstm_name).">";
+									}
+									$tagTail.= "</datalist>";
+									if (isset($_GET['selJobId'])) {
+										echo $tagHead."placeholder=\"".$booking->bk_cstm_account_name."\" value=\"".$booking->bk_cstm_account_name."\"".$tagTail;
+									} else {
+										echo $tagHead."placeholder=\"\" value=\"\"".$tagTail;
+									}
+									?>
+								</div>
 								<div class="col-2"><label class="col-form-label">Billing Account:&nbsp;</label><span class="text-danger">*</span></div>
 								<div class="col-4">
+									<!--
 									<input class="form-control mt-1 my-text-height" type="text" id="bk_cstm_account_no" name="bk_cstm_account_no" value="{{isset($booking)?$booking->bk_cstm_account_no:''}}">
-								</div>
-								<div class="col-2"><label class="col-form-label">Customer:&nbsp;</label></div>
-								<div class="col-4">
-									<input class="form-control mt-1 my-text-height" type="text" id="bk_cstm_account_name" name="bk_cstm_account_name" value="{{isset($booking)?$booking->bk_cstm_account_name:''}}">
+									-->
+									<?php
+									if (isset($_GET['selJobId'])) {
+										$tagHead = "<input readonly list=\"bk_cstm_account_no\" name=\"bk_cstm_account_no\" id=\"bkcstmaccountnoinput\" class=\"form-control mt-1 my-text-height\" ";
+									} else {
+										$tagHead = "<input list=\"bk_cstm_account_no\" name=\"bk_cstm_account_no\" id=\"bkcstmaccountnoinput\" onchange=\"CstmAccountNoSelected()\" class=\"form-control mt-1 my-text-height\" ";
+									}
+										$tagTail = "><datalist id=\"bk_cstm_account_no\">";
+
+									foreach($cstm_account_nos as $cstm_cstm_account_no) {
+										$tagTail.= "<option value=".str_replace(' ', '&nbsp;', $cstm_cstm_account_no).">";
+									}
+									$tagTail.= "</datalist>";
+									if (isset($_GET['selJobId'])) {
+										echo $tagHead."placeholder=\"".$booking->bk_cstm_account_no."\" value=\"".$booking->bk_cstm_account_no."\"".$tagTail;
+									} else {
+										echo $tagHead."placeholder=\"\" value=\"\"".$tagTail;
+									}
+									?>
 								</div>
 							</div>
 							<div class="row">
@@ -412,6 +459,28 @@
 	</div>
 
 	<script>
+		function CstmSelected() {
+			var cstmNames = {!!json_encode($cstm_names) !!};
+			var cstmAccountNos = {!!json_encode($cstm_account_nos) !!};
+			selCstm = document.getElementById("bkcstmaccountnameinput").value.normalize('NFKD');
+			for(let idx=0; idx<cstmNames.length; idx++) {
+				if (selCstm == cstmNames[idx]) {
+					document.getElementById("bkcstmaccountnoinput").value = cstmAccountNos[idx];
+				}
+			}
+		}
+
+		function CstmAccountNoSelected() {
+			var cstmNames = {!!json_encode($cstm_names) !!};
+			var cstmAccountNos = {!!json_encode($cstm_account_nos) !!};
+			selCstmAccountNo = document.getElementById("bkcstmaccountnoinput").value.normalize('NFKD');
+			for(let idx=0; idx<cstmAccountNos.length; idx++) {
+				if (selCstmAccountNo == cstmAccountNos[idx]) {
+					document.getElementById("bkcstmaccountnameinput").value = cstmNames[idx];
+				}
+			}
+		}
+
 		function JobTypeSelected() {
 			selType = document.getElementById("bkjobtypeinput").value.normalize('NFKD');
 			if (selType == {!! json_encode(MyHelper::$allJobTypes[0]) !!} ) {	
