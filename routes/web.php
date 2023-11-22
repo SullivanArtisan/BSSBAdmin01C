@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\MailController;
@@ -159,18 +160,10 @@ Route::get('/register', function () {
 })->name('register');
 
 Route::post('process_lifetime_expires', function (Request $request) {	
-	// $from_role 	= "";
-	// if (isset($_POST['from_role'])) {
-	// 	$from_role = $_POST['from_role'];
-	// }
-
-	// if ($from_role 	== "") {
-	 	MyHelper::LogStaffActionResult(Auth::user()->id, 'Logged out OK -- management tier lifetime expired!', '');
-	// } else {
-	//	MyHelper::LogStaffActionResult(Auth::user()->id, 'Logged out OK -- assistants tier lifetime expired!', '');
-	// }
+	Session::forget('login_time');
+	MyHelper::LogStaffActionResult(Auth::user()->id, 'Automatic logout triggered -- session lifetime expired!', '');
 	return;				
-})->middleware(['auth'])->name('process_lifetime_expires');
+})->name('process_lifetime_expires');
 
 //////////////////////////////// For System Users ////////////////////////////////
 Route::get('/system_user_main', function () {

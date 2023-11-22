@@ -24,6 +24,10 @@
 			</div>
 			-->
 		@endif
+
+		<?php
+			Session::forget('login_time');
+		?>
  
 		<div class="container">
 			<div class="row justify-content-center">

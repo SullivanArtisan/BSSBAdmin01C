@@ -192,7 +192,7 @@
     <!-- jQuery Custom Scroller CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
-    <script type="text/javascript">
+        <script type="text/javascript">
         $(document).ready(function () {
             $("#sidebar").mCustomScrollbar({
                 theme: "minimal"
@@ -205,14 +205,13 @@
             });
         });
 
-        var globalTimeout = setTimeout(ReloadAllJobMsgs, 1500);
+        var globalTimeout = setTimeout(ReloadAllJobMsgs, 1500);     // mili-seconds
         function ReloadAllJobMsgs() {
-            // alert('NAME = '+document.getElementById('btn_check_new_msg').name);
             var configLifetime = {!!json_encode($config_lifetime)!!};
             var loginTime      = {!!json_encode($login_time)!!};
             var secondsNow     = Date.now()/1000;
 
-            if (secondsNow > loginTime + configLifetime) {
+            if (secondsNow > loginTime + configLifetime - 300) {     // in seconds
                 clearTimeout(globalTimeout);
                 $.ajax({
                     url: 'process_lifetime_expires',
@@ -225,10 +224,10 @@
                         document.getElementById('form_logout').submit();
                     },
                     error: function(err) {
-                        document.getElementById('form_logout').submit();
                     }
                 });
             } else {
+                globalTimeout = setTimeout(ReloadAllJobMsgs, 7500); // mili-seconds
             }
 
         }
