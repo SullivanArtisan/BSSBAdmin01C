@@ -538,10 +538,13 @@ Route::get('/movements_selected', function () {
 })->middleware(['auth'])->name('movements_selected');
 
 Route::post('/movement_update', function (Request $request) {
-	// Log::info("QQQQ: ". $_POST['mvmt_name']);
 	$mov = Movement::where('mvmt_name', $_POST['mvmt_name'])->first();
 	if ($mov) {
-		$mov->mvmt_operation_date 		= $_POST['mvmt_operation_date'];
+		MyHelper::LogStaffAction(Auth::user()->id, 'Updated movement '.$mov->id.' ('.$mov->mvmt_name.') of container '.$mov->mvmt_cntnr_name.' for booking '.$mov->mvmt_bk_id.'.', '');
+
+		if (strlen($_POST['mvmt_operation_date']) > 0) {
+			$mov->mvmt_operation_date 		= $_POST['mvmt_operation_date'];
+		}
 		$mov->mvmt_operation_time_since	= $_POST['mvmt_operation_time_since'];
 		$mov->mvmt_reserv_no 			= $_POST['mvmt_reserv_no'];
 		$mov->mvmt_ops_code 			= $_POST['mvmt_ops_code'];
@@ -557,9 +560,15 @@ Route::post('/movement_update', function (Request $request) {
 		$mov->mvmt_cmpny_email 			= $_POST['mvmt_cmpny_email'];
 		$mov->mvmt_cmpny_desc 			= $_POST['mvmt_cmpny_desc'];
 		$mov->mvmt_cmpny_zone 			= $_POST['mvmt_cmpny_zone'];
-		$mov->mvmt_cmpny_dvr_no 			= $_POST['mvmt_cmpny_dvr_no'];
+		$mov->mvmt_cmpny_dvr_no 		= $_POST['mvmt_cmpny_dvr_no'];
+
+		$result = $mov->save();
+		if(!$result) {
+			MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to update movement '.$mov->id.' ('.$mov->mvmt_name.') of container '.$mov->mvmt_cntnr_name.'.', '');
+		} else {
+			MyHelper::LogStaffActionResult(Auth::user()->id, 'Updated movement '.$mov->id.' ('.$mov->mvmt_name.') of container '.$mov->mvmt_cntnr_name.' OK.', '');
+		}
 	}
-	$mov->save();
 
     return redirect()->back();
 })->middleware(['auth'])->name('movement_update');
