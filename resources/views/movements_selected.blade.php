@@ -47,7 +47,7 @@
         </div>
     </div>
 	<?php
-		$movs = Movement::where('mvmt_cntnr_name', $container->cntnr_name)->orderBy('mvmt_order')->get();
+		$movs = Movement::where('mvmt_cntnr_name', $container->cntnr_name)->where('mvmt_bk_id', $booking->id)->orderBy('mvmt_order')->get();
 		
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";
