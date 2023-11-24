@@ -31,10 +31,10 @@
 		$outContents .= "<div class=\"col-2 mt-1 align-middle\">";
 			$outContents .= "Container ID";
 		$outContents .= "</div>";
-		$outContents .= "<div class=\"col-2 mt-1 align-middle\">";
+		$outContents .= "<div class=\"col-3 mt-1 align-middle\">";
 			$outContents .= "Status";
 		$outContents .= "</div>";
-		$outContents .= "<div class=\"col-2 mt-1 align-middle\">";
+		$outContents .= "<div class=\"col-1 mt-1 align-middle\">";
 			$outContents .= "Size";
 		$outContents .= "</div>";
 		$outContents .= "<div class=\"col-2 mt-1 align-middle\">";
@@ -71,10 +71,15 @@
 				$outContents .= $container->cntnr_name;
 				$outContents .= "</a>";
 			$outContents .= "</div>";
-			$outContents .= "<div class=\"col-2\">";
-				$outContents .= $container->cntnr_status;
+			$outContents .= "<div class=\"col-3\">";
+				if (strlen($container->cntnr_dvr_no) > 0) {
+					$driver = \App\Models\Driver::where('dvr_no', $container->cntnr_dvr_no)->first();
+					$outContents .= $container->cntnr_status.' : <span class="text-info">'.$driver->dvr_name.'</span>';
+				} else {
+					$outContents .= $container->cntnr_status;
+				}
 			$outContents .= "</div>";
-			$outContents .= "<div class=\"col-2\">";
+			$outContents .= "<div class=\"col-1\">";
 				$outContents .= $container->cntnr_size;
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
