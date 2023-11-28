@@ -9,6 +9,7 @@
 </head>
 
 <?php
+use App\Helper\MyHelper;
 use App\Models\Container;
 use App\Models\Booking;
 use App\Models\Movement;
@@ -39,16 +40,29 @@ use App\Http\Controllers\ContainerController;
         }
     }
 
+    // The purpose of using the 'container_completed' table is to simulate Harbourlink's 3rd-party-software-company,
+    // who provides the communication-bridge-function between Harbourlink's DB server and all drivers' cell-phone application.
     if (isset($_GET['complete'])) {
-        $finishedJob = new container_completed;
-        $finishedJob->ccntnr_id = $cntnrId;
-        $finishedJob->ccntnr_job_id = $booking->id;
-        $finishedJob->ccntnr_dvr_id = $driverId;
-        $finishedJob->ccntnr_finished_on = date("Y-m-d H:i:s");
-        $finishedJob->ccntnr_received = 'N';
-        $finishedJob->save();
-
+        if ($container->cntnr_status != MyHelper::CntnrCompletedStaus()) {
+            MyHelper::LogStaffActionResult($driverId, 'Driver just completed container '.$container->cntnr_name.' for job '.$booking->id, '');
+            $finishedJob = new container_completed;
+            $finishedJob->ccntnr_id = $cntnrId;
+            $finishedJob->ccntnr_job_id = $booking->id;
+            $finishedJob->ccntnr_dvr_id = $driverId;
+            $finishedJob->ccntnr_finished_on = date("Y-m-d H:i:s");
+            $finishedJob->ccntnr_received = 'N';
+            $finishedJob->save();
+        } else {
+            MyHelper::LogStaffActionResult($driverId, 'Driver attempted to complete again for container '.$container->cntnr_name.' of job '.$booking->id, '');
+        }
         $complete = $_GET['complete'];
+    } else {
+        if ($container->cntnr_status == MyHelper::CntnrCompletedStaus()) {
+            MyHelper::LogStaffAction($driverId, 'Driver attempted to enter the ContainerJob4Driver page again for container '.$container->cntnr_name.' of job '.$booking->id, '');
+            $complete = 'ok';
+        } else {
+            MyHelper::LogStaffAction($driverId, 'Driver entered the ContainerJob4Driver page for container '.$container->cntnr_name.' of job '.$booking->id, '');
+        }
     }
 ?>
 

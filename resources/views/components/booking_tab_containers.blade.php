@@ -72,7 +72,7 @@
 				$outContents .= "</a>";
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-3\">";
-				if (strlen($container->cntnr_dvr_no) > 0) {
+				if (($container->cntnr_status == MyHelper::CntnrDispatchedStaus()) && (strlen($container->cntnr_dvr_no) > 0)) {
 					$driver = \App\Models\Driver::where('dvr_no', $container->cntnr_dvr_no)->first();
 					$outContents .= $container->cntnr_status.' : <span class="text-info">'.$driver->dvr_name.'</span>';
 				} else {
@@ -101,6 +101,8 @@
 	echo $outContents;
 	?>
 
+	@if (!strstr($booking->bk_status, MyHelper::BkCompletedStaus()))
+	{
 	<div class="card my-4">
 		<div class="card-body">
 			<div class="row">
@@ -235,6 +237,8 @@
 			</div>
 		</div>	
 	</div>	
+	}
+	@endif
 
 
 	
@@ -274,14 +278,18 @@
 			var token = "{{ csrf_token() }}";
 			var cntnr_job_no = {!! json_encode($cntnr_job_no) !!};
 			var cntnr_name = document.getElementById("cntnr_name").value;
-			var cntnr_goods_desc = document.getElementById("cntnr_goods_desc").value;
-			$.ajax({
-				url: '/container_add',
-				type: 'POST',
-				data: {_token:token, cntnr_job_no:cntnr_job_no, cntnr_name:cntnr_name,	cntnr_goods_desc:cntnr_goods_desc},    // the _token:token is for Laravel
-				success: function(dataRetFromPHP) {
-					location.href = location.href;
-				}
-			});
+			if (cntnr_name.length == 0) {
+				alert("Please enter the container's name first!");
+			} else {
+				var cntnr_goods_desc = document.getElementById("cntnr_goods_desc").value;
+				$.ajax({
+					url: '/container_add',
+					type: 'POST',
+					data: {_token:token, cntnr_job_no:cntnr_job_no, cntnr_name:cntnr_name,	cntnr_goods_desc:cntnr_goods_desc},    // the _token:token is for Laravel
+					success: function(dataRetFromPHP) {
+						location.href = location.href;
+					}
+				});
+			}
 		}
 	</script>
