@@ -15,7 +15,24 @@
         $surcharges = \App\Models\ContainerSurcharge::orderBy('cntnrsurchrg_type')->where('cntnrsurchrg_cntnr_id', $container->id)->get();
         $cntnr_job_no = $booking->bk_job_no;
         $customerAcc = \App\Models\CstmAccountPrice::where('cstm_account_no', $booking->bk_cstm_account_no)->where('cstm_account_from', $booking->bk_pickup_cmpny_zone)->where('cstm_account_to', $booking->bk_delivery_cmpny_zone)->first();
-        $totalCharge = $customerAcc->cstm_account_charge;
+        if ($customerAcc == null) {
+            $customerAcc = \App\Models\CstmAccountPrice::where('cstm_account_no', $booking->bk_cstm_account_no)->first();
+            if ($customerAcc == null) {
+                $totalCharge = 0;
+            } else {
+                if ($customerAcc->cstm_account_charge == null) {
+                    $totalCharge = 0;
+                } else {
+                    $totalCharge = $customerAcc->cstm_account_charge;
+                }
+            }
+        } else {
+            if ($customerAcc->cstm_account_charge == null) {
+                $totalCharge = 0;
+            } else {
+                $totalCharge = $customerAcc->cstm_account_charge;
+            }
+        }
         $containerCharge = $totalCharge;
 
         if (isset($_GET['surchargeId'])) {
@@ -159,19 +176,19 @@
                     <div class="row mx-2">
                         <div class="col-3"><label class="col-form-label">Quantity:&nbsp;</label></div>
                         <div class="col-9">
-                            <input class="form-control mt-1 my-text-height" type="number" step="0.01" id="chrg_quantity" name="chrg_quantity" value="{{isset($selSurcharge)?$selSurcharge->cntnrsurchrg_quantity:''}}">
+                            <input class="form-control mt-1 my-text-height" type="number" step="0.01" id="chrg_quantity" name="chrg_quantity" value="{{isset($selSurcharge)?$selSurcharge->cntnrsurchrg_quantity:''}}" onchange="updateCharge()">
                         </div>
                     </div>
                     <div class="row mx-2">
                         <div class="col-3"><label class="col-form-label">Rate:&nbsp;</label></div>
                         <div class="col-9">
-                            <input class="form-control mt-1 my-text-height" type="number" step="0.01" id="chrg_rate" name="chrg_rate" value="{{isset($selSurcharge)?$selSurcharge->cntnrsurchrg_rate:''}}">
+                            <input class="form-control mt-1 my-text-height" type="number" step="0.01" id="chrg_rate" name="chrg_rate" value="{{isset($selSurcharge)?$selSurcharge->cntnrsurchrg_rate:''}}" onchange="updateCharge()">
                         </div>
                     </div>
                     <div class="row mx-2">
                         <div class="col-3"><label class="col-form-label">Charge:&nbsp;</label></div>
                         <div class="col-5">
-                            <input class="form-control mt-1 my-text-height" type="number" step="0.01" id="chrg_charge" name="chrg_charge" value="{{isset($selSurcharge)?$selSurcharge->cntnrsurchrg_charge:''}}">
+                            <input class="form-control mt-1 my-text-height" type="number" step="0.01" id="chrg_charge" readonly name="chrg_charge" value="{{isset($selSurcharge)?$selSurcharge->cntnrsurchrg_charge:''}}">
                         </div>
                         <div class="col-3"><label class="col-form-label">Override:&nbsp;</label></div>
                         <div class="col-1"><input type="checkbox" class="mt-3" id="chrg_override" name="chrg_override" <?php if(isset($selSurcharge) && $selSurcharge->cntnrsurchrg_override=='T') {echo "checked";}?>></div>                        
@@ -232,6 +249,14 @@
             }
         }
 
+        function updateCharge() {
+            chargeQuantity = document.getElementById('chrg_quantity').value;
+            chargeRate = document.getElementById('chrg_rate').value;
+            if (chargeQuantity != null && chargeRate != null) {
+                document.getElementById('chrg_charge').value = chargeQuantity * chargeRate;
+            }
+        }
+
         function prepareSurchargeDetails() {
             token = "{{ csrf_token() }}";
             cntnrName= {!!json_encode($container->cntnr_name)!!};
@@ -245,6 +270,7 @@
             if (document.getElementById('chrg_override').checked) {
                 chargeOvrd = 'T';
             }
+            jobNo = {!!json_encode($cntnr_job_no)!!};
         }
 
         function addThisSurcharge() {
@@ -267,7 +293,8 @@
                             cntnrsurchrg_quantity:chargeQuantity, 
                             cntnrsurchrg_rate:chargeRate, 
                             cntnrsurchrg_charge:chargeCharge, 
-                            cntnrsurchrg_override:chargeOvrd
+                            cntnrsurchrg_override:chargeOvrd,
+                            cntnrsurchrg_job_no:jobNo
                         },    // the _token:token is for Laravel
                         success: function(dataRetFromPHP) {
                             alert("Surcharge is added for container"+cntnrName+" successfully!");

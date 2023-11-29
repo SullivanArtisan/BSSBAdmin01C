@@ -101,8 +101,7 @@
 	echo $outContents;
 	?>
 
-	@if (!strstr($booking->bk_status, MyHelper::BkCompletedStaus()))
-	{
+	@if (!isset($booking) || (isset($booking) && (!strstr($booking->bk_status, MyHelper::BkCompletedStaus()))))
 	<div class="card my-4">
 		<div class="card-body">
 			<div class="row">
@@ -237,7 +236,6 @@
 			</div>
 		</div>	
 	</div>	
-	}
 	@endif
 
 

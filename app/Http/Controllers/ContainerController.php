@@ -98,7 +98,6 @@ class ContainerController extends Controller
 
     public function update(Request $request)
     {
-        Log::Info("HAHAHA");
 		$validated = $request->validate([
 			//'cntnr_name'              => 'required',
 		]);

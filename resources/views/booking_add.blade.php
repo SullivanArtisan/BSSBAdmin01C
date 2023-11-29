@@ -96,7 +96,7 @@
 					<div class="w-25"></div>
 					<div class="col">
 						<div class="row">
-							@if ($id == '' && $booking_tab == '')
+							@if ($id == '' && $booking_tab == "''")
 							<button class="btn btn-success mx-4" type="submit">Next Step</button>
 							@else
 							<a href="{{route('home_page');}}"><button class="btn btn-success mx-4" type="button">Return</button></a>

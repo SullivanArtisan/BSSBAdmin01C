@@ -34,7 +34,9 @@ class BookingController extends Controller
 			'bk_delivery_cmpny_city'    => 'required',
 			'bk_delivery_cmpny_zone'    => 'required',
 		]);
-		
+
+		MyHelper::LogStaffAction(Auth::user()->id, 'Attempted to add a booking for customer '.$request->bk_cstm_account_name.' with job type '.$request->bk_job_type, '');
+	
 		$booking = new Booking;
         $booking->bk_job_no                     = Auth::user()->docket_prefix;
         $booking->bk_job_no                     .= Auth::user()->last_booking_job_no;
@@ -82,6 +84,7 @@ class BookingController extends Controller
 		$saved = $booking->save();
 		
 		if(!$saved) {
+            MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to add the booking for customer '.$request->bk_cstm_account_name.' with job type '.$request->bk_job_type, '');
 			return redirect()->route('booking_add', ['bookingResult'=>' <span style="color:red">(Failed to add the new booking!)</span>']);
 		} else {
 			$user = User::where('id', Auth::user()->id)->first();
@@ -89,7 +92,9 @@ class BookingController extends Controller
 			$userUpdateResult = $user->save();
 			if(!$userUpdateResult) {
 				Log::Info('Failed to increase booking_job_no for: '.$user->email);
+				MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to increase booking_job_no for: '.$user->email, '');
 			}
+            MyHelper::LogStaffActionResult(Auth::user()->id, 'Added the booking for customer '.$request->bk_cstm_account_name.' with job type '.$request->bk_job_type.' OK', '');
 			return redirect()->route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id]);
 		}
     }

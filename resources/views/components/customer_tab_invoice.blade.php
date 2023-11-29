@@ -162,7 +162,7 @@
 				if(isset($dbTable)) {
 					echo $tagHead."placeholder=\"".$dbTable->cstm_invoice_account_status."\" value=\"".$dbTable->cstm_invoice_account_status."\"".$tagTail;
 				} else {
-					echo $tagHead."placeholder=\"Pending\" value=\"Pending\"".$tagTail;
+					echo $tagHead."placeholder=\"Clear\" value=\"Clear\"".$tagTail;
 				}
 			?>
 		</div>

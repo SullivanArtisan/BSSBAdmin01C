@@ -494,6 +494,7 @@ Route::post('/container_surcharge_add', function (Request $request) {
 		$cntnr_surcharge->cntnrsurchrg_rate 			= $_POST['cntnrsurchrg_rate'];
 		$cntnr_surcharge->cntnrsurchrg_charge 			= $_POST['cntnrsurchrg_charge'];
 		$cntnr_surcharge->cntnrsurchrg_override 		= $_POST['cntnrsurchrg_override'];
+		$cntnr_surcharge->cntnrsurchrg_job_no 			= $_POST['cntnrsurchrg_job_no'];
 	}
 	if(strlen($cntnr_surcharge->cntnrsurchrg_quantity)==0)
 		{$cntnr_surcharge->cntnrsurchrg_quantity = 0;}
