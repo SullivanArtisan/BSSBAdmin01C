@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-1">
                     @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
-                    <button class="btn btn-primary my-1 type=button"><a href="{{route('container_to_dispatch', ['cntnrId'=>$container->id])}}" onclick="return myConfirmation();">Send to Dispatch</a></button>
+                    <button class="btn btn-primary my-1 type=button"><a href="{{route('container_to_dispatch', ['cntnrId'=>$container->id])}}" onclick="return myConfirmation();">Ready to Dispatch</a></button>
                     @else
                     <button class="btn btn-info my-1 type=button disabled">Container Status: <span class="text-dark">{{$container->cntnr_status}}</span></button>
                     @endif

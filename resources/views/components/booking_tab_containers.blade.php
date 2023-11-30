@@ -54,14 +54,15 @@
 	$selected_container	 = "";
 	$selected_containers = array();
 	$listed_containers = 0;
-	foreach ($containers as $container) {
-		$selected_container = $container->id;
-		$listed_containers++;
-		if ($listed_containers % 2) {
-			$outContents = "<div class=\"row\" style=\"background-color:Lavender\">";
-		} else {
-			$outContents = "<div class=\"row\" style=\"background-color:PaleGreen\">";
-		}
+	if (sizeof($containers) > 0) {
+		foreach ($containers as $container) {
+			$selected_container = $container->id;
+			$listed_containers++;
+			if ($listed_containers % 2) {
+				$outContents = "<div class=\"row\" style=\"background-color:Lavender\">";
+			} else {
+				$outContents = "<div class=\"row\" style=\"background-color:PaleGreen\">";
+			}
 			$outContents .= "<div class=\"col-2\">";
 				if (!isset($_GET['selJobId'])) {
 					$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no])."\">";
@@ -91,7 +92,11 @@
 			$outContents .= "<div class=\"col-2\">";
 				$outContents .= "<button class=\"btn btn-secondary btn-sm my-1\" type=\"button\"><a href=\"".route('movements_selected', ['cntnrId'=>$container->id])."\">Edit Movements</a></button>";
 			$outContents .= "</div>";
-		$outContents .= "</div>";
+			$outContents .= "</div>";
+			echo $outContents;
+		}
+	} else {
+		$outContents = "<div><p class=\"text-danger\">This booking has 0 container now!</p></br></div>";
 		echo $outContents;
 	}
 	?>

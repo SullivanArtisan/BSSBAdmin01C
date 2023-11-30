@@ -1,7 +1,7 @@
 @extends('layouts.home_page_base')
 
 @section('goback')
-	<a class="text-primary" href="{{route('home_page')}}" style="margin-right: 10px;">Back</a>
+	<a class="text-primary" href="{{route('dispatch_main')}}" style="margin-right: 10px;">Back</a>
 @show
 
 @section('function_page')
