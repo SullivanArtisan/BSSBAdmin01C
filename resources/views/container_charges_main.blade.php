@@ -120,10 +120,10 @@
                             $outContents .= "</a>";
                         $outContents .= "</div>";
                         $outContents .= "<div class=\"col-3\">";
-                            $tempSurcharge = ($surcharge->cntnrsurchrg_quantity * $surcharge->cntnrsurchrg_rate) + $surcharge->cntnrsurchrg_charge;
-                            $totalCharge += $tempSurcharge;
+                            //$tempSurcharge = ($surcharge->cntnrsurchrg_quantity * $surcharge->cntnrsurchrg_rate) + $surcharge->cntnrsurchrg_charge;
+                            $totalCharge += $surcharge->cntnrsurchrg_charge;
                             $outContents .= "<a href=\"".$refreshUrlWithSurchargeId."\">";
-                                $outContents .= $tempSurcharge;
+                                $outContents .= ltrim($surcharge->cntnrsurchrg_charge, "0");
                             $outContents .= "</a>";
                         $outContents .= "</div>";
                         $outContents .= "<div class=\"col-3\">";

@@ -484,6 +484,8 @@ Route::get('/container_charges_main', function () {
 })->middleware(['auth'])->name('container_charges_main');
 
 Route::post('/container_surcharge_add', function (Request $request) {
+	$container = Container::where('id', $_POST['cntnrsurchrg_cntnr_id'])->first();
+	MyHelper::LogStaffAction(Auth::user()->id, 'To add a surcharge of $'.$_POST['cntnrsurchrg_charge'].' for container '.$container->cntnr_name.'.', '');
 	$cntnr_surcharge = new ContainerSurcharge;
 	if ($cntnr_surcharge) {
 		$cntnr_surcharge->cntnrsurchrg_cntnr_id 		= $_POST['cntnrsurchrg_cntnr_id'];
@@ -503,11 +505,27 @@ Route::post('/container_surcharge_add', function (Request $request) {
 	if(strlen($cntnr_surcharge->cntnrsurchrg_charge)==0)
 		{$cntnr_surcharge->cntnrsurchrg_charge = 0;}
 
-	$cntnr_surcharge->save();
+	$saved = $cntnr_surcharge->save();
+	if (!$saved) {
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to add a surcharge for container '.$container->cntnr_name.'.', '');
+	} else {
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Added the surcharge '.$cntnr_surcharge->id.' OK.', '');
+		$container = Container::where('id', $_POST['cntnrsurchrg_cntnr_id'])->first();
+		$container->cntnr_surcharges += $cntnr_surcharge->cntnrsurchrg_charge;
+		$saved = $container->save();
+		if (!$saved) {
+			MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to update the surcharge for container '.$container->cntnr_name.'.', '');
+		} else {
+			MyHelper::LogStaffActionResult(Auth::user()->id, 'Updated the cntnr_surcharges OK for container'.$container->cntnr_name.'.', '');
+		}
+	}
 })->middleware(['auth'])->name('container_surcharge_add');
 
 Route::post('/container_surcharge_update', function (Request $request) {
+	$container = Container::where('id', $_POST['cntnrsurchrg_cntnr_id'])->first();
 	$cntnr_surcharge = ContainerSurcharge::where('id', $_POST['cntnrsurchrg_id'])->first();
+	MyHelper::LogStaffAction(Auth::user()->id, 'To update the surcharge '.$_POST['cntnrsurchrg_id'].' for container '.$container->cntnr_name.'.', '');
+	$oldSurcharge = 0;
 	if ($cntnr_surcharge) {
 		$cntnr_surcharge->cntnrsurchrg_cntnr_id 		= $_POST['cntnrsurchrg_cntnr_id'];
 		$cntnr_surcharge->cntnrsurchrg_type 			= $_POST['cntnrsurchrg_type'];
@@ -515,6 +533,7 @@ Route::post('/container_surcharge_update', function (Request $request) {
 		$cntnr_surcharge->cntnrsurchrg_3rd_pty_inv_no	= $_POST['cntnrsurchrg_3rd_pty_inv_no'];
 		$cntnr_surcharge->cntnrsurchrg_quantity 		= $_POST['cntnrsurchrg_quantity'];
 		$cntnr_surcharge->cntnrsurchrg_rate 			= $_POST['cntnrsurchrg_rate'];
+		$oldSurcharge = $cntnr_surcharge->cntnrsurchrg_charge;
 		$cntnr_surcharge->cntnrsurchrg_charge 			= $_POST['cntnrsurchrg_charge'];
 		$cntnr_surcharge->cntnrsurchrg_override 		= $_POST['cntnrsurchrg_override'];
 	}
@@ -525,12 +544,51 @@ Route::post('/container_surcharge_update', function (Request $request) {
 	if(strlen($cntnr_surcharge->cntnrsurchrg_charge)==0)
 		{$cntnr_surcharge->cntnrsurchrg_charge = 0;}
 
-	$cntnr_surcharge->save();
+	$saved = $cntnr_surcharge->save();
+	if (!$saved) {
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to update the surcharge '.$_POST['cntnrsurchrg_id'].'.', '');
+	} else {
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Updated the surcharge '.$_POST['cntnrsurchrg_id'].' OK.', '');
+		$container = Container::where('id', $_POST['cntnrsurchrg_cntnr_id'])->first();
+		$container->cntnr_surcharges = $container->cntnr_surcharges - $oldSurcharge + $cntnr_surcharge->cntnrsurchrg_charge;
+		$saved = $container->save();
+		if (!$saved) {
+			MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to update the cntnr_surcharges for container '.$container->cntnr_name.'.', '');
+		} else {
+			MyHelper::LogStaffActionResult(Auth::user()->id, 'Updated the cntnr_surcharges OK for container'.$container->cntnr_name.'. ($oldSurcharge='.$oldSurcharge.';$$cntnr_surcharge->cntnrsurchrg_charge='.$cntnr_surcharge->cntnrsurchrg_charge.')', '');
+		}
+	}
 })->middleware(['auth'])->name('container_surcharge_update');
 
 
 Route::post('/container_surcharge_delete', function (Request $request) {
-	ContainerSurcharge::where('id', $_POST['cntnrsurchrg_id'])->delete();
+	$cntnr_surcharge = ContainerSurcharge::where('id', $_POST['cntnrsurchrg_id'])->first();
+	$container = Container::where('id', $cntnr_surcharge->cntnrsurchrg_cntnr_id)->first();
+	Log::Info("****** 2 ******");
+	$oldSurcharge = $cntnr_surcharge->cntnrsurchrg_charge;
+	Log::Info("****** 3 ******");
+	MyHelper::LogStaffAction(Auth::user()->id, 'To delete the surcharge '.$_POST['cntnrsurchrg_id'].' for container '.$container->cntnr_name.'.', '');
+	
+	$deleted = ContainerSurcharge::where('id', $_POST['cntnrsurchrg_id'])->delete();
+	Log::Info("****** 4 ******");
+	if (!$deleted) {
+		Log::Info("****** 5 ******");
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to delete the surcharge '.$_POST['cntnrsurchrg_id'].'.', '');
+	} else {
+		Log::Info("****** 6 ******");
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Deleted the surcharge '.$_POST['cntnrsurchrg_id'].' OK.', '');
+		Log::Info("****** 8 ******");
+		$container->cntnr_surcharges = $container->cntnr_surcharges - $oldSurcharge;
+		Log::Info("****** 9 ******");
+		$saved = $container->save();
+		if (!$saved) {
+			Log::Info("****** 10 ******");
+			MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to delete the cntnr_surcharges for container '.$container->cntnr_name.'.', '');
+		} else {
+			Log::Info("****** 11 ******");
+			MyHelper::LogStaffActionResult(Auth::user()->id, 'Deleted the cntnr_surcharges OK for container'.$container->cntnr_name.'.', '');
+		}
+	}
 })->middleware(['auth'])->name('container_surcharge_delete');
 
 //////////////////////////////// For Movements ////////////////////////////////

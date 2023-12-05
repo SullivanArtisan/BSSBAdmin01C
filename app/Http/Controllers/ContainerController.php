@@ -73,6 +73,12 @@ class ContainerController extends Controller
 		$container->cntnr_name          = $request->cntnr_name;
 		$container->cntnr_goods_desc    = $request->cntnr_goods_desc;
 		$container->cntnr_status        = MyHelper::CntnrCreatedStaus();
+		$container->cntnr_cost          = $request->cntnr_cost;
+		$container->cntnr_surcharges    = $request->cntnr_surcharges;
+		$container->cntnr_discount      = $request->cntnr_discount;
+		$container->cntnr_tax           = $request->cntnr_tax;
+		$container->cntnr_total         = $request->cntnr_total;
+		$container->cntnr_net           = $request->cntnr_net;
 		$saved = $container->save();
 		
 		$booking = Booking::where('bk_job_no', $request->cntnr_job_no)->first();
@@ -122,26 +128,32 @@ class ContainerController extends Controller
 		} else {
 			$container->cntnr_droponly = 'F';
 		}
-		$container->cntnr_goods_desc             = $request->cntnr_goods_desc;
-		$container->cntnr_ssl_release_date           = $request->cntnr_ssl_release_date;
-		$container->cntnr_cstm_order_no            = $request->cntnr_cstm_order_no;
-		$container->cntnr_cstm_release_date        = $request->cntnr_cstm_release_date;
-		$container->cntnr_cstm_release_time         = $request->cntnr_cstm_release_time;
-		$container->cntnr_trmnl_lfd            = $request->cntnr_trmnl_lfd;
-		$container->cntnr_ssl_lfd   = $request->cntnr_ssl_lfd;
-		$container->cntnr_mt_lfd       = $request->cntnr_mt_lfd;
-		$container->cntnr_mt_release_no      = $request->cntnr_mt_release_no;
-		$container->cntnr_empty_return_trmnl     = $request->cntnr_empty_return_trmnl;
-		$container->cntnr_ssl    = $request->cntnr_ssl;
-		$container->cntnr_seal_no    = $request->cntnr_seal_no;
-		$container->cntnr_cargo_weight    = $request->cntnr_cargo_weight;
+		$container->cntnr_goods_desc        = $request->cntnr_goods_desc;
+		$container->cntnr_ssl_release_date  = $request->cntnr_ssl_release_date;
+		$container->cntnr_cstm_order_no     = $request->cntnr_cstm_order_no;
+		$container->cntnr_cstm_release_date = $request->cntnr_cstm_release_date;
+		$container->cntnr_cstm_release_time = $request->cntnr_cstm_release_time;
+		$container->cntnr_trmnl_lfd         = $request->cntnr_trmnl_lfd;
+		$container->cntnr_ssl_lfd           = $request->cntnr_ssl_lfd;
+		$container->cntnr_mt_lfd            = $request->cntnr_mt_lfd;
+		$container->cntnr_mt_release_no     = $request->cntnr_mt_release_no;
+		$container->cntnr_empty_return_trmnl= $request->cntnr_empty_return_trmnl;
+		$container->cntnr_cost              = $request->cntnr_cost;
+		$container->cntnr_surcharges        = $request->cntnr_surcharges;
+		$container->cntnr_discount          = $request->cntnr_discount;
+		$container->cntnr_tax               = $request->cntnr_tax;
+		$container->cntnr_total             = $request->cntnr_total;
+		$container->cntnr_net               = $request->cntnr_net;
+		$container->cntnr_ssl               = $request->cntnr_ssl;
+		$container->cntnr_seal_no           = $request->cntnr_seal_no;
+		$container->cntnr_cargo_weight      = $request->cntnr_cargo_weight;
 		if ($request->cntnr_weight_unit == 'Kgs') {
-			$container->cntnr_weight_unit = 0;
+			$container->cntnr_weight_unit   = 0;
 		} else {
-			$container->cntnr_weight_unit = 1;
+			$container->cntnr_weight_unit   = 1;
 		}
-		$container->cntnr_chassis_type    = $request->cntnr_chassis_type;
-		$container->cntnr_chassis_id    = $request->cntnr_chassis_id;
+		$container->cntnr_chassis_type      = $request->cntnr_chassis_type;
+		$container->cntnr_chassis_id        = $request->cntnr_chassis_id;
 
 		$saved = $container->save();
 		

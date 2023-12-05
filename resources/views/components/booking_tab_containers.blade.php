@@ -184,6 +184,36 @@
 				<div class="col-5"><input type="hidden" class="form-control mt-1 my-text-height" type="text"></div>
 			</div>
 			<div class="row">
+				<div class="col-2"><label class="col-form-label">Cost:&nbsp;</label></div>
+				<div class="col-4">
+					<input class="form-control mt-1" type="number" step="0.01" id="cntnr_cost" name="cntnr_cost" placeholder="0.0" onchange="getNewPrices()">
+				</div>
+				<div class="col-2"><label class="col-form-label">Surcharges:&nbsp;</label></div>
+				<div class="col-4">
+					<input class="form-control mt-1" readonly type="number" step="0.01" id="cntnr_surcharges" name="cntnr_surcharges" placeholder="0.0">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-2"><label class="col-form-label">Discount:&nbsp;</label></div>
+				<div class="col-4">
+					<input class="form-control mt-1" type="number" step="0.01" id="cntnr_discount" name="cntnr_discount" placeholder="0.0" onchange="getNewPrices()">
+				</div>
+				<div class="col-2"><label class="col-form-label">Tax:&nbsp;</label></div>
+				<div class="col-4">
+					<input class="form-control mt-1" type="number" step="0.01" id="cntnr_tax" name="cntnr_tax" placeholder="0.12" onchange="getNewPrices()">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-2"><label class="col-form-label">Total:&nbsp;</label></div>
+				<div class="col-4">
+					<input class="form-control mt-1" readonly type="number" step="0.01" id="cntnr_total" name="cntnr_total" placeholder="0.0">
+				</div>
+				<div class="col-2"><label class="col-form-label">Net:&nbsp;</label></div>
+				<div class="col-4">
+					<input class="form-control mt-1" readonly type="number" step="0.01" id="cntnr_net" name="cntnr_net" placeholder="0.0">
+				</div>
+			</div>
+			<div class="row">
 				<div class="col-2"><label class="col-form-label">Steamship Line:&nbsp;</label></div>
 				<div class="col-4">
 					<input list="cntnr_ssl" name="cntnr_ssl" id="cntnr_ssl_li" class="form-control mt-1 my-text-height">
@@ -246,6 +276,34 @@
 
 	
 	<script>
+		var cntnr_cost          = 0;
+		var cntnr_surcharges    = 0;
+		var cntnr_discount      = 0;
+		var cntnr_tax           = 0;
+		var cntnr_total         = 0;
+		var cntnr_net           = 0;
+                
+		function getAllPrices() {
+			cntnr_cost = document.getElementById("cntnr_cost").value;
+			cntnr_cost = cntnr_cost === ''? document.getElementById("cntnr_cost").placeholder : cntnr_cost;
+			cntnr_surcharges = document.getElementById("cntnr_surcharges").value;
+			cntnr_surcharges = cntnr_surcharges === ''? document.getElementById("cntnr_surcharges").placeholder : cntnr_surcharges;
+			cntnr_discount = document.getElementById("cntnr_discount").value;
+			cntnr_discount = cntnr_discount === ''? document.getElementById("cntnr_discount").placeholder: cntnr_discount;
+			cntnr_tax = document.getElementById("cntnr_tax").value;
+			cntnr_tax = cntnr_tax === ''? document.getElementById("cntnr_tax").placeholder : cntnr_tax;
+		}
+
+		function getNewTotal() {
+			getAllPrices();
+			cntnr_total = ((cntnr_cost* 10) / 10 + (cntnr_surcharges* 10) / 10) * (1 + (cntnr_tax * 10) / 10);
+		}
+
+		function getNewNet() {
+			getNewTotal();
+			cntnr_net = ((cntnr_total* 10) / 10) - ((((cntnr_discount* 10) / 10)) * (1 + (cntnr_tax * 10) / 10));
+		}
+        
 		$(document).ready(function() {
 			$('.nav-tabs a').on('shown.bs.tab', function(event){		// Lock other tabs except the "Container Details" tab
 				var bookingTab = {!! json_encode($booking_tab) !!};
@@ -276,6 +334,12 @@
 	</script>	
 
 	<script>
+		function getNewPrices() {
+			getNewNet();
+			document.getElementById("cntnr_total").value= cntnr_total.toFixed(2);
+			document.getElementById("cntnr_net").value  = cntnr_net.toFixed(2);
+		}
+
 		function AddNewContainer(e) {
 			e.preventDefault();
 			var token = "{{ csrf_token() }}";
@@ -284,11 +348,23 @@
 			if (cntnr_name.length == 0) {
 				alert("Please enter the container's name first!");
 			} else {
+				var cntnr_cost = document.getElementById("cntnr_cost").value;
+					cntnr_cost = cntnr_cost === ''? document.getElementById("cntnr_cost").placeholder : cntnr_cost;
+				var cntnr_surcharges = document.getElementById("cntnr_surcharges").value;
+					cntnr_surcharges = cntnr_surcharges === ''? document.getElementById("cntnr_surcharges").placeholder : cntnr_surcharges;
+				var cntnr_discount = document.getElementById("cntnr_discount").value;
+					cntnr_discount = cntnr_discount === ''? document.getElementById("cntnr_discount").placeholder: cntnr_discount;
+				var cntnr_tax = document.getElementById("cntnr_tax").value;
+					cntnr_tax = cntnr_tax === ''? document.getElementById("cntnr_tax").placeholder : cntnr_tax;
+				var cntnr_total = document.getElementById("cntnr_total").value;
+					cntnr_total = cntnr_total === ''? document.getElementById("cntnr_total").placeholder : cntnr_total;
+				var cntnr_net = document.getElementById("cntnr_net").value;
+					cntnr_net = cntnr_net === ''? document.getElementById("cntnr_net").placeholder : cntnr_net;
 				var cntnr_goods_desc = document.getElementById("cntnr_goods_desc").value;
 				$.ajax({
 					url: '/container_add',
 					type: 'POST',
-					data: {_token:token, cntnr_job_no:cntnr_job_no, cntnr_name:cntnr_name,	cntnr_goods_desc:cntnr_goods_desc},    // the _token:token is for Laravel
+					data: {_token:token, cntnr_job_no:cntnr_job_no, cntnr_name:cntnr_name,	cntnr_goods_desc:cntnr_goods_desc, cntnr_cost:cntnr_cost, cntnr_surcharges:cntnr_surcharges, cntnr_discount:cntnr_discount, cntnr_tax:cntnr_tax, cntnr_total:cntnr_total, cntnr_net:cntnr_net},    // the _token:token is for Laravel
 					success: function(dataRetFromPHP) {
 						location.href = location.href;
 					}

@@ -1,6 +1,7 @@
 <?php
 	use App\Models\Container;
 	use App\Models\Booking;
+	use App\Models\ContainerSurcharge;
 ?>
 
 @extends('layouts.home_page_base')
@@ -83,10 +84,10 @@
 						@csrf
 						<div class="row mx-2">
 							<div class="col-2"><label class="col-form-label">Container:&nbsp;</label></div>
-							<div class="col-4"><input class="form-control mt-1 my-text-height" type="text" name="cntnr_name" value="{{$container->cntnr_name}}"></div>
+							<div class="col-4"><input class="form-control mt-1" type="text" name="cntnr_name" value="{{$container->cntnr_name}}"></div>
 							<div class="col-2"><label class="col-form-label">Goods' Desc.:&nbsp;</label></div>
                             <div class="col-4">
-                                <input list="cntnr_goods_desc" name="cntnr_goods_desc" id="cntnrGoodsDescInput" class="form-control mt-1 my-text-height" value="{{$container->cntnr_goods_desc}}">
+                                <input list="cntnr_goods_desc" name="cntnr_goods_desc" id="cntnrGoodsDescInput" class="form-control mt-1" value="{{$container->cntnr_goods_desc}}">
                                 <datalist id="cntnr_goods_desc">
                                     <option value="General Freight">
                                     <option value="Dangourous Goods">
@@ -98,7 +99,7 @@
 						<div class="row mx-2">
 							<div class="col-2"><label class="col-form-label">Container Size:&nbsp;</label></div>
                             <div class="col-4">
-                                <input list="cntnr_size" name="cntnr_size" id="cntnrSizeInput" class="form-control mt-1 my-text-height" value="{{$container->cntnr_size}}">
+                                <input list="cntnr_size" name="cntnr_size" id="cntnrSizeInput" class="form-control mt-1" value="{{$container->cntnr_size}}">
                                 <datalist id="cntnr_size">
                                     <option value="100 ft">
                                     <option value="150 ft">
@@ -118,39 +119,39 @@
                         <div class="row mx-2">
                             <div class="col-2"><label class="col-form-label">Customs Release Date:&nbsp;</label></div>
                             <div class="col-4">
-                                <input class=form-control mt-1 my-text-height type=date id=cntnr_cstm_release_date name=cntnr_cstm_release_date value="{{$container->cntnr_cstm_release_date}}">
+                                <input class="form-control mt-1" type="date" id="cntnr_cstm_release_date" name="cntnr_cstm_release_date" value="{{$container->cntnr_cstm_release_date}}">
                             </div>
                             <div class="col-2"><label class="col-form-label">Customs Release Time:&nbsp;</label></div>
                             <div class="col-4">
-                                <input class=form-control mt-1 my-text-height type=time id=cntnr_cstm_release_time name=cntnr_cstm_release_time value="{{$container->cntnr_cstm_release_time}}">
+                                <input class="form-control mt-1" type="time" id="cntnr_cstm_release_time" name="cntnr_cstm_release_time" value="{{$container->cntnr_cstm_release_time}}">
                             </div>
                         </div>
                         <div class="row mx-2">
                             <div class="col-2"><label class="col-form-label">SSL Release Date:&nbsp;</label></div>
                             <div class="col-4">
-                                <input class=form-control mt-1 my-text-height type=date id=cntnr_ssl_release_date name=cntnr_ssl_release_date value="{{$container->cntnr_ssl_release_date}}">
+                                <input class="form-control mt-1" type="date" id="cntnr_ssl_release_date" name="cntnr_ssl_release_date" value="{{$container->cntnr_ssl_release_date}}">
                             </div>
                             <div class="col-2"><label class="col-form-label">SSL Last Free Date:&nbsp;</label></div>
                             <div class="col-4">
-                                <input class=form-control mt-1 my-text-height type=date id=cntnr_ssl_lfd name=cntnr_ssl_lfd value="{{$container->cntnr_ssl_lfd}}">
+                                <input class="form-control mt-1" type="date" id="cntnr_ssl_lfd" name="cntnr_ssl_lfd" value="{{$container->cntnr_ssl_lfd}}">
                             </div>
                         </div>
                         <div class="row mx-2">
                             <div class="col-2"><label class="col-form-label">Terminal Last Free Date:&nbsp;</label></div>
                             <div class="col-4">
-                                <input class=form-control mt-1 my-text-height type=date id=cntnr_trmnl_lfd name=cntnr_trmnl_lfd>
+                                <input class="form-control mt-1" type="date" id="cntnr_trmnl_lfd" name="cntnr_trmnl_lfd">
                             </div>
                             <div class="col-2"><label class="col-form-label">&nbsp;</label></div>
-                            <div class="col-4"><input type="hidden" class="form-control mt-1 my-text-height" type="text"></div>
+                            <div class="col-4"><input type="hidden" class="form-control mt-1" type="text"></div>
                         </div>
                         <div class="row mx-2">
                             <div class="col-2"><label class="col-form-label">Cargo Weight:&nbsp;</label></div>
                             <div class="col-4">
-                                <input class=form-control mt-1 my-text-height type=text id=cntnr_cargo_weight name=cntnr_cargo_weight value="{{$container->cntnr_cargo_weight}}">
+                                <input class="form-control mt-1" type="text" id="cntnr_cargo_weight" name="cntnr_cargo_weight" value="{{$container->cntnr_cargo_weight}}">
                             </div>
                             <div class="col-1">
                                 <?php
-                                $tagHead = "<input list=\"cntnr_weight_unit\" name=\"cntnr_weight_unit\" id=\"cntnrweightunitinput\" class=\"form-control mt-1 my-text-height\" ";
+                                $tagHead = "<input list=\"cntnr_weight_unit\" name=\"cntnr_weight_unit\" id=\"cntnrweightunitinput\" class=\"form-control mt-1\" ";
                                 $tagTail = "><datalist id=\"cntnr_weight_unit\">";
                                 $tagTail.= "<option value=\"Kgs\">";
                                 $tagTail.= "<option value=\"Lbs\">";
@@ -162,12 +163,42 @@
                                 }
                                 ?>
                             </div>
-                            <div class="col-5"><input type="hidden" class="form-control mt-1 my-text-height" type="text"></div>
+                            <div class="col-5"><input type="hidden" class="form-control mt-1" type="text"></div>
+                        </div>
+                        <div class="row mx-2">
+                            <div class="col-2"><label class="col-form-label">Cost:&nbsp;</label></div>
+                            <div class="col-4">
+                                <input class="form-control mt-1" type="number" step="0.01" id="cntnr_cost" name="cntnr_cost" value="{{$container->cntnr_cost}}" onchange="getNewPrices()">
+                            </div>
+                            <div class="col-2"><label class="col-form-label">Surcharges:&nbsp;</label></div>
+                            <div class="col-4">
+                                <input class="form-control mt-1" readonly type="number" step="0.01" id="cntnr_surcharges" name="cntnr_surcharges" value="{{$container->cntnr_surcharges}}" onchange="getNewPrices()">
+                            </div>
+                        </div>
+                        <div class="row mx-2">
+                            <div class="col-2"><label class="col-form-label">Discount:&nbsp;</label></div>
+                            <div class="col-4">
+                                <input class="form-control mt-1" type="number" step="0.01" id="cntnr_discount" name="cntnr_discount" value="{{$container->cntnr_discount}}" onchange="getNewPrices()">
+                            </div>
+                            <div class="col-2"><label class="col-form-label">Tax:&nbsp;</label></div>
+                            <div class="col-4">
+                                <input class="form-control mt-1" readonly type="number" step="0.01" id="cntnr_tax" name="cntnr_tax" value="{{$container->cntnr_tax}}" onchange="getNewPrices()">
+                            </div>
+                        </div>
+                        <div class="row mx-2">
+                            <div class="col-2"><label class="col-form-label">Total:&nbsp;</label></div>
+                            <div class="col-4">
+                                <input class="form-control mt-1" readonly type="number" step="0.01" id="cntnr_total" name="cntnr_total" value="{{$container->cntnr_total}}">
+                            </div>
+                            <div class="col-2"><label class="col-form-label">Net:&nbsp;</label></div>
+                            <div class="col-4">
+                                <input class="form-control mt-1" readonly type="number" step="0.01" id="cntnr_net" name="cntnr_net" value="{{$container->cntnr_net}}">
+                            </div>
                         </div>
                         <div class="row mx-2">
                             <div class="col-2"><label class="col-form-label">Steamship Line:&nbsp;</label></div>
                             <div class="col-4">
-                                <input list="cntnr_ssl" name="cntnr_ssl" id="cntnr_ssl_li" class="form-control mt-1 my-text-height" value="{{$container->cntnr_ssl}}">
+                                <input list="cntnr_ssl" name="cntnr_ssl" id="cntnr_ssl_li" class="form-control mt-1" value="{{$container->cntnr_ssl}}">
                                     <datalist id="cntnr_ssl">
                                         <option value="AAAA">
                                         <option value="BBBB">
@@ -177,7 +208,7 @@
                             </div>
                             <div class="col-2"><label class="col-form-label">Chassis:&nbsp;</label></div>
                             <div class="col-4">
-                                <input list="cntnr_chassis_type" name="cntnr_chassis_type" id="cntnr_chassis_type_li" class="form-control mt-1 my-text-height" value="{{$container->cntnr_chassis_type}}">
+                                <input list="cntnr_chassis_type" name="cntnr_chassis_type" id="cntnr_chassis_type_li" class="form-control mt-1" value="{{$container->cntnr_chassis_type}}">
                                     <datalist id="cntnr_chassis_type">
                                         <option value="AAAA">
                                         <option value="BBBB">
@@ -189,7 +220,7 @@
                         <div class="row mx-2">
                             <div class="col-2"><label class="col-form-label">Empty Return Depot:&nbsp;</label></div>
                             <div class="col-4">
-                                <input list="cntnr_empty_return_trmnl" name="cntnr_empty_return_trmnl" id="cntnr_empty_return_trmnl_li" class="form-control mt-1 my-text-height" value="{{$container->cntnr_empty_return_trmnl}}">
+                                <input list="cntnr_empty_return_trmnl" name="cntnr_empty_return_trmnl" id="cntnr_empty_return_trmnl_li" class="form-control mt-1" value="{{$container->cntnr_empty_return_trmnl}}">
                                     <datalist id="cntnr_empty_return_trmnl">
                                         <option value="AAAA">
                                         <option value="BBBB">
@@ -199,26 +230,26 @@
                             </div>
                             <div class="col-2"><label class="col-form-label">MT Last Free Date:&nbsp;</label></div>
                             <div class="col-4">
-                                <input class=form-control mt-1 my-text-height type=date id=cntnr_mt_lfd name=cntnr_mt_lfd value="{{$container->cntnr_mt_lfd}}">
+                                <input class="form-control mt-1" type="date" id="cntnr_mt_lfd" name="cntnr_mt_lfd" value="{{$container->cntnr_mt_lfd}}">
                             </div>
                         </div>
                         <div class="row mx-2">
                             <div class="col-2"><label class="col-form-label">Seal Number:&nbsp;</label></div>
                             <div class="col-4">
-                                <input class=form-control mt-1 my-text-height type=text id=cntnr_seal_no name=cntnr_seal_no value="{{$container->cntnr_seal_no}}">
+                                <input class="form-control mt-1" type="text" id="cntnr_seal_no" name="cntnr_seal_no" value="{{$container->cntnr_seal_no}}">
                             </div>
                             <div class="col-2"><label class="col-form-label">Customer Order Number:&nbsp;</label></div>
                             <div class="col-4">
-                                <input class=form-control mt-1 my-text-height type=text id=cntnr_cstm_order_no name=cntnr_cstm_order_no value="{{$container->cntnr_cstm_order_no}}">
+                                <input class="form-control mt-1" type="text" id="cntnr_cstm_order_no" name="cntnr_cstm_order_no" value="{{$container->cntnr_cstm_order_no}}">
                             </div>
                         </div>
                         <div class="row mx-2">
                             <div class="col-2"><label class="col-form-label">Booking Number:&nbsp;</label></div>
                             <div class="col-4">
-                                <input class=form-control mt-1 my-text-height type=text id=cntnr_job_no name=cntnr_job_no value="{{$container->cntnr_job_no}}">
+                                <input class="form-control mt-1" type="text" id="cntnr_job_no" name="cntnr_job_no" value="{{$container->cntnr_job_no}}">
                             </div>
                             <div class="col-2"><label class="col-form-label">&nbsp;</label></div>
-                            <div class="col-4"><input type="hidden" class="form-control mt-1 my-text-height" type="text"></div>
+                            <div class="col-4"><input type="hidden" class="form-control mt-1" type="text"></div>
                         </div>
 					    <div class="row my-3">
 							<div class="w-25"></div>
@@ -241,15 +272,47 @@
 				</div>
 			</div>
 		</div>
-		<script>
-		</script>
-		
-		<script>
+	
+        <script>
+            var cntnr_cost          = 0;
+            var cntnr_surcharges    = 0;
+            var cntnr_discount      = 0;
+            var cntnr_tax           = 0;
+            var cntnr_total         = 0;
+            var cntnr_net           = 0;
+            
+            function getAllPrices() {
+				cntnr_cost = document.getElementById("cntnr_cost").value;
+				cntnr_surcharges = document.getElementById("cntnr_surcharges").value;
+				cntnr_discount = document.getElementById("cntnr_discount").value;
+				cntnr_tax = document.getElementById("cntnr_tax").value;
+				cntnr_total = document.getElementById("cntnr_total").value;
+				cntnr_net = document.getElementById("cntnr_net").value;
+            }
+
+            function getNewTotal() {
+                getAllPrices();
+                cntnr_total = ((cntnr_cost* 10) / 10 + (cntnr_surcharges* 10) / 10) * (1 + (cntnr_tax * 10) / 10);
+            }
+
+            function getNewNet() {
+                getNewTotal();
+                cntnr_net = ((cntnr_total* 10) / 10) - ((((cntnr_discount* 10) / 10)) * (1 + (cntnr_tax * 10) / 10));
+            }
+
 			function myConfirmation() {
 				if(!confirm("Are you sure to delete this container?"))
 				event.preventDefault();
 			}
-		</script>
+
+			function getNewPrices() {
+                getNewNet();
+                document.getElementById("cntnr_total").value= cntnr_total.toFixed(2);
+				document.getElementById("cntnr_net").value  = cntnr_net.toFixed(2);
+			}
+
+            getNewPrices();
+        </script>
 	@endsection
 }
 @endif
