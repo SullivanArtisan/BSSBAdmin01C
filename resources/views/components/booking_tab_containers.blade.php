@@ -266,7 +266,7 @@
 				<div class="col-4">
 					<input class=form-control mt-1 my-text-height type=text id=cntnr_job_no name=cntnr_job_no>
 				</div>
-				<div class="col-2"><button class="btn btn-primary my-1 type=button" onclick="AddNewContainer(event)">Add this Container</button></div>
+				<div class="col-2"><button class="btn btn-success my-1 type=button" onclick="AddNewContainer(event)">Add this Container</button></div>
 				<div class="col-4"><input type="hidden" class="form-control mt-1 my-text-height" type="text"></div>
 			</div>
 		</div>	

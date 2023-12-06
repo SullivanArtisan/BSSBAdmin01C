@@ -71,10 +71,10 @@ use App\Models\Booking;
 					@csrf
 					<ul class="nav nav-tabs" id="myTab" role="tablist">
 						<li class="nav-item">
-							<a class="nav-link active " id="bookingdetail-tab" data-toggle="tab" href="#bookingdetail" role="tab" aria-controls="bookingdetail" aria-selected="true">Booking Details</a>
+							<a class="nav-link active " id="bookingdetail-tab" data-toggle="tab" href="#bookingdetail" role="tab" aria-controls="bookingdetail" aria-selected="true" onclick="MarkSelectedTab(1)">Booking Details</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="containerinfo-tab" data-toggle="tab" href="#containerinfo" role="tab" aria-controls="containerinfo" aria-selected="false">Container Details</a>
+							<a class="nav-link" id="containerinfo-tab" data-toggle="tab" href="#containerinfo" role="tab" aria-controls="containerinfo" aria-selected="false" onclick="MarkSelectedTab(2)">Container Details</a>
 						</li>
 					</ul>
 
@@ -91,7 +91,7 @@ use App\Models\Booking;
 						<div class="w-25"></div>
 						<div class="col">
 							<div class="row">
-								<button class="btn btn-success mx-4" type="submit" onclick="return CheckMatchedZones();">Save</button>
+								<button class="btn btn-warning mx-4" type="submit" id="btn_save" onclick="return CheckMatchedZones();">Save</button>
 								<!--
 								<button class="btn btn-secondary mx-3" type="button"><a href="{{route('home_page')}}">Cancel</a></button>
 								-->
@@ -112,7 +112,7 @@ use App\Models\Booking;
 			}
 
 			function CheckMatchedZones() {
-				var originalPickupZone		 = document.getElementById('original_pickup_zone').value;
+				var originalPickupZone		= document.getElementById('original_pickup_zone').value;
 				var originalDeliveryZone	= document.getElementById('original_delivery_zone').value;
 				var inputPickupZone 		= document.getElementById('bk_pickup_cmpny_zone').value;
 				var inputDeliveryZone 		= document.getElementById('bk_delivery_cmpny_zone').value;
@@ -126,6 +126,20 @@ use App\Models\Booking;
 					if(!confirm("The delivery location's zone doesn't match its pricing zone. Continue?")) {
 						event.preventDefault();
 					}
+				}
+
+				if (document.getElementById("btn_save").innerHTML == 'Back') {
+					event.preventDefault();
+					location.reload();
+				}
+			}
+
+			function MarkSelectedTab(tab_sel) {
+				if (tab_sel == 1) {
+					document.getElementById("btn_save").innerHTML = 'Save';
+				} else {
+					document.getElementById("btn_save").className = 'btn btn-dark mx-4';
+					document.getElementById("btn_save").innerHTML = 'Back';
 				}
 			}
 		</script>
