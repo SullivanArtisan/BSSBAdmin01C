@@ -1,6 +1,7 @@
 <?php
 	use App\Models\Container;
 	use App\Models\Booking;
+	use App\Models\SteamShipLine;
 	use App\Models\ContainerSurcharge;
 ?>
 
@@ -20,6 +21,8 @@
         $prevPage = $_GET['prevPage'];
         $retParam = ['id'=>$id, 'prevPage'=>$prevPage, 'selJobId'=>$_GET['selJobId']];
     }
+
+	$ssls = SteamShipLine::all();
 ?>
 
 @section('goback')
@@ -83,7 +86,7 @@
                     @endif
 						@csrf
 						<div class="row mx-2">
-							<div class="col-2"><label class="col-form-label">Container:&nbsp;</label></div>
+							<div class="col-2"><label class="col-form-label">Container Name:&nbsp;</label><span class="text-danger">*</span></div>
 							<div class="col-4"><input class="form-control mt-1" type="text" name="cntnr_name" value="{{$container->cntnr_name}}"></div>
 							<div class="col-2"><label class="col-form-label">Goods' Desc.:&nbsp;</label></div>
                             <div class="col-4">
@@ -196,15 +199,16 @@
                             </div>
                         </div>
                         <div class="row mx-2">
-                            <div class="col-2"><label class="col-form-label">Steamship Line:&nbsp;</label></div>
+                            <div class="col-2"><label class="col-form-label">Steamship Line:&nbsp;</label><span class="text-danger">*</span></div>
                             <div class="col-4">
-                                <input list="cntnr_ssl" name="cntnr_ssl" id="cntnr_ssl_li" class="form-control mt-1" value="{{$container->cntnr_ssl}}">
-                                    <datalist id="cntnr_ssl">
-                                        <option value="AAAA">
-                                        <option value="BBBB">
-                                        <option value="CCCC">
-                                    </datalist>
-                                </input>
+                                <input list="cntnr_ssl" name="cntnr_ssl" id="cntnr_ssl_li" class="form-control mt-1 my-text-height" value="{{$container->cntnr_ssl}}">
+                                <datalist id="cntnr_ssl">
+                                <?php
+                                    foreach ($ssls as $ssl) {
+                                        echo "<option value=\"".$ssl->ssl_name."\">";
+                                    }
+                                ?>
+                                </datalist></input>
                             </div>
                             <div class="col-2"><label class="col-form-label">Chassis:&nbsp;</label></div>
                             <div class="col-4">

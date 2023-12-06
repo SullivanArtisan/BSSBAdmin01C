@@ -7,6 +7,7 @@
 		$booking_tab = '';
 	}
 
+	$ssls = \App\Models\SteamShipLine::all();
 	if (isset($_GET['id'])) {
 		$id = $_GET['id'];
 		$booking = \App\Models\Booking::where('id', $id)->first();
@@ -113,7 +114,7 @@
 				<h5 class="card-title ml-2">New Container</h5>
 			</div>
 			<div class="row">
-				<div class="col-2"><label class="col-form-label">Container:&nbsp;</label></div>
+				<div class="col-2"><label class="col-form-label">Container Name:&nbsp;</label><span class="text-danger">*</span></div>
 				<div class="col-4">
 					<input class=form-control mt-1 my-text-height type=text id=cntnr_name name=cntnr_name>
 				</div>
@@ -214,15 +215,16 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-2"><label class="col-form-label">Steamship Line:&nbsp;</label></div>
+				<div class="col-2"><label class="col-form-label">Steamship Line:&nbsp;</label><span class="text-danger">*</span></div>
 				<div class="col-4">
 					<input list="cntnr_ssl" name="cntnr_ssl" id="cntnr_ssl_li" class="form-control mt-1 my-text-height">
-						<datalist id="cntnr_ssl">
-							<option value="AAAA">
-							<option value="BBBB">
-							<option value="CCCC">
-						</datalist>
-					</input>
+					<datalist id="cntnr_ssl">
+					<?php
+						foreach ($ssls as $ssl) {
+							echo "<option value=\"".$ssl->ssl_name."\">";
+						}
+					?>
+					</datalist></input>
 				</div>
 				<div class="col-2"><label class="col-form-label">Chassis:&nbsp;</label></div>
 				<div class="col-4">
@@ -345,7 +347,10 @@
 			var token = "{{ csrf_token() }}";
 			var cntnr_job_no = {!! json_encode($cntnr_job_no) !!};
 			var cntnr_name = document.getElementById("cntnr_name").value;
-			if (cntnr_name.length == 0) {
+			var cntnr_ssl = document.getElementById("cntnr_ssl_li").value;
+			if (cntnr_ssl.length == 0) {
+				alert("Please enter the steamship line's name first!");
+			} else if (cntnr_name.length == 0) {
 				alert("Please enter the container's name first!");
 			} else {
 				var cntnr_cost = document.getElementById("cntnr_cost").value;
@@ -367,7 +372,10 @@
 					data: {_token:token, cntnr_job_no:cntnr_job_no, cntnr_name:cntnr_name,	cntnr_goods_desc:cntnr_goods_desc, cntnr_cost:cntnr_cost, cntnr_surcharges:cntnr_surcharges, cntnr_discount:cntnr_discount, cntnr_tax:cntnr_tax, cntnr_total:cntnr_total, cntnr_net:cntnr_net},    // the _token:token is for Laravel
 					success: function(dataRetFromPHP) {
 						location.href = location.href;
-					}
+                    },
+                    error: function(err) {
+						alert("Make sure you have already added a new booking first!");
+                    }
 				});
 			}
 		}
