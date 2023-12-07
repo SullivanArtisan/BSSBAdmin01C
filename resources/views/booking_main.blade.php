@@ -231,7 +231,11 @@
 				$outContents .= "</div>";
 				$outContents .= "<div class=\"col-1\">";
 					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
-					$outContents .= "<small>".$booking->bk_total_containers."</small>";
+					if ($booking->bk_total_containers == null) {
+						$outContents .= "<small>0</small>";
+					} else {
+						$outContents .= "<small>".$booking->bk_total_containers."</small>";
+					}
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 			$outContents .= "</div><hr class=\"m-1\"/>";

@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
 				$container->cntnr_completed_on = date("Y-m-d H:i:s");
 				$container->save();
 		
-				Log::Info("I'm going to receive the completed the job for container ".$container->cntnr_name);
+				Log::Info("I'm going to receive the completed job for container ".$container->cntnr_name);
 
 				$booking = Booking::where('id', $done_container->ccntnr_job_id)->first();
 				ContainerController::UpdateBookingStatus($booking);

@@ -32,9 +32,9 @@ class ContainerController extends Controller
             }
         }
 
-        if ($sent_cntnrs == 0) {
+        /*if ($sent_cntnrs == 0) {
             // do nothing
-        } else if ($completed_cntnrs > 0) { 
+        } else*/ if ($completed_cntnrs > 0) { 
             $booking->bk_status = $completed_cntnrs."/".$total_cntnrs." ".MyHelper::BkCompletedStaus();
         } else if ($sent_cntnrs < $total_cntnrs) { 
             $booking->bk_status = $sent_cntnrs."/".$total_cntnrs." Sent";
@@ -79,6 +79,7 @@ class ContainerController extends Controller
 		$container->cntnr_tax           = $request->cntnr_tax;
 		$container->cntnr_total         = $request->cntnr_total;
 		$container->cntnr_net           = $request->cntnr_net;
+		$container->cntnr_ssl           = $request->cntnr_ssl;
 		$saved = $container->save();
 		
 		$booking = Booking::where('bk_job_no', $request->cntnr_job_no)->first();

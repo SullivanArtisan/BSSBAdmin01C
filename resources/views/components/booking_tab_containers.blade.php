@@ -369,12 +369,14 @@
 				$.ajax({
 					url: '/container_add',
 					type: 'POST',
-					data: {_token:token, cntnr_job_no:cntnr_job_no, cntnr_name:cntnr_name,	cntnr_goods_desc:cntnr_goods_desc, cntnr_cost:cntnr_cost, cntnr_surcharges:cntnr_surcharges, cntnr_discount:cntnr_discount, cntnr_tax:cntnr_tax, cntnr_total:cntnr_total, cntnr_net:cntnr_net},    // the _token:token is for Laravel
+					data: {_token:token, cntnr_job_no:cntnr_job_no, cntnr_name:cntnr_name, cntnr_ssl:cntnr_ssl,	cntnr_goods_desc:cntnr_goods_desc, cntnr_cost:cntnr_cost, cntnr_surcharges:cntnr_surcharges, cntnr_discount:cntnr_discount, cntnr_tax:cntnr_tax, cntnr_total:cntnr_total, cntnr_net:cntnr_net},    // the _token:token is for Laravel
 					success: function(dataRetFromPHP) {
 						location.href = location.href;
+						alert("Container "+cntnr_name+" is added to "+cntnr_job_no+" successfully!");
                     },
                     error: function(err) {
-						alert("Make sure you have already added a new booking first!");
+						console.log(err);
+						alert(err);
                     }
 				});
 			}
