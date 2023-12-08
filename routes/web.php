@@ -410,6 +410,27 @@ Route::get('/booking_delete/{id}', function ($id) {
 	}
 })->middleware(['auth'])->name('booking_delete');
 
+Route::post('/booking_pay_off', function (Request $request) {
+	$booking = Booking::where('id', $_POST['booking_id'])->first();
+	MyHelper::LogStaffAction(Auth::user()->id, 'To pay off container '.$booking->bk_job_no.'.', '');
+	$booking->bk_status = MyHelper::BkFullyPaidStaus();
+	$res = $booking->save();
+					
+	if(!$res) {
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to pay off container '.$booking->bk_job_no.'.', '');
+	} else {
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Paid off container '.$booking->bk_job_no.' OK.', '');
+
+		$containers = Container::where('cntnr_job_no', $booking->bk_job_no)->get();
+		foreach ($containers as $container) {
+			if ($container->cntnr_status == MyHelper::CntnrCompletedStaus()) {
+				$container->cntnr_paid = $container->cntnr_net;
+				$container->save();
+			}
+		}
+	}
+})->middleware(['auth'])->name('booking_pay_off');
+
 //////////////////////////////// For Dispatch ////////////////////////////////
 Route::get('/dispatch_main', function () {
 	return view('dispatch_main');

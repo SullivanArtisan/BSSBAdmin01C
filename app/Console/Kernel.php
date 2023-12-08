@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
+            // Check if there's any container which is just completed by the driver. If so, change the container's and the corresponding booking's status
 			$done_containers = \App\Models\container_completed::where('ccntnr_received', 'N')->get();
 			foreach ($done_containers as $done_container) {
 				$container = Container::where('id', $done_container->ccntnr_id)->first();
@@ -39,7 +40,7 @@ class Kernel extends ConsoleKernel
 				$done_container->ccntnr_received = 'Y';
 				$done_container->save();
 			}
-		})->everyMinute();
+        })->everyMinute();
     }
 
     /**

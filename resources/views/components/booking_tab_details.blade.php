@@ -8,6 +8,8 @@
 		array_push($cstm_names, $customer->cstm_account_name);
 		array_push($cstm_account_nos, $customer->cstm_account_no);
 	}
+
+	$completed_status = $booking->bk_total_containers.'/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus();
 ?>
 
 <div class="row">
@@ -139,8 +141,13 @@
 								<div class="col-4">
 									<input class="form-control mt-1 my-text-height" type="text" id="bk_imo_no" name="bk_imo_no" value="{{isset($booking)?$booking->bk_imo_no:''}}">
 								</div>
+								@if ($completed_status == $booking->bk_status)
+								<div class="col-3">&nbsp;</div>
+								<div class="col-3"><button class="btn btn-warning mt-1" onclick="return PayOffThisBooking();">Pay Off This Booking</button></div>
+								@else
 								<div class="col-2"><label class="col-form-label">&nbsp;</label></div>
 								<div class="col-4"><input type="hidden" class="form-control mt-1 my-text-height" type="text"></div>
+								@endif
 							</div>
 						</div>
 					</div>
@@ -509,5 +516,24 @@
 				document.getElementById("bkdeliverymovementtypeinput").value = "";
 			} else {
 			}
+		}
+
+		function PayOffThisBooking() {
+			event.preventDefault();
+			var token = "{{ csrf_token() }}";
+			bookId = {!! json_encode($booking->id) !!}
+			$.ajax({
+				url: '/booking_pay_off',
+				type: 'POST',
+				data: {_token:token, booking_id:bookId},    // the _token:token is for Laravel
+				success: function(dataRetFromPHP) {
+					location.href = location.href;
+					alert("This booking is paid off successfully!");
+				},
+				error: function(err) {
+					console.log(err);
+					alert(err);
+				}
+			});
 		}
 	</script>

@@ -61,6 +61,16 @@ class MyHelper
         return "completed";
     }  
 
+    // Get the 'fully_paid' booking status
+    public static function BkFullyPaidStaus() {
+        return "fully_paid";
+    }  
+
+    // Get the 'partialy_paid' booking status
+    public static function BkPartialyPaidStaus() {
+        return "partialy_paid";
+    }  
+
     //============================================== for containers status =============================================
     // Get the 'created' container status
     public static function CntnrCreatedStaus() {
