@@ -23,6 +23,9 @@ class MyHelper
                                  "Customer Pickup", "Customer Drop", "Other Pickup", "Other Drop", "Live Pickup", "Live Drop", "HarbourLink Pickup", "HarbourLink Drop", 
                                  "Empty Pickup", "Empty Drop", "Bobtail Pickup", "Bobtail Drop", "Cancelled Leg", "Dead Run", "Street Turn"];
 
+    // The Invoice's Issued Time
+    static $invoiceIssuedTime = "all_containers_to_be_dispatched";  // possible values: "all_containers_to_be_dispatched" or "all_containers_completed"
+
     //=================================================================================================================================================================
 
     // Get all Job Types
@@ -90,6 +93,32 @@ class MyHelper
     // Get the 'completed' container status
     public static function CntnrCompletedStaus() {
         return "cntnr_completed";
+    }  
+
+    //============================================== for invoices status =============================================
+    // Get the 'issued' invoice status
+    public static function InvoiceIssuedStaus() {
+        return "invoice_issued";
+    }  
+
+    // Get the 'dued' invoice status
+    public static function InvoiceDuedStaus() {
+        return "invoice_dued";
+    }  
+
+    // Get the 'closed' invoice status
+    public static function InvoiceClosedStaus() {
+        return "invoice_closed";
+    }  
+
+    // Get the 'partially_paid' invoice status
+    public static function InvoicePartiallyPaidStaus() {
+        return "invoice_partially_paid";
+    }  
+
+    // Get the 'cancelled' invoice status
+    public static function InvoiceCancelledStaus() {
+        return "invoice_cancelled";
     }  
 
     //============================================== for dbg log types =============================================

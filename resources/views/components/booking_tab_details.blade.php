@@ -9,6 +9,7 @@
 		array_push($cstm_account_nos, $customer->cstm_account_no);
 	}
 
+	$invoicing_config = MyHelper::$invoiceIssuedTime;
 	$completed_status = $booking->bk_total_containers.'/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus();
 ?>
 
@@ -141,13 +142,9 @@
 								<div class="col-4">
 									<input class="form-control mt-1 my-text-height" type="text" id="bk_imo_no" name="bk_imo_no" value="{{isset($booking)?$booking->bk_imo_no:''}}">
 								</div>
-								@if ($completed_status == $booking->bk_status)
-								<div class="col-3">&nbsp;</div>
-								<div class="col-3"><button class="btn btn-warning mt-1" onclick="return PayOffThisBooking();">Pay Off This Booking</button></div>
-								@else
-								<div class="col-2"><label class="col-form-label">&nbsp;</label></div>
-								<div class="col-4"><input type="hidden" class="form-control mt-1 my-text-height" type="text"></div>
-								@endif
+								<div class="col-1"><label class="col-form-label">&nbsp;</label></div>
+								<div class="col-2"><button class="btn btn-success mt-1" onclick="return SendInvoice();">Send Invoice</button></div>
+								<div class="col-3"><button class="btn btn-danger mt-1" onclick="return PayOffThisBooking();">Pay Off This Booking</button></div>
 							</div>
 						</div>
 					</div>
@@ -521,19 +518,33 @@
 		function PayOffThisBooking() {
 			event.preventDefault();
 			var token = "{{ csrf_token() }}";
-			bookId = {!! json_encode($booking->id) !!}
-			$.ajax({
-				url: '/booking_pay_off',
-				type: 'POST',
-				data: {_token:token, booking_id:bookId},    // the _token:token is for Laravel
-				success: function(dataRetFromPHP) {
-					location.href = location.href;
-					alert("This booking is paid off successfully!");
-				},
-				error: function(err) {
-					console.log(err);
-					alert(err);
-				}
-			});
+			bookId = {!! json_encode($booking->id) !!};
+			bookStatus = {!! json_encode($booking->bk_status) !!};
+			completedStatus = {!! json_encode($completed_status) !!};
+
+			if (bookStatus != completedStatus) {
+				alert("You cannot pay off this booking now.");
+			} else {
+				$.ajax({
+					url: '/booking_pay_off',
+					type: 'POST',
+					data: {_token:token, booking_id:bookId},    // the _token:token is for Laravel
+					success: function(dataRetFromPHP) {
+						location.href = location.href;
+						alert("This booking is paid off successfully!");
+					},
+					error: function(err) {
+						console.log(err);
+						alert(err);
+					}
+				});
+			}
+		}
+
+		function SendInvoice() {
+			event.preventDefault();
+			invoicingConfig = {!! json_encode($invoicing_config) !!};
+
+			alert("Going to send the invoice of this booking!")
 		}
 	</script>
