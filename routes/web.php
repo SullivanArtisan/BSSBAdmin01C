@@ -17,6 +17,7 @@ use App\Http\Controllers\SteamShipLineController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ContainerController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PDFController;
 use App\Models\User;
 use App\Models\UserSysDetail;
@@ -33,8 +34,10 @@ use App\Models\Company;
 use App\Models\Booking;
 use App\Models\Container;
 use App\Models\Movement;
+use App\Models\Invoice;
 use App\Models\ContainerSurcharge;
 use App\Models\container_completed;
+// use PDF;
 
 function ChangeMovName($job_id, $cntnr_id, $mvmt_id, $include) {
 	$pivotMovName = "J_".$job_id."_C_".$cntnr_id."_M_".$mvmt_id;
@@ -412,18 +415,18 @@ Route::get('/booking_delete/{id}', function ($id) {
 
 Route::post('/booking_pay_off', function (Request $request) {
 	$booking = Booking::where('id', $_POST['booking_id'])->first();
-	MyHelper::LogStaffAction(Auth::user()->id, 'To pay off container '.$booking->bk_job_no.'.', '');
+	MyHelper::LogStaffAction(Auth::user()->id, 'To pay off booking '.$booking->bk_job_no.'.', '');
 	$booking->bk_status = MyHelper::BkFullyPaidStaus();
 	$res = $booking->save();
 					
 	if(!$res) {
-		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to pay off container '.$booking->bk_job_no.'.', '');
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to pay off booking '.$booking->bk_job_no.'.', '');
 	} else {
-		MyHelper::LogStaffActionResult(Auth::user()->id, 'Paid off container '.$booking->bk_job_no.' OK.', '');
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Paid off booking '.$booking->bk_job_no.' OK.', '');
 
 		$containers = Container::where('cntnr_job_no', $booking->bk_job_no)->get();
 		foreach ($containers as $container) {
-			if ($container->cntnr_status == MyHelper::CntnrCompletedStaus()) {
+			if ($container->cntnr_status != 'MyHelper::CntnrCompletedStaus()') {
 				$container->cntnr_paid = $container->cntnr_net;
 				$container->save();
 			}
@@ -431,10 +434,68 @@ Route::post('/booking_pay_off', function (Request $request) {
 	}
 })->middleware(['auth'])->name('booking_pay_off');
 
+Route::post('/send_invoice_to_customer', function (Request $request) {
+	$container_prices = [];
+
+	$booking = Booking::where('id', $_POST['booking_id'])->first();
+	$containers = Container::where('cntnr_job_no', $booking->bk_job_no)->get();
+	$net_price  = 0;
+	foreach ($containers as $container) {
+		if ($container->cntnr_status != 'deleted') {
+			$container_price = new StdClass();
+			$container_price->cntnr_cost 		= $container->cntnr_cost;
+			$container_price->cntnr_surcharges	= $container->cntnr_surcharges;
+			$container_price->cntnr_discount 	= $container->cntnr_discount;
+			$container_price->cntnr_tax			= $container->cntnr_tax;
+			$container_price->cntnr_total 		= $container->cntnr_total;
+			$container_price->cntnr_net 		= $container->cntnr_net;
+			array_push($container_prices, $container_price);
+
+			$net_price += $container->cntnr_net;
+		}
+	}
+	MyHelper::LogStaffAction(Auth::user()->id, 'To send invoice of booking '.$booking->bk_job_no.'.', '');
+
+	$current_seconds = time();
+	$due_date_seconds = $current_seconds + MyHelper::$invPaymentWaitingPeriod * 24 * 60 * 60;
+	$invoice = Invoice::where('inv_job_no', $booking->bk_job_no)->first();
+	if ($invoice && $invoice->inv_status != 'deleted' && $invoice->inv_status != MyHelper::InvoiceCancelledStaus()) {
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Invoice '.$invoice->inv_serial_no.' already existed. Just send it to the customer again.', '');
+		$res = true;
+	} else { 
+		$invoice = new Invoice;
+		$invoice->inv_serial_no   	= date("Y-m-", $current_seconds).$booking->bk_job_no;
+		$invoice->inv_job_no      	= $booking->bk_job_no;
+		$invoice->inv_total    		= $net_price;
+		$invoice->inv_status       	= MyHelper::InvoiceIssuedStaus();
+		$invoice->inv_issued_date	= date("Y-m-d H:i:s", $current_seconds);
+		$invoice->inv_due_date    	= date("Y-m-d H:i:s", $due_date_seconds);
+		$res = $invoice->save();
+	}
+					
+	if(!$res) {
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to create invoice '.$invoice->inv_serial_no.' for booking '.$booking->bk_job_no.'.', '');
+	} else {
+		// $data = [
+        //     'inv_serial_no' 	=> $invoice->inv_serial_no,
+        //     'inv_issued_date'	=> $invoice->inv_issued_date,
+        //     'inv_due_date' 		=> $invoice->inv_due_date,
+        //     'date' => date('Y-m-d H:i:s')
+        // ];
+
+        // $pdf = PDF::loadView('myPDF', $data);
+
+        // return $pdf->download('welcome_to_hl.pdf');
+		PDFController::sendInvoice($booking);
+
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Sent invoice '.$invoice->inv_serial_no.' for booking '.$booking->bk_job_no.' OK.', '');
+	}
+})->middleware(['auth'])->name('send_invoice_to_customer');
+
 //////////////////////////////// For Dispatch ////////////////////////////////
 Route::get('/dispatch_main', function () {
 	return view('dispatch_main');
-})->middleware(['auth'])->name('dispatch_main');
+	})->middleware(['auth'])->name('dispatch_main');
 
 Route::get('/dispatch_container', function () {
 	if (!isset($_GET['driverId'])) {
@@ -585,28 +646,19 @@ Route::post('/container_surcharge_update', function (Request $request) {
 Route::post('/container_surcharge_delete', function (Request $request) {
 	$cntnr_surcharge = ContainerSurcharge::where('id', $_POST['cntnrsurchrg_id'])->first();
 	$container = Container::where('id', $cntnr_surcharge->cntnrsurchrg_cntnr_id)->first();
-	Log::Info("****** 2 ******");
 	$oldSurcharge = $cntnr_surcharge->cntnrsurchrg_charge;
-	Log::Info("****** 3 ******");
 	MyHelper::LogStaffAction(Auth::user()->id, 'To delete the surcharge '.$_POST['cntnrsurchrg_id'].' for container '.$container->cntnr_name.'.', '');
 	
 	$deleted = ContainerSurcharge::where('id', $_POST['cntnrsurchrg_id'])->delete();
-	Log::Info("****** 4 ******");
 	if (!$deleted) {
-		Log::Info("****** 5 ******");
 		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to delete the surcharge '.$_POST['cntnrsurchrg_id'].'.', '');
 	} else {
-		Log::Info("****** 6 ******");
 		MyHelper::LogStaffActionResult(Auth::user()->id, 'Deleted the surcharge '.$_POST['cntnrsurchrg_id'].' OK.', '');
-		Log::Info("****** 8 ******");
 		$container->cntnr_surcharges = $container->cntnr_surcharges - $oldSurcharge;
-		Log::Info("****** 9 ******");
 		$saved = $container->save();
 		if (!$saved) {
-			Log::Info("****** 10 ******");
 			MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to delete the cntnr_surcharges for container '.$container->cntnr_name.'.', '');
 		} else {
-			Log::Info("****** 11 ******");
 			MyHelper::LogStaffActionResult(Auth::user()->id, 'Deleted the cntnr_surcharges OK for container'.$container->cntnr_name.'.', '');
 		}
 	}

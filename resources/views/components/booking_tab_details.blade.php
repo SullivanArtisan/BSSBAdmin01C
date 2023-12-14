@@ -9,8 +9,21 @@
 		array_push($cstm_account_nos, $customer->cstm_account_no);
 	}
 
-	$invoicing_config = MyHelper::$invoiceIssuedTime;
+	$invoicing_config = MyHelper::$invoiceSendTiming;
+	$ready_to_be_dispatched_status = '0/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus();
 	$completed_status = $booking->bk_total_containers.'/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus();
+	$invoice_existing = 0;
+	$invoice_closed   = 0;
+	$invoice_cancelled= 0;
+	$invoice = App\Models\Invoice::where('inv_job_no', $booking->bk_job_no)->first();
+	if ($invoice != null) {
+		$invoice_existing = 1;
+		if ($invoice->inv_status == MyHelper::InvoiceClosedStaus()) {
+			$invoice_closed   = 1;
+		} else if ($invoice->inv_status == MyHelper::InvoiceCancelledStaus()) {
+			$invoice_cancelled   = 1;
+		}
+	}
 ?>
 
 <div class="row">
@@ -515,12 +528,18 @@
 			}
 		}
 
+		bookId = {!! json_encode($booking->id) !!};
+		bookStatus = {!! json_encode($booking->bk_status) !!};
+		invoicingConfig = {!! json_encode($invoicing_config) !!};
+		readyToBeDispatchedStatus = {!! json_encode($ready_to_be_dispatched_status) !!};
+		completedStatus = {!! json_encode($completed_status) !!};
+		invoiceExisting = {!! json_encode($invoice_existing) !!};
+		invoiceClosed   = {!! json_encode($invoice_closed) !!};
+		invoiceCancelled= {!! json_encode($invoice_cancelled) !!};
+
 		function PayOffThisBooking() {
 			event.preventDefault();
 			var token = "{{ csrf_token() }}";
-			bookId = {!! json_encode($booking->id) !!};
-			bookStatus = {!! json_encode($booking->bk_status) !!};
-			completedStatus = {!! json_encode($completed_status) !!};
 
 			if (bookStatus != completedStatus) {
 				alert("You cannot pay off this booking now.");
@@ -543,8 +562,36 @@
 
 		function SendInvoice() {
 			event.preventDefault();
-			invoicingConfig = {!! json_encode($invoicing_config) !!};
 
-			alert("Going to send the invoice of this booking!")
+			if (invoicingConfig == 'all_containers_completed') {
+				if (bookStatus != completedStatus) {
+					alert("You cannot send this booking's invoice to the customer now.");
+					return;
+				}
+			} else {	// Default config: all_containers_ready_to_be_dispatched
+				if (bookStatus != readyToBeDispatchedStatus) {
+					alert("You cannot send this booking's invoice to the customer now.");
+					return;
+				}
+			}
+
+			if (invoiceExisting == 1 && invoiceClosed == 1) {
+				alert("You cannot send this booking's invoice again.");
+			} else {
+				var token = "{{ csrf_token() }}";
+				$.ajax({
+					url: '/send_invoice_to_customer',
+					type: 'POST',
+					data: {_token:token, booking_id:bookId},    // the _token:token is for Laravel
+					success: function(dataRetFromPHP) {
+						location.href = location.href;
+						alert("The invoice of this booking has been sent to the customer successfully!");
+					},
+					error: function(err) {
+						console.log(err);
+						alert(err);
+					}
+				});
+			}
 		}
 	</script>

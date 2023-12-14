@@ -23,8 +23,11 @@ class MyHelper
                                  "Customer Pickup", "Customer Drop", "Other Pickup", "Other Drop", "Live Pickup", "Live Drop", "HarbourLink Pickup", "HarbourLink Drop", 
                                  "Empty Pickup", "Empty Drop", "Bobtail Pickup", "Bobtail Drop", "Cancelled Leg", "Dead Run", "Street Turn"];
 
-    // The Invoice's Issued Time
-    static $invoiceIssuedTime = "all_containers_to_be_dispatched";  // possible values: "all_containers_to_be_dispatched" or "all_containers_completed"
+    // The Invoice's Send Timing
+    static $invoiceSendTiming = "all_containers_ready_to_be_dispatched";  // possible values: "all_containers_ready_to_be_dispatched" or "all_containers_completed"
+
+    // The Invoice's Payment Waiting Peroid
+    static $invPaymentWaitingPeriod = 30;  // days
 
     //=================================================================================================================================================================
 
@@ -108,7 +111,7 @@ class MyHelper
 
     // Get the 'closed' invoice status
     public static function InvoiceClosedStaus() {
-        return "invoice_closed";
+        return "invoice_closed";    // It's fully paid
     }  
 
     // Get the 'partially_paid' invoice status

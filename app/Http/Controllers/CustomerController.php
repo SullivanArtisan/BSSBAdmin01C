@@ -41,12 +41,13 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
 		$validated = $request->validate([
-			'cstm_account_no' => 'required',
-			'cstm_account_name' => 'required',
-			'cstm_address' => 'required',
-			'cstm_city' => 'required',
-			'cstm_province' => 'required',
-			'cstm_postcode' => 'required',
+			'cstm_account_no' 		=> 'required',
+			'cstm_account_name' 	=> 'required',
+			'cstm_address' 			=> 'required',
+			'cstm_city' 			=> 'required',
+			'cstm_province' 		=> 'required',
+			'cstm_postcode' 		=> 'required',
+			'cstm_contact_email1'	=> 'required',
 		]);
 		
 		// Prepare the data in customer's Contact tab

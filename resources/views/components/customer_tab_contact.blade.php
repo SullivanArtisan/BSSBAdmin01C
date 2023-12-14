@@ -181,7 +181,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col"><label class="col-form-label">Contact Email 1:&nbsp;</label></div>
+		<div class="col"><label class="col-form-label">Contact Email 1:&nbsp;</label><span class="text-danger">*</span></div>
 		<div class="col">
 			<?php
 				if(isset($dbTable)) {
