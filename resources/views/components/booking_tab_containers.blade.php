@@ -74,12 +74,18 @@
 				$outContents .= "</a>";
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-3\">";
+				if (!isset($_GET['selJobId'])) {
+					$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no])."\">";
+				} else {
+					$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
+				}
 				if (($container->cntnr_status == MyHelper::CntnrDispatchedStaus()) && (strlen($container->cntnr_dvr_no) > 0)) {
 					$driver = \App\Models\Driver::where('dvr_no', $container->cntnr_dvr_no)->first();
 					$outContents .= $container->cntnr_status.' : <span class="text-info">'.$driver->dvr_name.'</span>';
 				} else {
 					$outContents .= $container->cntnr_status;
 				}
+				$outContents .= "</a>";
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-1\">";
 				$outContents .= $container->cntnr_size;
@@ -107,7 +113,7 @@
 	echo $outContents;
 	?>
 
-	@if (!isset($booking) || (isset($booking) && (!strstr($booking->bk_status, MyHelper::BkCompletedStaus()))))
+@if (!isset($booking) || (isset($booking) && (!strstr($booking->bk_status, MyHelper::BkCompletedStaus()))))
 	<div class="card my-4">
 		<div class="card-body">
 			<div class="row">
@@ -273,7 +279,7 @@
 			</div>
 		</div>	
 	</div>	
-	@endif
+@endif
 
 
 	
@@ -303,7 +309,7 @@
 
 		function getNewNet() {
 			getNewTotal();
-			cntnr_net = ((cntnr_total* 10) / 10) - ((((cntnr_discount* 10) / 10)) * (1 + (cntnr_tax * 10) / 10));
+			cntnr_net = ((cntnr_total* 10) / 10) - ((cntnr_discount* 10) / 10);
 		}
         
 		$(document).ready(function() {

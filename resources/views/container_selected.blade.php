@@ -301,7 +301,7 @@
 
             function getNewNet() {
                 getNewTotal();
-                cntnr_net = ((cntnr_total* 10) / 10) - ((((cntnr_discount* 10) / 10)) * (1 + (cntnr_tax * 10) / 10));
+                cntnr_net = ((cntnr_total* 10) / 10) - ((cntnr_discount* 10) / 10);
             }
 
 			function myConfirmation() {

@@ -435,22 +435,12 @@ Route::post('/booking_pay_off', function (Request $request) {
 })->middleware(['auth'])->name('booking_pay_off');
 
 Route::post('/send_invoice_to_customer', function (Request $request) {
-	$container_prices = [];
-
+	Log::Info('-------- booking_id = '.$_POST['booking_id']);
 	$booking = Booking::where('id', $_POST['booking_id'])->first();
 	$containers = Container::where('cntnr_job_no', $booking->bk_job_no)->get();
 	$net_price  = 0;
 	foreach ($containers as $container) {
 		if ($container->cntnr_status != 'deleted') {
-			$container_price = new StdClass();
-			$container_price->cntnr_cost 		= $container->cntnr_cost;
-			$container_price->cntnr_surcharges	= $container->cntnr_surcharges;
-			$container_price->cntnr_discount 	= $container->cntnr_discount;
-			$container_price->cntnr_tax			= $container->cntnr_tax;
-			$container_price->cntnr_total 		= $container->cntnr_total;
-			$container_price->cntnr_net 		= $container->cntnr_net;
-			array_push($container_prices, $container_price);
-
 			$net_price += $container->cntnr_net;
 		}
 	}
@@ -486,7 +476,8 @@ Route::post('/send_invoice_to_customer', function (Request $request) {
         // $pdf = PDF::loadView('myPDF', $data);
 
         // return $pdf->download('welcome_to_hl.pdf');
-		PDFController::sendInvoice($booking);
+		$invoice_file_name = $invoice->inv_serial_no;
+		PDFController::sendInvoice($booking, $invoice_file_name);
 
 		MyHelper::LogStaffActionResult(Auth::user()->id, 'Sent invoice '.$invoice->inv_serial_no.' for booking '.$booking->bk_job_no.' OK.', '');
 	}
@@ -593,7 +584,9 @@ Route::post('/container_surcharge_add', function (Request $request) {
 	} else {
 		MyHelper::LogStaffActionResult(Auth::user()->id, 'Added the surcharge '.$cntnr_surcharge->id.' OK.', '');
 		$container = Container::where('id', $_POST['cntnrsurchrg_cntnr_id'])->first();
-		$container->cntnr_surcharges += $cntnr_surcharge->cntnrsurchrg_charge;
+		$container->cntnr_surcharges	+= $cntnr_surcharge->cntnrsurchrg_charge;
+		$container->cntnr_total 		= ($container->cntnr_cost + $container->cntnr_surcharges) * (1 + $container->cntnr_tax);
+		$container->cntnr_net 			= $container->cntnr_total - $container->cntnr_discount;
 		$saved = $container->save();
 		if (!$saved) {
 			MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to update the surcharge for container '.$container->cntnr_name.'.', '');
@@ -632,7 +625,9 @@ Route::post('/container_surcharge_update', function (Request $request) {
 	} else {
 		MyHelper::LogStaffActionResult(Auth::user()->id, 'Updated the surcharge '.$_POST['cntnrsurchrg_id'].' OK.', '');
 		$container = Container::where('id', $_POST['cntnrsurchrg_cntnr_id'])->first();
-		$container->cntnr_surcharges = $container->cntnr_surcharges - $oldSurcharge + $cntnr_surcharge->cntnrsurchrg_charge;
+		$container->cntnr_surcharges	= $container->cntnr_surcharges - $oldSurcharge + $cntnr_surcharge->cntnrsurchrg_charge;
+		$container->cntnr_total 		= ($container->cntnr_cost + $container->cntnr_surcharges) * (1 + $container->cntnr_tax);
+		$container->cntnr_net 			= $container->cntnr_total - $container->cntnr_discount;
 		$saved = $container->save();
 		if (!$saved) {
 			MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to update the cntnr_surcharges for container '.$container->cntnr_name.'.', '');
@@ -654,7 +649,9 @@ Route::post('/container_surcharge_delete', function (Request $request) {
 		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to delete the surcharge '.$_POST['cntnrsurchrg_id'].'.', '');
 	} else {
 		MyHelper::LogStaffActionResult(Auth::user()->id, 'Deleted the surcharge '.$_POST['cntnrsurchrg_id'].' OK.', '');
-		$container->cntnr_surcharges = $container->cntnr_surcharges - $oldSurcharge;
+		$container->cntnr_surcharges	= $container->cntnr_surcharges - $oldSurcharge;
+		$container->cntnr_total 		= ($container->cntnr_cost + $container->cntnr_surcharges) * (1 + $container->cntnr_tax);
+		$container->cntnr_net 			= $container->cntnr_total - $container->cntnr_discount;
 		$saved = $container->save();
 		if (!$saved) {
 			MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to delete the cntnr_surcharges for container '.$container->cntnr_name.'.', '');

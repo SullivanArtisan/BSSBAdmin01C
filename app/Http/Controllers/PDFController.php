@@ -20,14 +20,10 @@ class PDFController extends Controller
         return $pdf->download('welcome_to_hl.pdf');
     }
 
-    public static function sendInvoice ($booking) {
-        $data = [
-            'date' => date('m/d/Y')
-        ];
-
+    public static function sendInvoice ($booking, $invoice_file_name) {
         $pdf = PDF::loadView('invoice_create', compact('booking'));
 
-        $result = file_put_contents('welcome_invoice.pdf', $pdf->Output());
+        $result = file_put_contents($invoice_file_name.'.pdf', $pdf->Output());
         if (!$result) {
             Log::Info("file_put_contents failed.");
         } else {

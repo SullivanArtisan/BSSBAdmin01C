@@ -9,6 +9,11 @@ $customer   = Customer::where('cstm_account_no', $booking->bk_cstm_account_no)->
 $invoice    = Invoice::where('inv_job_no', $booking->bk_job_no)->first();
 $containers = Container::where('cntnr_job_no', $booking->bk_job_no)->get();
 $idx        = 1;
+$subtotal   = 0;
+$discount   = 0;
+$s_tax      = '';
+$subtotal   = 0;
+$total      = 0;
 ?>
 
 <!DOCTYPE html>
@@ -88,17 +93,40 @@ $idx        = 1;
                 <td>{{ $container->cntnr_cost }}</td>
                 <td>{{ $container->cntnr_surcharges }}</td>
                 <td>{{ $container->cntnr_discount }}</td>
-                <td>{{ $container->cntnr_tax }}</td>
-                <td>{{ $container->cntnr_total }}</td>
-                <td>{{ $container->cntnr_net }}</td>
+                <?php
+                    $s_tax = ($container->cntnr_tax * 100).'%'; 
+                    $temp_subtotal = $container->cntnr_total;
+                    $temp_total = $container->cntnr_net;
+                ?>
+                <td>{{ $s_tax }}</td>
+                <td>{{ $temp_subtotal }}</td>
+                <td>{{ $temp_total }}</td>
             </tr>
         </table>
+        <?php
+            $subtotal += $temp_subtotal;
+            $total +=  $temp_total;
+        ?>
         @endif
     @endforeach
     <p><br/></p>
-    <p class="subtitlestyle">Invoice Summaries</p>
-    <p class="subtitlestyle">Subtotal: xxxx</p>
-    <p class="subtitlestyle">Tax: xxxx</p>
-    <p class="subtitlestyle">Total: xxxx</p>
+    <table>
+        <tr>
+            <th style="border: 1px solid #ffffff; !important">Invoice Summaries</th>
+            <th style="border: 1px solid #ffffff; !important"></th>
+        </tr>
+        <tr style="background-color: #ffffff;" !important>
+            <td style="border: 1px solid #ffffff; !important">Subtotal:</td>
+            <td style="border: 1px solid #ffffff; text-align: right; !important">${{ sprintf('%0.2f', $subtotal) }}</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ffffff; !important">Tax:</td>
+            <td style="border: 1px solid #ffffff; text-align: right; !important">${{ sprintf('%0.2f', $s_tax) }}</td>
+        </tr>
+        <tr style="background-color: #ffffff;" !important>
+            <td style="border: 1px solid #ffffff; !important">Total:</td>
+            <td style="border: 1px solid #ffffff; text-align: right; !important">${{ sprintf('%0.2f', $total) }}</td>
+        </tr>
+    </table>
 </body>
 </html>
