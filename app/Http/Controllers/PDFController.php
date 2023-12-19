@@ -23,11 +23,13 @@ class PDFController extends Controller
     public static function sendInvoice ($booking, $invoice_file_name) {
         $pdf = PDF::loadView('invoice_create', compact('booking'));
 
-        $result = file_put_contents($invoice_file_name.'.pdf', $pdf->Output());
+        $result = file_put_contents($invoice_file_name, $pdf->Output());
         if (!$result) {
             Log::Info("file_put_contents failed.");
+            return FALSE;
         } else {
             Log::Info("file_put_contents OK!");
+            return TRUE;
         }
     }
 }

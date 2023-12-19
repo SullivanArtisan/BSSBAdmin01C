@@ -464,20 +464,25 @@ Route::post('/send_invoice_to_customer', function (Request $request) {
 	}
 					
 	if(!$res) {
-		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to create invoice '.$invoice->inv_serial_no.' for booking '.$booking->bk_job_no.'.', '');
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to create invoice record: '.$invoice->inv_serial_no.' for booking '.$booking->bk_job_no.'.', '');
 	} else {
-		// $data = [
-        //     'inv_serial_no' 	=> $invoice->inv_serial_no,
-        //     'inv_issued_date'	=> $invoice->inv_issued_date,
-        //     'inv_due_date' 		=> $invoice->inv_due_date,
-        //     'date' => date('Y-m-d H:i:s')
-        // ];
+		$invoice_file_name = $invoice->inv_serial_no.'.pdf';
+		$result = PDFController::sendInvoice($booking, $invoice_file_name);
 
-        // $pdf = PDF::loadView('myPDF', $data);
-
-        // return $pdf->download('welcome_to_hl.pdf');
-		$invoice_file_name = $invoice->inv_serial_no;
-		PDFController::sendInvoice($booking, $invoice_file_name);
+		if (!$result) {
+			MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to create a invoice PDF file '.$invoice_file_name.' for booking '.$booking->bk_job_no.'.', '');
+		} else {
+			$customer = Customer::where('cstm_account_no', $booking->bk_cstm_account_no)->first();
+			if ($customer == null) {
+				MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to send the invoice PDF file '.$invoice_file_name.' for booking '.$booking->bk_job_no.'.', '');
+			} else {
+				$rec_email	= $customer->cstm_contact_email1;
+				$rec_name 	= $customer->cstm_contact_name1;
+				$subject 	= "The invoice (for job ".$booking->bk_job_no.") is ready for you!";
+				$body 	 	= "Hi ".$rec_name.",\r\n\r\nThe invoice ".$invoice_file_name." is ready for your attention and process. Please pay it off before the due date.\r\n\r\n";
+				MyHelper::SendThisEmail($rec_email, $rec_name, $subject, $body, $invoice_file_name);
+			}
+		}
 
 		MyHelper::LogStaffActionResult(Auth::user()->id, 'Sent invoice '.$invoice->inv_serial_no.' for booking '.$booking->bk_job_no.' OK.', '');
 	}
@@ -504,7 +509,7 @@ Route::get('/dispatch_container', function () {
 			$rec_name 	= $driver->dvr_name;
 			$subject 	= "A container job (of ".$container->cntnr_name.") is ready for you!";
 			$body 	 	= "Hi ".$rec_name.",\r\n\r\nThe container ".$container->cntnr_name." is ready for your attention and operation. Please click http://bssbadmin01c.test/ContainerJob4Driver?driverId=".$driverId."&cntnrId=".$cntnrId." for the details.\r\n\r\n";
-			MyHelper::SendThisEmail($rec_email, $rec_name, $subject, $body);
+			MyHelper::SendThisEmail($rec_email, $rec_name, $subject, $body, '');
             return redirect()->route('op_result.dispatch', ['cntnrId'=>$cntnrId])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been dipatched to the driver '.$driver->dvr_no.' successfully.');
         }
 	}

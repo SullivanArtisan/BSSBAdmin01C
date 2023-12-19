@@ -205,7 +205,7 @@ class MyHelper
     } 
 
     // Send an email ....
-    public static function SendThisEmail($rec_email, $rec_name, $subject, $body) {
+    public static function SendThisEmail($rec_email, $rec_name, $subject, $body, $attachment) {
         $mail = new PHPMailer(true);
         $mail->isSMTP();            
         $mail->Host = "smtp.gmail.com";
@@ -228,7 +228,10 @@ class MyHelper
         $mail->Subject = $subject;
         $mail->Body = $body."\r\n\r\n\r\nRegards,\r\n\r\n".$mail->FromName;
         // $mail->AltBody = "This is the plain text version of the email content";
-    
+        if ($attachment != null) {
+            $mail->AddAttachment($attachment);
+        }
+
         try {
             $mail->send();
             Log::Info("Message has been sent successfully");

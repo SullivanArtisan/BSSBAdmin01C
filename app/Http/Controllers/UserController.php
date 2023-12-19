@@ -98,7 +98,7 @@ class UserController extends Controller
 					return redirect()->route('op_result.user')->with('status', ' <span style="color:red">Data has NOT been inserted!</span>');
 				} else {
 					if ($request->email_password == 'on') {
-						$emailBody = array('name'=>$request->name, 'status'=>'Your account has been created successfully with temporart password: '.$request->password.'. Please change it ASAP!');
+						$emailBody = array('name'=>$request->name, 'status'=>'Your account has been created successfully with temporary password: '.$request->password.'. Please change it ASAP!');
 						$toAddr = $request->email;
 						Mail::send(['text'=>'mail_ok_notice'], $emailBody, function($message) use($toAddr) {
 							$message->to($toAddr, 'HarbourLink Administration')->subject('Congratulations!!');
