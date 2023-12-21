@@ -8,16 +8,17 @@
 	}
 
 	$ssls = \App\Models\SteamShipLine::all();
-	if (isset($_GET['id'])) {
+	$available_containers = [];
+	if (isset($_GET['id'])) {				// Enter this page from booking_add.blade
 		$id = $_GET['id'];
 		$booking = \App\Models\Booking::where('id', $id)->first();
 		$containers = \App\Models\Container::where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->get();
 		$cntnr_job_no = $booking->bk_job_no;
-		//$containers = \App\Models\Container::where('cntnr_job_no', 'LIKE', 'ML%')->orderBy('cntnr_job_no', 'asc')->distinct()->get(['cntnr_job_no']);
 	} else {
 		if (isset($_GET['selJobId'])) {		// Enter this page from booking_selected.blade
-			$containers = \App\Models\Container::where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->get();
-			$cntnr_job_no = $booking->bk_job_no;
+			$containers 			= \App\Models\Container::where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->get();
+			$available_containers 	= \App\Models\Container::where('cntnr_status', MyHelper::CntnrCompletedStaus())->orderBy('cntnr_name', 'asc')->get();
+			$cntnr_job_no 			= $booking->bk_job_no;
 		} else {
 			$id = '';
 			$containers = [];
@@ -114,11 +115,16 @@
 	?>
 
 @if (!isset($booking) || (isset($booking) && (!strstr($booking->bk_status, MyHelper::BkCompletedStaus()))))
-	<div class="card my-4">
+	<div class="row mt-5 mb-2 h5">
+		<div class="ml-1 col-2"><label>Add a Container by:</label></div>
+		<div class="ml-1 col-2"><input type="radio" name="ContainerAddWays" id="rdoCreateContainer" onclick="RadioCreateClicked()" value="create" class="text-lg" checked> Creating a New One</input></div>
+		<div class="ml-1 col-4"><input type="radio" name="ContainerAddWays" id="rdoSelectContainer" onclick="RadioSelectClicked()" value="select" > Selecting an Existing One</input></div>
+	</div>
+	<div class="card mb-4" id="card_create">
 		<div class="card-body">
-			<div class="row">
+			<!-- <div class="row">
 				<h5 class="card-title ml-2">New Container</h5>
-			</div>
+			</div> -->
 			<div class="row">
 				<div class="col-2"><label class="col-form-label">Container Name:&nbsp;</label><span class="text-danger">*</span></div>
 				<div class="col-4">
@@ -279,112 +285,172 @@
 			</div>
 		</div>	
 	</div>	
+	<div class="card mb-4" id="card_select">
+		<div class="card-body">
+			<div class="row bg-success text-white fw-bold">
+				<div class="col">Container Name</div>
+				<div class="col">Owner</div>
+				<div class="col">Type</div>
+				<div class="col">Length</div>
+				<div class="col">Max Load (KGs)</div>
+			</div>
+		
+			<!-- // Body Lines -->
+			@foreach ($available_containers as $avlble_container)
+			<div class="row" id="{{$avlble_container->id}}" onclick="AddThisSelectedContainer(this.id)">
+				<div class="col">{{$avlble_container->cntnr_name}}</div>
+				<div class="col">{{$booking->bk_cstm_account_name}}</div>
+				<div class="col">{{$avlble_container->cntnr_type}}</div>
+				<div class="col">{{$avlble_container->cntnr_length}}</div>
+				<div class="col">{{$avlble_container->cntnr_max_load}}</div>
+			</div>
+			@endforeach
+		</div>
+	</div>
 @endif
-
-
 	
-	<script>
-		var cntnr_cost          = 0;
-		var cntnr_surcharges    = 0;
-		var cntnr_discount      = 0;
-		var cntnr_tax           = 0;
-		var cntnr_total         = 0;
-		var cntnr_net           = 0;
-                
-		function getAllPrices() {
-			cntnr_cost = document.getElementById("cntnr_cost").value;
-			cntnr_cost = cntnr_cost === ''? document.getElementById("cntnr_cost").placeholder : cntnr_cost;
-			cntnr_surcharges = document.getElementById("cntnr_surcharges").value;
-			cntnr_surcharges = cntnr_surcharges === ''? document.getElementById("cntnr_surcharges").placeholder : cntnr_surcharges;
-			cntnr_discount = document.getElementById("cntnr_discount").value;
-			cntnr_discount = cntnr_discount === ''? document.getElementById("cntnr_discount").placeholder: cntnr_discount;
-			cntnr_tax = document.getElementById("cntnr_tax").value;
-			cntnr_tax = cntnr_tax === ''? document.getElementById("cntnr_tax").placeholder : cntnr_tax;
-		}
+<script>
+	var cntnr_cost          = 0;
+	var cntnr_surcharges    = 0;
+	var cntnr_discount      = 0;
+	var cntnr_tax           = 0;
+	var cntnr_total         = 0;
+	var cntnr_net           = 0;
+	var rdo_clicked			= 'none';
 
-		function getNewTotal() {
-			getAllPrices();
-			cntnr_total = ((cntnr_cost* 10) / 10 + (cntnr_surcharges* 10) / 10) * (1 + (cntnr_tax * 10) / 10);
-		}
+	if (rdo_clicked == 'none') {
+		rdo_clicked = 'create';
+		document.getElementById("card_select").style.display = "none";
+	}
+			
+	function RadioCreateClicked() {
+		document.getElementById("card_create").style.display = "block";
+		document.getElementById("card_select").style.display = "none";
+		rdo_clicked = 'create';
+	}
 
-		function getNewNet() {
-			getNewTotal();
-			cntnr_net = ((cntnr_total* 10) / 10) - ((cntnr_discount* 10) / 10);
-		}
-        
-		$(document).ready(function() {
-			$('.nav-tabs a').on('shown.bs.tab', function(event){		// Lock other tabs except the "Container Details" tab
-				var bookingTab = {!! json_encode($booking_tab) !!};
-				var id = {!! json_encode($id) !!};
+	function RadioSelectClicked() {
+		document.getElementById("card_create").style.display = "none";
+		document.getElementById("card_select").style.display = "block";
+		rdo_clicked = 'select';
+	}
 
-				if (bookingTab == 'containerinfo-tab' && id != '') {
-					document.getElementById('bookingdetail-tab').removeAttribute('class');
-					document.getElementById('bookingdetail-tab').classList.add('nav-link');
-					document.getElementById('containerinfo-tab').removeAttribute('class');
-					document.getElementById('containerinfo-tab').classList.add('nav-link');
-					document.getElementById('containerinfo-tab').classList.add('active');				// <---- active
-
-					document.getElementById('bookingdetail-tab').setAttribute("aria-checked", false);
-					document.getElementById('containerinfo-tab').setAttribute("aria-checked", true);	// <---- active
-
-					document.getElementById('bookingdetail').removeAttribute('class');
-					document.getElementById('bookingdetail').classList.add('tab-pane');
-					document.getElementById('bookingdetail').classList.add('show');
-
-					document.getElementById('containerinfo').removeAttribute('class');
-					document.getElementById('containerinfo').classList.add('tab-pane');
-					document.getElementById('containerinfo').classList.add('show');
-					document.getElementById('containerinfo').classList.add('fade');						// <---- active
-					document.getElementById('containerinfo').classList.add('active');					// <---- active
+	function AddThisSelectedContainer(clicked_id) {
+		if(!confirm("Are you sure to add this existing container?")) {
+			event.preventDefault();
+		} else {
+			var token = "{{ csrf_token() }}";
+			var bookingId = {!! json_encode($booking->id) !!};
+			$.ajax({
+				url: '/container_add_selected',
+				type: 'POST',
+				data: {_token:token, bookingId:bookingId, cntnrId:clicked_id},    // the _token:token is for Laravel
+				success: function(dataRetFromPHP) {
+					location.href = location.href;
+					alert("Container (id = "+clicked_id+") is added to booking (id = "+bookingId+") successfully!");
+				},
+				error: function(err) {
+					console.log(err);
+					alert(err);
 				}
 			});
-		});
-	</script>	
-
-	<script>
-		function getNewPrices() {
-			getNewNet();
-			document.getElementById("cntnr_total").value= cntnr_total.toFixed(2);
-			document.getElementById("cntnr_net").value  = cntnr_net.toFixed(2);
 		}
+	}
 
-		function AddNewContainer(e) {
-			e.preventDefault();
-			var token = "{{ csrf_token() }}";
-			var cntnr_job_no = {!! json_encode($cntnr_job_no) !!};
-			var cntnr_name = document.getElementById("cntnr_name").value;
-			var cntnr_ssl = document.getElementById("cntnr_ssl_li").value;
-			if (cntnr_ssl.length == 0) {
-				alert("Please enter the steamship line's name first!");
-			} else if (cntnr_name.length == 0) {
-				alert("Please enter the container's name first!");
-			} else {
-				var cntnr_cost = document.getElementById("cntnr_cost").value;
-					cntnr_cost = cntnr_cost === ''? document.getElementById("cntnr_cost").placeholder : cntnr_cost;
-				var cntnr_surcharges = document.getElementById("cntnr_surcharges").value;
-					cntnr_surcharges = cntnr_surcharges === ''? document.getElementById("cntnr_surcharges").placeholder : cntnr_surcharges;
-				var cntnr_discount = document.getElementById("cntnr_discount").value;
-					cntnr_discount = cntnr_discount === ''? document.getElementById("cntnr_discount").placeholder: cntnr_discount;
-				var cntnr_tax = document.getElementById("cntnr_tax").value;
-					cntnr_tax = cntnr_tax === ''? document.getElementById("cntnr_tax").placeholder : cntnr_tax;
-				var cntnr_total = document.getElementById("cntnr_total").value;
-					cntnr_total = cntnr_total === ''? document.getElementById("cntnr_total").placeholder : cntnr_total;
-				var cntnr_net = document.getElementById("cntnr_net").value;
-					cntnr_net = cntnr_net === ''? document.getElementById("cntnr_net").placeholder : cntnr_net;
-				var cntnr_goods_desc = document.getElementById("cntnr_goods_desc").value;
-				$.ajax({
-					url: '/container_add',
-					type: 'POST',
-					data: {_token:token, cntnr_job_no:cntnr_job_no, cntnr_name:cntnr_name, cntnr_ssl:cntnr_ssl,	cntnr_goods_desc:cntnr_goods_desc, cntnr_cost:cntnr_cost, cntnr_surcharges:cntnr_surcharges, cntnr_discount:cntnr_discount, cntnr_tax:cntnr_tax, cntnr_total:cntnr_total, cntnr_net:cntnr_net},    // the _token:token is for Laravel
-					success: function(dataRetFromPHP) {
-						location.href = location.href;
-						alert("Container "+cntnr_name+" is added to "+cntnr_job_no+" successfully!");
-                    },
-                    error: function(err) {
-						console.log(err);
-						alert(err);
-                    }
-				});
+	function getAllPrices() {
+		cntnr_cost = document.getElementById("cntnr_cost").value;
+		cntnr_cost = cntnr_cost === ''? document.getElementById("cntnr_cost").placeholder : cntnr_cost;
+		cntnr_surcharges = document.getElementById("cntnr_surcharges").value;
+		cntnr_surcharges = cntnr_surcharges === ''? document.getElementById("cntnr_surcharges").placeholder : cntnr_surcharges;
+		cntnr_discount = document.getElementById("cntnr_discount").value;
+		cntnr_discount = cntnr_discount === ''? document.getElementById("cntnr_discount").placeholder: cntnr_discount;
+		cntnr_tax = document.getElementById("cntnr_tax").value;
+		cntnr_tax = cntnr_tax === ''? document.getElementById("cntnr_tax").placeholder : cntnr_tax;
+	}
+
+	function getNewTotal() {
+		getAllPrices();
+		cntnr_total = ((cntnr_cost* 10) / 10 + (cntnr_surcharges* 10) / 10) * (1 + (cntnr_tax * 10) / 10);
+	}
+
+	function getNewNet() {
+		getNewTotal();
+		cntnr_net = ((cntnr_total* 10) / 10) - ((cntnr_discount* 10) / 10);
+	}
+	
+	$(document).ready(function() {
+		$('.nav-tabs a').on('shown.bs.tab', function(event){		// Lock other tabs except the "Container Details" tab
+			var bookingTab = {!! json_encode($booking_tab) !!};
+			var id = {!! json_encode($id) !!};
+
+			if (bookingTab == 'containerinfo-tab' && id != '') {
+				document.getElementById('bookingdetail-tab').removeAttribute('class');
+				document.getElementById('bookingdetail-tab').classList.add('nav-link');
+				document.getElementById('containerinfo-tab').removeAttribute('class');
+				document.getElementById('containerinfo-tab').classList.add('nav-link');
+				document.getElementById('containerinfo-tab').classList.add('active');				// <---- active
+
+				document.getElementById('bookingdetail-tab').setAttribute("aria-checked", false);
+				document.getElementById('containerinfo-tab').setAttribute("aria-checked", true);	// <---- active
+
+				document.getElementById('bookingdetail').removeAttribute('class');
+				document.getElementById('bookingdetail').classList.add('tab-pane');
+				document.getElementById('bookingdetail').classList.add('show');
+
+				document.getElementById('containerinfo').removeAttribute('class');
+				document.getElementById('containerinfo').classList.add('tab-pane');
+				document.getElementById('containerinfo').classList.add('show');
+				document.getElementById('containerinfo').classList.add('fade');						// <---- active
+				document.getElementById('containerinfo').classList.add('active');					// <---- active
 			}
+		});
+	});
+</script>	
+
+<script>
+	function getNewPrices() {
+		getNewNet();
+		document.getElementById("cntnr_total").value= cntnr_total.toFixed(2);
+		document.getElementById("cntnr_net").value  = cntnr_net.toFixed(2);
+	}
+
+	function AddNewContainer(e) {
+		e.preventDefault();
+		var token = "{{ csrf_token() }}";
+		var cntnr_job_no = {!! json_encode($cntnr_job_no) !!};
+		var cntnr_name = document.getElementById("cntnr_name").value;
+		var cntnr_ssl = document.getElementById("cntnr_ssl_li").value;
+		if (cntnr_ssl.length == 0) {
+			alert("Please enter the steamship line's name first!");
+		} else if (cntnr_name.length == 0) {
+			alert("Please enter the container's name first!");
+		} else {
+			var cntnr_cost = document.getElementById("cntnr_cost").value;
+				cntnr_cost = cntnr_cost === ''? document.getElementById("cntnr_cost").placeholder : cntnr_cost;
+			var cntnr_surcharges = document.getElementById("cntnr_surcharges").value;
+				cntnr_surcharges = cntnr_surcharges === ''? document.getElementById("cntnr_surcharges").placeholder : cntnr_surcharges;
+			var cntnr_discount = document.getElementById("cntnr_discount").value;
+				cntnr_discount = cntnr_discount === ''? document.getElementById("cntnr_discount").placeholder: cntnr_discount;
+			var cntnr_tax = document.getElementById("cntnr_tax").value;
+				cntnr_tax = cntnr_tax === ''? document.getElementById("cntnr_tax").placeholder : cntnr_tax;
+			var cntnr_total = document.getElementById("cntnr_total").value;
+				cntnr_total = cntnr_total === ''? document.getElementById("cntnr_total").placeholder : cntnr_total;
+			var cntnr_net = document.getElementById("cntnr_net").value;
+				cntnr_net = cntnr_net === ''? document.getElementById("cntnr_net").placeholder : cntnr_net;
+			var cntnr_goods_desc = document.getElementById("cntnr_goods_desc").value;
+			$.ajax({
+				url: '/container_add_new',
+				type: 'POST',
+				data: {_token:token, cntnr_job_no:cntnr_job_no, cntnr_name:cntnr_name, cntnr_ssl:cntnr_ssl,	cntnr_goods_desc:cntnr_goods_desc, cntnr_cost:cntnr_cost, cntnr_surcharges:cntnr_surcharges, cntnr_discount:cntnr_discount, cntnr_tax:cntnr_tax, cntnr_total:cntnr_total, cntnr_net:cntnr_net},    // the _token:token is for Laravel
+				success: function(dataRetFromPHP) {
+					location.href = location.href;
+					alert("Container "+cntnr_name+" is added to "+cntnr_job_no+" successfully!");
+				},
+				error: function(err) {
+					console.log(err);
+					alert(err);
+				}
+			});
 		}
-	</script>
+	}
+</script>

@@ -67,10 +67,13 @@ class ContainerController extends Controller
  
     public function add(Request $request)
     {
-        MyHelper::LogStaffAction(Auth::user()->id, 'Attempted to add a container '.$request->cntnr_name.' for job '.$request->cntnr_job_no, '');
+		$booking = Booking::where('bk_job_no', $request->cntnr_job_no)->first();
+
+        MyHelper::LogStaffAction(Auth::user()->id, 'Attempted to add a new container '.$request->cntnr_name.' for job '.$request->cntnr_job_no, '');
 		$container = new Container;
 		$container->cntnr_job_no        = $request->cntnr_job_no;
 		$container->cntnr_name          = $request->cntnr_name;
+		$container->cntnr_cstm_account_name = $booking->bk_cstm_account_name;
 		$container->cntnr_goods_desc    = $request->cntnr_goods_desc;
 		$container->cntnr_status        = MyHelper::CntnrCreatedStaus();
 		$container->cntnr_cost          = $request->cntnr_cost;
@@ -82,7 +85,6 @@ class ContainerController extends Controller
 		$container->cntnr_ssl           = $request->cntnr_ssl;
 		$saved = $container->save();
 		
-		$booking = Booking::where('bk_job_no', $request->cntnr_job_no)->first();
         $totalContainers = $booking->bk_total_containers;
 
         // Because the 'add' function is triggered by the Ajax function directly of the "Add this Container" button instead of the normal form's POST method through web.php's route,
@@ -98,8 +100,36 @@ class ContainerController extends Controller
             $this->UpdateBookingStatus($booking);
 
             $this->CreateInitialMovements($booking->id, $container->id, $container->cntnr_name, $booking->bk_job_type);
-            MyHelper::LogStaffActionResult(Auth::user()->id, 'Add container '.$request->cntnr_name.' for job '.$request->cntnr_job_no.' OK', '');
-            // return view('home_page');
+            MyHelper::LogStaffActionResult(Auth::user()->id, 'Added container '.$request->cntnr_name.' for job '.$request->cntnr_job_no.' OK', '');
+		}
+    }
+ 
+    public function addSelected(Request $request)
+    {
+		$booking    = Booking::where('id', $request->bookingId)->first();
+		$container  = Container::where('id', $request->cntnrId)->first();
+
+        MyHelper::LogStaffAction(Auth::user()->id, 'Attempted to add the existing container '.$container->cntnr_name.' for job '.$booking->bk_job_no, '');
+		$container->cntnr_job_no        = $booking->bk_job_no;
+		$container->cntnr_cstm_account_name = $booking->bk_cstm_account_name;
+		$container->cntnr_status        = MyHelper::CntnrCreatedStaus();
+		$saved = $container->save();
+		
+        $totalContainers = $booking->bk_total_containers;
+
+        // Because the 'add' function is triggered by the Ajax function directly of the "Add this Container" button instead of the normal form's POST method through web.php's route,
+        // the page's redirection in the following conditions is useless. 
+        // In fact, the page's redirection is controlled in the callback function of Ajax function in the "Add this Container" button
+        if(!$saved) {
+            MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to add the existing container '.$container->cntnr_name.' for job '.$booking->bk_job_no, '');
+        } else {
+            $totalContainers++;
+            $booking->bk_total_containers = $totalContainers;
+            $saved = $booking->save();
+            $this->UpdateBookingStatus($booking);
+
+            // $this->CreateInitialMovements($booking->id, $container->id, $container->cntnr_name, $booking->bk_job_type);
+            MyHelper::LogStaffActionResult(Auth::user()->id, 'Added the existing container '.$container->cntnr_name.' for job '.$booking->bk_job_no.' OK', '');
 		}
     }
 

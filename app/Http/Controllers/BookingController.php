@@ -95,7 +95,7 @@ class BookingController extends Controller
 				MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to increase booking_job_no for: '.$user->email, '');
 			}
             MyHelper::LogStaffActionResult(Auth::user()->id, 'Added the booking for customer '.$request->bk_cstm_account_name.' with job type '.$request->bk_job_type.' OK', '');
-			return redirect()->route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id]);
+			return redirect()->route('booking_selected', ['selJobId'=>$booking->id]);
 		}
     }
 	

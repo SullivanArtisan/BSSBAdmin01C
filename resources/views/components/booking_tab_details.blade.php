@@ -10,12 +10,24 @@
 	}
 
 	$invoicing_config = MyHelper::$invoiceSendTiming;
-	$ready_to_be_dispatched_status = '0/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus();
-	$completed_status = $booking->bk_total_containers.'/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus();
+	if (!strstr($_SERVER['REQUEST_URI'], 'booking_selected')) {		// User entered this page by clicking the Add button in Bookings
+		$page_from_booking_selected = false;
+		$booking_id = 0;
+		$booking_status = 'deleted';
+		$ready_to_be_dispatched_status = '0/? completed';
+		$completed_status = '?/? completed';
+		$invoice = null;
+	} else {	// User entered this page by clicking any existing booking in Bookings
+		$page_from_booking_selected = true;
+		$booking_id = $booking->id;
+		$booking_status = $booking->bk_status;
+		$ready_to_be_dispatched_status = '0/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus();
+		$completed_status = $booking->bk_total_containers.'/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus();
+		$invoice = App\Models\Invoice::where('inv_job_no', $booking->bk_job_no)->first();
+	}
 	$invoice_existing = 0;
 	$invoice_closed   = 0;
 	$invoice_cancelled= 0;
-	$invoice = App\Models\Invoice::where('inv_job_no', $booking->bk_job_no)->first();
 	if ($invoice != null) {
 		$invoice_existing = 1;
 		if ($invoice->inv_status == MyHelper::InvoiceClosedStaus()) {
@@ -24,6 +36,7 @@
 			$invoice_cancelled   = 1;
 		}
 	}
+
 ?>
 
 <div class="row">
@@ -156,8 +169,10 @@
 									<input class="form-control mt-1 my-text-height" type="text" id="bk_imo_no" name="bk_imo_no" value="{{isset($booking)?$booking->bk_imo_no:''}}">
 								</div>
 								<div class="col-1"><label class="col-form-label">&nbsp;</label></div>
+								@if (true == $page_from_booking_selected)
 								<div class="col-2"><button class="btn btn-success mt-1" onclick="return SendInvoice();">Send Invoice</button></div>
 								<div class="col-3"><button class="btn btn-danger mt-1" onclick="return PayOffThisBooking();">Pay Off This Booking</button></div>
+								@endif
 							</div>
 						</div>
 					</div>
@@ -528,8 +543,8 @@
 			}
 		}
 
-		bookId = {!! json_encode($booking->id) !!};
-		bookStatus = {!! json_encode($booking->bk_status) !!};
+		bookId = {!! json_encode($booking_id) !!};
+		bookStatus = {!! json_encode($booking_status) !!};
 		invoicingConfig = {!! json_encode($invoicing_config) !!};
 		readyToBeDispatchedStatus = {!! json_encode($ready_to_be_dispatched_status) !!};
 		completedStatus = {!! json_encode($completed_status) !!};
@@ -565,18 +580,18 @@
 
 			if (invoicingConfig == 'all_containers_completed') {
 				if (bookStatus != completedStatus) {
-					alert("You cannot send this booking's invoice to the customer now.");
+					alert("\r\nSorry!!\r\nYou cannot send this booking's invoice to the customer now.");
 					return;
 				}
 			} else {	// Default config: all_containers_ready_to_be_dispatched
 				if (bookStatus != readyToBeDispatchedStatus) {
-					alert("You cannot send this booking's invoice to the customer now.");
+					alert("\r\nSorry!!\r\nYou cannot send this booking's invoice to the customer now.");
 					return;
 				}
 			}
 
 			if (invoiceExisting == 1 && invoiceClosed == 1) {
-				alert("You cannot send this booking's invoice again.");
+				alert("\r\nOops!!\r\nYou cannot send this booking's invoice again.");
 			} else {
 				var token = "{{ csrf_token() }}";
 				$.ajax({

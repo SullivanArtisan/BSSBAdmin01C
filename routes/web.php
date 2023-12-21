@@ -518,7 +518,8 @@ Route::get('/dispatch_container', function () {
 //////////////////////////////// For Containers ////////////////////////////////
 // Although the 'add' function is triggered by the Ajax function directly of the "Add this Container" button instead of the normal form's POST method through web.php's route,
 // we STILL need the route for the "add" operation. DON'T KNOW WHY!!
-Route::post('container_add', [ContainerController::class, 'add'])->middleware(['auth'])->name('container_add');
+Route::post('container_add_new', [ContainerController::class, 'add'])->middleware(['auth'])->name('container_add_new');
+Route::post('container_add_selected', [ContainerController::class, 'addSelected'])->middleware(['auth'])->name('container_add_selected');
 
 Route::get('container_selected', function (Request $request) {
     return view('container_selected');

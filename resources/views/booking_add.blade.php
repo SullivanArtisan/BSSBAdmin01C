@@ -66,13 +66,6 @@
                         <a class="nav-link" id="bookingdetail-tab" data-toggle="tab" href="#bookingdetail" role="tab" aria-controls="bookingdetail" aria-selected="false">Booking Details</a>
 						@endif
                     </li>
-                    <li class="nav-item">
-						@if ($booking_tab == 'containerinfo-tab')
-                        <a class="nav-link active " id="containerinfo-tab" data-toggle="tab" href="#containerinfo" role="tab" aria-controls="containerinfo" aria-selected="true">Container Details</a>
-						@else
-                        <a class="nav-link" id="containerinfo-tab" data-toggle="tab" href="#containerinfo" role="tab" aria-controls="containerinfo" aria-selected="false">Container Details</a>
-						@endif
-                    </li>
                 </ul>
 
                 <div class="tab-content" id="myTabContent">
@@ -83,21 +76,13 @@
 					@endif
                         @include('components.booking_tab_details')
                     </div>
-
-					@if ($booking_tab == 'containerinfo-tab')
-                    <div class="tab-pane fade show active" id="containerinfo" role="tabpanel" aria-labelledby="containerinfo-tab">
-					@else
-                    <div class="tab-pane fade" id="containerinfo" role="tabpanel" aria-labelledby="containerinfo-tab">
-					@endif
-                        @include('components.booking_tab_containers')
-                    </div>
                 </div>
 				<div class="row my-3">
 					<div class="w-25"></div>
 					<div class="col">
 						<div class="row">
-							@if ($id == '' && $booking_tab == "''")
-							<button class="btn btn-success mx-4" type="submit">Next Step</button>
+							@if ($id == '' && $booking_tab == "")
+							<button class="btn btn-success mx-4" type="submit">Add</button>
 							@else
 							<a href="{{route('home_page');}}"><button class="btn btn-success mx-4" type="button">Return</button></a>
 							@endif
@@ -113,32 +98,6 @@
     </div>
 
 	<script>
-		$(document).ready(function() {
-			$('.nav-tabs a').on('shown.bs.tab', function(event){		// Lock other tabs except the "Booking Details" tab
-				var bookingTab = {!! json_encode($booking_tab) !!};
-
-				if (bookingTab == '') {
-					document.getElementById('bookingdetail-tab').removeAttribute('class');
-					document.getElementById('bookingdetail-tab').classList.add('nav-link');
-					document.getElementById('bookingdetail-tab').classList.add('active');				// <---- active
-					document.getElementById('containerinfo-tab').removeAttribute('class');
-					document.getElementById('containerinfo-tab').classList.add('nav-link');
-
-					document.getElementById('bookingdetail-tab').setAttribute("aria-checked", true);	// <---- active
-					document.getElementById('containerinfo-tab').setAttribute("aria-checked", false);
-
-					document.getElementById('bookingdetail').removeAttribute('class');
-					document.getElementById('bookingdetail').classList.add('tab-pane');
-					document.getElementById('bookingdetail').classList.add('show');
-					document.getElementById('bookingdetail').classList.add('fade');						// <---- active
-					document.getElementById('bookingdetail').classList.add('active');					// <---- active
-
-					document.getElementById('containerinfo').removeAttribute('class');
-					document.getElementById('containerinfo').classList.add('tab-pane');
-					document.getElementById('containerinfo').classList.add('show');
-				}
-			});
-		});
 
 	</script>	
 	<!--

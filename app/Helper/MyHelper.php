@@ -23,6 +23,12 @@ class MyHelper
                                  "Customer Pickup", "Customer Drop", "Other Pickup", "Other Drop", "Live Pickup", "Live Drop", "HarbourLink Pickup", "HarbourLink Drop", 
                                  "Empty Pickup", "Empty Drop", "Bobtail Pickup", "Bobtail Drop", "Cancelled Leg", "Dead Run", "Street Turn"];
 
+    // All Container Types
+    static $allContainerTypes = ["Shipping", "Reefer", "Tank", "Open Top", "Flat Rack", "Other"];
+
+    // All Container Lengths
+    static $allContainerLengths = ["10", "20", "40", "Other"];
+
     // The Invoice's Send Timing
     static $invoiceSendTiming = "all_containers_ready_to_be_dispatched";  // possible values: "all_containers_ready_to_be_dispatched" or "all_containers_completed"
 

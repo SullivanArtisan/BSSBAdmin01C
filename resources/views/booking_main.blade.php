@@ -54,7 +54,7 @@
 				<h2 class="text-muted pl-2">All Bookings</h2>
             </div>
             <div class="col my-auto ml-5">
-				<button class="btn btn-success mr-4" type="button"><a href="booking_add?bookingTab=''">Add</a></button>
+				<button class="btn btn-success mr-4" type="button"><a href="booking_add">Add</a></button>
 			</div>
         </div>
     </div>
