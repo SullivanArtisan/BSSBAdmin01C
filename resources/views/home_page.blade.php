@@ -25,7 +25,7 @@
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;"><a href="{{route('booking_add')}}">Enter New Job</a></button></div>
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;"><a href="{{route('dispatch_main')}}">Dispatch</button></div>
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;"><a href="{{route('booking_main')}}">Bookings</a></button></div>
-                                    <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;">Containers</button></div>
+                                    <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;"><a href="{{route('container_main')}}">Containers</button></div>
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;">Chassis</button></div>
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;">Power Units</button></div>
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;">Predispatch Screen</button></div>

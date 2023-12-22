@@ -73,7 +73,7 @@ class ContainerController extends Controller
 		$container = new Container;
 		$container->cntnr_job_no        = $request->cntnr_job_no;
 		$container->cntnr_name          = $request->cntnr_name;
-		$container->cntnr_cstm_account_name = $booking->bk_cstm_account_name;
+		$container->cntnr_cstm_account_name = $booking == null? 'new':$booking->bk_cstm_account_name;
 		$container->cntnr_goods_desc    = $request->cntnr_goods_desc;
 		$container->cntnr_status        = MyHelper::CntnrCreatedStaus();
 		$container->cntnr_cost          = $request->cntnr_cost;
@@ -85,7 +85,9 @@ class ContainerController extends Controller
 		$container->cntnr_ssl           = $request->cntnr_ssl;
 		$saved = $container->save();
 		
-        $totalContainers = $booking->bk_total_containers;
+        if ($booking) {
+            $totalContainers = $booking->bk_total_containers;
+        }
 
         // Because the 'add' function is triggered by the Ajax function directly of the "Add this Container" button instead of the normal form's POST method through web.php's route,
         // the page's redirection in the following conditions is useless. 
@@ -94,12 +96,15 @@ class ContainerController extends Controller
             MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to add container '.$request->cntnr_name.' for job '.$request->cntnr_job_no, '');
             // return redirect()->route('booking_add', ['bookingResult'=>' <span style="color:red">(Failed to add the new container!)</span>', 'bookingTab'=>'containerinfo-tab', 'id'=>$booking->id]);
         } else {
-            $totalContainers++;
-            $booking->bk_total_containers = $totalContainers;
-            $saved = $booking->save();
-            $this->UpdateBookingStatus($booking);
+            if ($booking) {
+                Log::Info('BOOKING is not null!');
+                $totalContainers++;
+                $booking->bk_total_containers = $totalContainers;
+                $saved = $booking->save();
+                $this->UpdateBookingStatus($booking);
 
-            $this->CreateInitialMovements($booking->id, $container->id, $container->cntnr_name, $booking->bk_job_type);
+                $this->CreateInitialMovements($booking->id, $container->id, $container->cntnr_name, $booking->bk_job_type);
+            }
             MyHelper::LogStaffActionResult(Auth::user()->id, 'Added container '.$request->cntnr_name.' for job '.$request->cntnr_job_no.' OK', '');
 		}
     }
@@ -135,7 +140,7 @@ class ContainerController extends Controller
 
     public function update(Request $request)
     {
-		$validated = $request->validate([
+        $validated = $request->validate([
 			//'cntnr_name'              => 'required',
 		]);
 
@@ -150,6 +155,7 @@ class ContainerController extends Controller
         }
 		
 		$container = Container::where('id', $id)->first();
+        MyHelper::LogStaffAction(Auth::user()->id, 'Attempted to update the existing container '.$container->cntnr_name, '');
 		// $container->cntnr_job_no              = $request->cntnr_job_no;
 		// $container->cntnr_booking_no               = $request->cntnr_booking_no;
 		$container->cntnr_name              = $request->cntnr_name;
@@ -192,11 +198,17 @@ class ContainerController extends Controller
 			return redirect()->route('op_result.container')->with('status', ' <span style="color:red">Data has NOT been updated!</span>');
 		} else {
             $booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
-            $this->UpdateBookingStatus($booking);
-            if (!isset($request->prevPage)) {
-                return redirect()->route('op_result.container', ['id'=>$request->id])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been updated successfully.');
+            if ($booking) {
+                MyHelper::LogStaffActionResult(Auth::user()->id, 'Updated the existing container '.$container->cntnr_name.' for job '.$booking->bk_job_no.' OK', '');
+                $this->UpdateBookingStatus($booking);
+                if (!isset($request->prevPage)) {
+                    return redirect()->route('op_result.container', ['id'=>$request->id])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been updated successfully.');
+                } else {
+                    return redirect()->route('op_result.container', ['id'=>$request->id, 'prevPage'=>$prevPage, 'selJobId'=>$selJobId])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been updated successfully.');
+                }
             } else {
-                return redirect()->route('op_result.container', ['id'=>$request->id, 'prevPage'=>$prevPage, 'selJobId'=>$selJobId])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been updated successfully.');
+                MyHelper::LogStaffActionResult(Auth::user()->id, 'Updated the existing container '.$container->cntnr_name.' for job unknown OK', '');
+                return redirect()->route('op_result.container', ['id'=>$request->id])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$container->cntnr_name.'</span>, has been updated successfully.');
             }
         }
     }

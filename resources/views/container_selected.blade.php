@@ -27,10 +27,14 @@
 
 @section('goback')
     <?php
-        if (!isset($_GET['prevPage'])) {
-            $toThisLink = "<a class=\"text-primary\" href=\"".route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id])."\" style=\"margin-right: 10px;\">Back</a>";
-        } else {
-            $toThisLink = "<a class=\"text-primary\" href=\"".route($prevPage, ['selJobId'=>$_GET['selJobId']])."\" style=\"margin-right: 10px;\">Back</a>";
+        if ($booking == null) {     // Enter this page by selecting a container in the container_main page
+            $toThisLink = "<a class=\"text-primary\" href=\"".route('container_main')."\" style=\"margin-right: 10px;\">Back</a>";
+        } else {                    // Enter this page by selecting a container in the booking_main page's respective booking's containers tab
+            if (!isset($_GET['prevPage'])) {
+                $toThisLink = "<a class=\"text-primary\" href=\"".route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id])."\" style=\"margin-right: 10px;\">Back</a>";
+            } else {
+                $toThisLink = "<a class=\"text-primary\" href=\"".route($prevPage, ['selJobId'=>$_GET['selJobId']])."\" style=\"margin-right: 10px;\">Back</a>";
+            }
         }
         echo $toThisLink;
     ?>
@@ -63,8 +67,10 @@
 				</div>
 				<div class="col ml-5">
 					<button class="btn btn-danger" type="button"><a href="{{route('container_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>
+                    @if ($booking)
 					<button class="btn btn-primary ml-4" type="button"><a href="{{route('container_charges_main', ['cntnrId'=>$id, 'cntnrJobNo'=>$container->cntnr_job_no, 'prevPage'=>'booking_selected', 'selJobId'=>$booking->id])}}">Edit Surcharges</a></button>
-				</div>
+                    @endif
+                </div>
 			</div>
 		</div>
 		<div>
@@ -248,12 +254,17 @@
                             </div>
                         </div>
                         <div class="row mx-2">
+                            @if ($booking == null)
+                            <div class="col-6"><input type="hidden" id="cntnr_job_no" name="cntnr_job_no" value="new"></div>
+                            <div class="col-6"><input type="hidden" id="cntnr_cstm_account_name" name="cntnr_cstm_account_name" value="new"></div>
+                            @else
                             <div class="col-2"><label class="col-form-label">Booking Number:&nbsp;</label></div>
                             <div class="col-4">
                                 <input class="form-control mt-1" type="text" id="cntnr_job_no" name="cntnr_job_no" value="{{$container->cntnr_job_no}}">
                             </div>
                             <div class="col-2"><label class="col-form-label">&nbsp;</label></div>
                             <div class="col-4"><input type="hidden" class="form-control mt-1" type="text"></div>
+                            @endif
                         </div>
 					    <div class="row my-3">
 							<div class="w-25"></div>
@@ -261,10 +272,14 @@
 								<div class="row">
 									<button class="btn btn-warning mx-4" type="submit">Update</button>
                                     <?php
-                                        if (!isset($_GET['prevPage'])) {
-                                            $toThisLink = "<button class=\"btn btn-secondary mx-3\" type=\"button\"><a href=\"".route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id])."\">Cancel</a></button>";
+                                        if ($booking == null) {
+                                            $toThisLink = "<button class=\"btn btn-secondary mx-3\" type=\"button\"><a href=\"".route('container_main')."\">Cancel</a></button>";
                                         } else {
-                                            $toThisLink = "<button class=\"btn btn-secondary mx-3\" type=\"button\"><a href=\"".route($_GET['prevPage'], ['selJobId'=>$_GET['selJobId']])."\">Cancel</a></button>";
+                                            if (!isset($_GET['prevPage'])) {
+                                                $toThisLink = "<button class=\"btn btn-secondary mx-3\" type=\"button\"><a href=\"".route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id])."\">Cancel</a></button>";
+                                            } else {
+                                                $toThisLink = "<button class=\"btn btn-secondary mx-3\" type=\"button\"><a href=\"".route($_GET['prevPage'], ['selJobId'=>$_GET['selJobId']])."\">Cancel</a></button>";
+                                            }
                                         }
                                         echo $toThisLink;
                                     ?>

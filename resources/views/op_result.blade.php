@@ -13,7 +13,11 @@
 			if (!isset($_GET['prevPage'])) {
 				$container = Container::where('id', $_GET['id'])->first();
 				$booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
-				$backPath = '<a class="text-primary" href="'.route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id]).'" style="margin-right: 10px;">Back</a>';
+				if ($booking) {
+					$backPath = '<a class="text-primary" href="'.route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id]).'" style="margin-right: 10px;">Back</a>';
+				} else {
+					$backPath = '<a class="text-primary" href="'.route('container_main').'" style="margin-right: 10px;">Back</a>';
+				}
 			} else {
 				$backPath = '<a class="text-primary" href="'.route('booking_selected', ['bookingTab'=>'containerinfo-tab', 'selJobId'=>$_GET['selJobId']]).'" style="margin-right: 10px;">Back</a>';
 			}
