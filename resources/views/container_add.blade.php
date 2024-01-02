@@ -1,6 +1,7 @@
 <?php
 	use App\Models\Driver;
-    ?>
+    use App\Helper\MyHelper;
+?>
 
 @extends('layouts.home_page_base')
 <style>
@@ -22,7 +23,7 @@
 			$container_result = '';
 		}
         $ssls = \App\Models\SteamShipLine::all();
-		$cntnr_job_no = 'new';
+		$cntnr_job_no = MyHelper::CntnrNewlyCreated();
 		?>
 		<div class="row"><div class="col-3"><h2 class="text-muted pl-2 mb-2">Enter a New Container</h2></div><div class="col-9 mt-2"><?php echo $container_result;?></div></div>
 	</div>

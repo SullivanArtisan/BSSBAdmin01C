@@ -73,7 +73,7 @@ class ContainerController extends Controller
 		$container = new Container;
 		$container->cntnr_job_no        = $request->cntnr_job_no;
 		$container->cntnr_name          = $request->cntnr_name;
-		$container->cntnr_cstm_account_name = $booking == null? 'new':$booking->bk_cstm_account_name;
+		$container->cntnr_cstm_account_name = $booking == null? MyHelper::CntnrNewlyCreated():$booking->bk_cstm_account_name;
 		$container->cntnr_goods_desc    = $request->cntnr_goods_desc;
 		$container->cntnr_status        = MyHelper::CntnrCreatedStaus();
 		$container->cntnr_cost          = $request->cntnr_cost;

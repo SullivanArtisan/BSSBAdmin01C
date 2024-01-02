@@ -104,6 +104,10 @@ class MyHelper
         return "cntnr_completed";
     }  
 
+    public static function CntnrNewlyCreated() {
+        return "new";
+    }  
+
     //============================================== for invoices status =============================================
     // Get the 'issued' invoice status
     public static function InvoiceIssuedStaus() {
