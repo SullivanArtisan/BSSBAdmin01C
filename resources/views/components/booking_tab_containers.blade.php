@@ -17,7 +17,7 @@
 	} else {
 		if (isset($_GET['selJobId'])) {		// Enter this page from booking_selected.blade
 			$containers 			= \App\Models\Container::where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->get();
-			$available_containers 	= \App\Models\Container::where('cntnr_status', MyHelper::CntnrCompletedStaus())->orderBy('cntnr_name', 'asc')->get();
+			$available_containers 	= \App\Models\Container::where('cntnr_job_no', '<>', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->orderBy('cntnr_name', 'asc')->get();
 			$cntnr_job_no 			= $booking->bk_job_no;
 		} else {
 			$id = '';
