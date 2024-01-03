@@ -142,10 +142,10 @@
 				}
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
-				$sortParms = "?sort_key_container=cntnr_cstm_account_name&sort_time=".time();
+				$sortParms = "?sort_key_container=cntnr_job_no&sort_time=".time();
 				$outContents .= "<a href=\"container_main".$sortParms."\">";
-				$outContents .= "Owner";
-				if ($sortKeyInput != 'cntnr_cstm_account_name') {
+				$outContents .= "Booking";
+				if ($sortKeyInput != 'cntnr_job_no') {
 					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
 				} else {
 					if ($sort_icon == 'asc') {
@@ -226,7 +226,7 @@
                         $booking = \App\Models\Booking::where('bk_job_no', $container->cntnr_job_no)->first();
                         $outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
                     }
-                    $outContents .= $container->cntnr_cstm_account_name;
+                    $outContents .= $container->cntnr_job_no;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-2\">";

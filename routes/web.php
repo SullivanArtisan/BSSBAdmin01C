@@ -550,21 +550,49 @@ Route::get('container_to_dispatch/{cntnrId}', function ($cntnrId) {
 
 Route::get('/container_delete/{id}', function ($id) {
 	$container = Container::where('id', $id)->first();
-	$booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
-	$totalContainers = $booking->bk_total_containers;
+	MyHelper::LogStaffAction(Auth::user()->id, 'To delete the container '.$container->cntnr_name.'.', '');
 	$containerName = $container->cntnr_name;
 	$container->cntnr_status = 'deleted';
 	$res = $container->save();
 					
 	if(!$res) {
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to delete the container '.$containerName.'.', '');
 		return redirect()->route('op_result.container')->with('status', ' <span style="color:red">Failed to delete container '.$containerName.'!</span>');
 	} else {
-		$booking->bk_total_containers = --$totalContainers;
-		$saved = $booking->save();
-
-		return redirect()->route('op_result.container', ['id'=>$booking->id, 'prevPage'=>"unknown", 'selJobId'=>$booking->id])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been deleted successfully.');
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Deleted the container '.$containerName.' OK.', '');
+		return redirect()->route('op_result.container', ['id'=>$id, 'prevPage'=>"unknown", 'selJobId'=>0])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been deleted successfully.');
 	}
 })->middleware(['auth'])->name('container_delete');
+
+Route::get('/container_remove/{id}', function ($id) {
+	$container = Container::where('id', $id)->first();
+	$containerName = $container->cntnr_name;
+	$oldjobName = $container->cntnr_job_no;
+	MyHelper::LogStaffAction(Auth::user()->id, 'To remove the container '.$containerName.' from the booking '.$oldjobName.'.', '');
+	$booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
+	$container->cntnr_job_no = MyHelper::CntnrNewlyCreated();
+	$container->cntnr_status = MyHelper::CntnrCreatedStaus();
+	$res = $container->save();
+					
+	if(!$res) {
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to remove the container '.$containerName.' from the booking '.$oldjobName.'.', '');
+		return redirect()->route('op_result.container')->with('status', ' <span style="color:red">Failed to remove container '.$containerName.'!</span>');
+	} else {
+		if ($booking) {
+			$totalContainers = $booking->bk_total_containers;
+			$booking->bk_total_containers = --$totalContainers;
+			$saved = $booking->save();
+
+			ContainerController::UpdateBookingStatus($booking);
+
+			MyHelper::LogStaffActionResult(Auth::user()->id, 'Removed the container '.$containerName.' from the booking '.$oldjobName.' OK.', '');
+			return redirect()->route('op_result.container', ['id'=>$id, 'prevPage'=>"unknown", 'selJobId'=>$booking->id])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been deleted successfully.');
+		} else {
+			Log::Info('Oops, cannot get the booking while remove the container '.$containerName.' from the booking '.$oldjobName.'.');
+			return redirect()->route('op_result.container', ['id'=>$id, 'prevPage'=>"unknown", 'selJobId'=>0])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been deleted successfully.');
+		}
+	}
+})->middleware(['auth'])->name('container_remove');
 
 Route::get('/container_charges_main', function () {
     return view('container_charges_main');

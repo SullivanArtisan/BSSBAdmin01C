@@ -63,12 +63,18 @@
 		<div>
 			<div class="row m-4">
 				<div>
-					<h2 class="text-muted pl-2">Container: {{$container->cntnr_name}} (Status: {{$container->cntnr_status}})</h2>
+                    @if ($booking)
+					<h2 class="text-muted pl-2">{{$container->cntnr_job_no}}'s Container: {{$container->cntnr_name}} (Status: {{$container->cntnr_status}})</h2>
+                    @else
+					<h2 class="text-muted pl-2">New Container: {{$container->cntnr_name}} (Status: {{$container->cntnr_status}})</h2>
+                    @endif
 				</div>
 				<div class="col ml-5">
-					<button class="btn btn-danger" type="button"><a href="{{route('container_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>
                     @if ($booking)
+					<button class="btn btn-danger" type="button"><a href="{{route('container_remove', ['id'=>$id])}}" onclick="return myRemovalConfirmation();">Remove</a></button>
 					<button class="btn btn-primary ml-4" type="button"><a href="{{route('container_charges_main', ['cntnrId'=>$id, 'cntnrJobNo'=>$container->cntnr_job_no, 'prevPage'=>'booking_selected', 'selJobId'=>$booking->id])}}">Edit Surcharges</a></button>
+                    @else
+					<button class="btn btn-danger" type="button"><a href="{{route('container_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>
                     @endif
                 </div>
 			</div>
@@ -321,6 +327,11 @@
 
 			function myConfirmation() {
 				if(!confirm("Are you sure to delete this container?"))
+				event.preventDefault();
+			}
+
+			function myRemovalConfirmation() {
+				if(!confirm("Are you sure to remove this container from the booking?"))
 				event.preventDefault();
 			}
 
