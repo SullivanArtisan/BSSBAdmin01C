@@ -155,8 +155,16 @@
                             <div class="col-4">
                                 <input class="form-control mt-1" type="date" id="cntnr_trmnl_lfd" name="cntnr_trmnl_lfd">
                             </div>
-                            <div class="col-2"><label class="col-form-label">&nbsp;</label></div>
-                            <div class="col-4"><input type="hidden" class="form-control mt-1" type="text"></div>
+                            <div class="col-2"><label class="col-form-label">Type:&nbsp;</label></div>
+                            <div class="col-4">
+                                <input list="cntnr_type" name="cntnr_type" id="cntnr_type_li" class="form-control mt-1" value="{{$container->cntnr_type}}">
+                                    <datalist id="cntnr_type">
+                                        @foreach (MyHelper::$allContainerTypes as $type)
+                                            <option value="{{$type}}">
+                                        @endforeach
+                                    </datalist>
+                                </input>
+                            </div>
                         </div>
                         <div class="row mx-2">
                             <div class="col-2"><label class="col-form-label">Cargo Weight:&nbsp;</label></div>

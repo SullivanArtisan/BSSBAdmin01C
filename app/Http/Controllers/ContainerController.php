@@ -77,6 +77,7 @@ class ContainerController extends Controller
 		$container->cntnr_cstm_account_name = $booking == null? MyHelper::CntnrNewlyCreated():$booking->bk_cstm_account_name;
 		$container->cntnr_goods_desc    = $request->cntnr_goods_desc;
 		$container->cntnr_status        = MyHelper::CntnrCreatedStaus();
+		$container->cntnr_type          = $request->cntnr_type == ''? 'Shipping' : $request->cntnr_type;
 		$container->cntnr_cost          = $request->cntnr_cost;
 		$container->cntnr_surcharges    = $request->cntnr_surcharges;
 		$container->cntnr_discount      = $request->cntnr_discount;
@@ -159,13 +160,14 @@ class ContainerController extends Controller
 		// $container->cntnr_job_no              = $request->cntnr_job_no;
 		// $container->cntnr_booking_no               = $request->cntnr_booking_no;
 		$container->cntnr_name              = $request->cntnr_name;
-		$container->cntnr_length            = $request->cntnr_length;
+		$container->cntnr_length            = $request->cntnr_length == ''? '40' : $request->cntnr_length;
 		if ($request->cntnr_droponly == 'on') {
 			$container->cntnr_droponly = 'T';
 		} else {
 			$container->cntnr_droponly = 'F';
 		}
 		$container->cntnr_goods_desc        = $request->cntnr_goods_desc;
+		$container->cntnr_type              = $request->cntnr_type == ''? 'Shipping' : $request->cntnr_type;
 		$container->cntnr_ssl_release_date  = $request->cntnr_ssl_release_date;
 		$container->cntnr_cstm_order_no     = $request->cntnr_cstm_order_no;
 		$container->cntnr_cstm_release_date = $request->cntnr_cstm_release_date;

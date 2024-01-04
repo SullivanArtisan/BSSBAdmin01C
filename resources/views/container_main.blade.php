@@ -170,10 +170,10 @@
 				}
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2 mt-1\">";
-				$sortParms = "?sort_key_container=cntnr_max_load&sort_time=".time();
+				$sortParms = "?sort_key_container=cntnr_ssl&sort_time=".time();
 				$outContents .= "<a href=\"container_main".$sortParms."\">";
-				$outContents .= "Max Load";
-				if ($sortKeyInput != 'cntnr_max_load') {
+				$outContents .= "Steamship Line";
+				if ($sortKeyInput != 'cntnr_ssl') {
 					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
 				} else {
 					if ($sort_icon == 'asc') {
@@ -246,7 +246,7 @@
                         $booking = \App\Models\Booking::where('bk_job_no', $container->cntnr_job_no)->first();
                         $outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
                     }
-                    $outContents .= $container->cntnr_max_load;
+                    $outContents .= $container->cntnr_ssl;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 			$outContents .= "</div><hr class=\"m-1\"/>";

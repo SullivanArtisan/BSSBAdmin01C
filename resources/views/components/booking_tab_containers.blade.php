@@ -40,7 +40,7 @@
 			$outContents .= "Length";
 		$outContents .= "</div>";
 		$outContents .= "<div class=\"col-2 mt-1 align-middle\">";
-			$outContents .= "Chassis Type";
+			$outContents .= "Type";
 		$outContents .= "</div>";
 		$outContents .= "<div class=\"col-2 mt-1 align-middle\">";
 			$outContents .= "Total Movements";
@@ -92,7 +92,7 @@
 				$outContents .= $container->cntnr_length;
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
-				$outContents .= $container->cntnr_chassis_type;
+				$outContents .= $container->cntnr_type;
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
 				//$outContents .= $container->cntnr_job_no;
@@ -176,8 +176,16 @@
 				<div class="col-4">
 					<input class=form-control mt-1 my-text-height type=date id=cntnr_trmnl_lfd name=cntnr_trmnl_lfd>
 				</div>
-				<div class="col-2"><label class="col-form-label">&nbsp;</label></div>
-				<div class="col-4"><input type="hidden" class="form-control mt-1 my-text-height" type="text"></div>
+				<div class="col-2"><label class="col-form-label">Type:&nbsp;</label></div>
+				<div class="col-4">
+					<input list="cntnr_type" name="cntnr_type" id="cntnr_type_li" placeholder="Shipping" class="form-control mt-1 my-text-height">
+						<datalist id="cntnr_type">
+							@foreach (MyHelper::$allContainerTypes as $type)
+								<option value="{{$type}}">
+							@endforeach
+						</datalist>
+					</input>
+				</div>
 			</div>
 			<div class="row">
 				<div class="col-2"><label class="col-form-label">Cargo Weight:&nbsp;</label></div>
@@ -289,7 +297,7 @@
 		<div class="card-body">
 			<div class="row bg-success text-white fw-bold">
 				<div class="col">Container Name</div>
-				<div class="col">Owner</div>
+				<div class="col">Steamship Line</div>
 				<div class="col">Type</div>
 				<div class="col">Length</div>
 				<div class="col">Max Load (KGs)</div>
@@ -299,7 +307,7 @@
 			@foreach ($available_containers as $avlble_container)
 			<div class="row" id="{{$avlble_container->id}}" onclick="AddThisSelectedContainer(this.id)">
 				<div class="col">{{$avlble_container->cntnr_name}}</div>
-				<div class="col">{{$booking->bk_cstm_account_name}}</div>
+				<div class="col">{{$avlble_container->cntnr_ssl}}</div>
 				<div class="col">{{$avlble_container->cntnr_type}}</div>
 				<div class="col">{{$avlble_container->cntnr_length}}</div>
 				<div class="col">{{$avlble_container->cntnr_max_load}}</div>
