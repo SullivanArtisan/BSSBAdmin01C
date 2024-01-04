@@ -88,7 +88,7 @@
 				$outContents .= "Container";
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-1\">";
-				$outContents .= "Size";
+				$outContents .= "Length";
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-1\">";
 				$outContents .= "Chassis";
@@ -143,7 +143,7 @@
                     $outContents .= $container->cntnr_name;
                 $outContents .= "</div>";
                 $outContents .= "<div class=\"col-1\">";
-                    $outContents .= $container->cntnr_size;
+                    $outContents .= $container->cntnr_length;
                 $outContents .= "</div>";
                 $outContents .= "<div class=\"col-1\">";
                     $outContents .= $container->cntnr_chassis_id;

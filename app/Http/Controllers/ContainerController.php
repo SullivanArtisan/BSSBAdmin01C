@@ -73,6 +73,7 @@ class ContainerController extends Controller
 		$container = new Container;
 		$container->cntnr_job_no        = $request->cntnr_job_no;
 		$container->cntnr_name          = $request->cntnr_name;
+		$container->cntnr_length        = $request->cntnr_length == ''? '40' : $request->cntnr_length;
 		$container->cntnr_cstm_account_name = $booking == null? MyHelper::CntnrNewlyCreated():$booking->bk_cstm_account_name;
 		$container->cntnr_goods_desc    = $request->cntnr_goods_desc;
 		$container->cntnr_status        = MyHelper::CntnrCreatedStaus();
@@ -97,7 +98,6 @@ class ContainerController extends Controller
             // return redirect()->route('booking_add', ['bookingResult'=>' <span style="color:red">(Failed to add the new container!)</span>', 'bookingTab'=>'containerinfo-tab', 'id'=>$booking->id]);
         } else {
             if ($booking) {
-                Log::Info('BOOKING is not null!');
                 $totalContainers++;
                 $booking->bk_total_containers = $totalContainers;
                 $saved = $booking->save();
@@ -159,7 +159,7 @@ class ContainerController extends Controller
 		// $container->cntnr_job_no              = $request->cntnr_job_no;
 		// $container->cntnr_booking_no               = $request->cntnr_booking_no;
 		$container->cntnr_name              = $request->cntnr_name;
-		$container->cntnr_size              = $request->cntnr_size;
+		$container->cntnr_length            = $request->cntnr_length;
 		if ($request->cntnr_droponly == 'on') {
 			$container->cntnr_droponly = 'T';
 		} else {

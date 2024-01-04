@@ -12,11 +12,11 @@
 	if (isset($_GET['id'])) {				// Enter this page from booking_add.blade
 		$id = $_GET['id'];
 		$booking = \App\Models\Booking::where('id', $id)->first();
-		$containers = \App\Models\Container::where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->get();
+		$containers = \App\Models\Container::where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->orderBy('cntnr_name', 'asc')->get();
 		$cntnr_job_no = $booking->bk_job_no;
 	} else {
 		if (isset($_GET['selJobId'])) {		// Enter this page from booking_selected.blade
-			$containers 			= \App\Models\Container::where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->get();
+			$containers 			= \App\Models\Container::where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->orderBy('cntnr_name', 'asc')->get();
 			$available_containers 	= \App\Models\Container::where('cntnr_job_no', '<>', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->orderBy('cntnr_name', 'asc')->get();
 			$cntnr_job_no 			= $booking->bk_job_no;
 		} else {
@@ -31,13 +31,13 @@
 	$outContents = "<div class=\"container mw-100\">";
 	$outContents .= "<div class=\"row bg-info text-white fw-bold mb-2\">";
 		$outContents .= "<div class=\"col-2 mt-1 align-middle\">";
-			$outContents .= "Container ID";
+			$outContents .= "Container Name";
 		$outContents .= "</div>";
 		$outContents .= "<div class=\"col-3 mt-1 align-middle\">";
 			$outContents .= "Status";
 		$outContents .= "</div>";
 		$outContents .= "<div class=\"col-1 mt-1 align-middle\">";
-			$outContents .= "Size";
+			$outContents .= "Length";
 		$outContents .= "</div>";
 		$outContents .= "<div class=\"col-2 mt-1 align-middle\">";
 			$outContents .= "Chassis Type";
@@ -89,7 +89,7 @@
 				$outContents .= "</a>";
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-1\">";
-				$outContents .= $container->cntnr_size;
+				$outContents .= $container->cntnr_length;
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
 				$outContents .= $container->cntnr_chassis_type;
@@ -136,13 +136,13 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-2"><label class="col-form-label">Container Size:&nbsp;</label></div>
+				<div class="col-2"><label class="col-form-label">Container Length:&nbsp;</label></div>
 				<div class="col-4">
-					<input list="cntnr_size" name="cntnr_size" id="cntnr_size_li" class="form-control mt-1 my-text-height">
-						<datalist id="cntnr_size">
-							<option value="AAAA">
-							<option value="BBBB">
-							<option value="CCCC">
+					<input list="cntnr_length" name="cntnr_length" id="cntnr_length_li" placeholder="40" class="form-control mt-1 my-text-height">
+						<datalist id="cntnr_length">
+							@foreach (MyHelper::$allContainerLengths as $length)
+								<option value="{{$length}}">
+							@endforeach
 						</datalist>
 					</input>
 				</div>
@@ -278,7 +278,7 @@
 			<div class="row">
 				<div class="col-2"><label class="col-form-label">Booking Number:&nbsp;</label></div>
 				<div class="col-4">
-					<input class=form-control mt-1 my-text-height type=text id=cntnr_job_no name=cntnr_job_no>
+					<input class=form-control mt-1 my-text-height type=text readonly id=cntnr_job_no name=cntnr_job_no value="{{$cntnr_job_no}}">
 				</div>
 				<div class="col-2"><button class="btn btn-success my-1 type=button" onclick="AddNewContainer(event)">Add this Container</button></div>
 				<div class="col-4"><input type="hidden" class="form-control mt-1 my-text-height" type="text"></div>

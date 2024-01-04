@@ -63,13 +63,13 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-2"><label class="col-form-label">Container Size:&nbsp;</label></div>
+                            <div class="col-2"><label class="col-form-label">Container Length:&nbsp;</label></div>
                             <div class="col-4">
-                                <input list="cntnr_size" name="cntnr_size" id="cntnr_size_li" class="form-control mt-1 my-text-height">
-                                    <datalist id="cntnr_size">
-                                        <option value="AAAA">
-                                        <option value="BBBB">
-                                        <option value="CCCC">
+                                <input list="cntnr_length" name="cntnr_length" id="cntnr_length_li" placeholder="40" class="form-control mt-1 my-text-height">
+                                    <datalist id="cntnr_length">
+                                    @foreach (MyHelper::$allContainerLengths as $length)
+                                        <option value="{{$length}}">
+                                    @endforeach
                                     </datalist>
                                 </input>
                             </div>

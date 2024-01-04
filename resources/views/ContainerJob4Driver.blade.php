@@ -92,8 +92,8 @@ use App\Http\Controllers\ContainerController;
                         <div class="col-8"><input class="w-100 mb-1" readonly type="text" value="{{$container->cntnr_chassis_id}}"></div>
                     </div>
                     <div class="row mx-2">
-                        <div class="col-4"><label>Container Size:&nbsp;</label></div>
-                        <div class="col-8"><input class="w-100 mb-1" readonly type="text" value="{{$container->cntnr_size}}"></div>
+                        <div class="col-4"><label>Container Length:&nbsp;</label></div>
+                        <div class="col-8"><input class="w-100 mb-1" readonly type="text" value="{{$container->cntnr_length}}"></div>
                     </div>
                     <div class="row mx-2">
                         <div class="col-4"><label>Cargo Weight:&nbsp;</label></div>

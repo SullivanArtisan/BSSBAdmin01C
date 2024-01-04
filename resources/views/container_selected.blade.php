@@ -112,14 +112,13 @@
                             </div>
                         </div>
 						<div class="row mx-2">
-							<div class="col-2"><label class="col-form-label">Container Size:&nbsp;</label></div>
+							<div class="col-2"><label class="col-form-label">Container Length:&nbsp;</label></div>
                             <div class="col-4">
-                                <input list="cntnr_size" name="cntnr_size" id="cntnrSizeInput" class="form-control mt-1" value="{{$container->cntnr_size}}">
-                                <datalist id="cntnr_size">
-                                    <option value="100 ft">
-                                    <option value="150 ft">
-                                    <option value="200 ft">
-                                    <option value="250 ft">
+                                <input list="cntnr_length" name="cntnr_length" id="cntnrLengthInput" class="form-control mt-1" value="{{$container->cntnr_length}}">
+                                <datalist id="cntnr_length">
+                                @foreach (MyHelper::$allContainerLengths as $length)
+                                    <option value="{{$length}}">
+                                @endforeach
                                 </datalist>
                             </div>
                             <div class="col-2"><label class="col-form-label">Drop Only:&nbsp;</label></div>
