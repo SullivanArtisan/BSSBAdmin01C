@@ -134,6 +134,8 @@ class ContainerController extends Controller
             $saved = $booking->save();
             $this->UpdateBookingStatus($booking);
 
+            $this->CreateInitialMovements($booking->id, $container->id, $container->cntnr_name, $booking->bk_job_type);
+
             // $this->CreateInitialMovements($booking->id, $container->id, $container->cntnr_name, $booking->bk_job_type);
             MyHelper::LogStaffActionResult(Auth::user()->id, 'Added the existing container '.$container->cntnr_name.' for job '.$booking->bk_job_no.' OK', '');
 		}
