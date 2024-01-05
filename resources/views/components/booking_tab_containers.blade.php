@@ -304,7 +304,13 @@
 			</div>
 		
 			<!-- // Body Lines -->
+			<?php
+			$c_names = [];
+			?>
 			@foreach ($available_containers as $avlble_container)
+			<?php
+			array_push($c_names, $avlble_container->id.'_'.$avlble_container->cntnr_name);
+			?>
 			<div class="row" id="{{$avlble_container->id}}" onclick="AddThisSelectedContainer(this.id)">
 				<div class="col">{{$avlble_container->cntnr_name}}</div>
 				<div class="col">{{$avlble_container->cntnr_ssl}}</div>
@@ -344,25 +350,40 @@
 	}
 
 	function AddThisSelectedContainer(clicked_id) {
-		if(!confirm("Are you sure to add this existing container?")) {
-			event.preventDefault();
-		} else {
-			var token = "{{ csrf_token() }}";
-			var bookingId = {!! json_encode($booking->id) !!};
-			$.ajax({
-				url: '/container_add_selected',
-				type: 'POST',
-				data: {_token:token, bookingId:bookingId, cntnrId:clicked_id},    // the _token:token is for Laravel
-				success: function(dataRetFromPHP) {
-					location.href = location.href;
-					alert("Container (id = "+clicked_id+") is added to booking (id = "+bookingId+") successfully!");
-				},
-				error: function(err) {
-					console.log(err);
-					alert(err);
-				}
-			});
+		let cNames = {!! json_encode($c_names) !!};
+		let cntnrName = '';
+		for (let idx=0; idx<cNames.length; idx++) {
+			let cntnrNameArray = cNames[idx].split("_");
+			if (cntnrNameArray[0] == clicked_id) {
+				cntnrName = cntnrNameArray[1];
+			}
+			document.getElementById(cntnrNameArray[0]).style.backgroundColor="white";
 		}
+		let oldBgColor = document.getElementById(clicked_id).style.backgroundColor;
+		document.getElementById(clicked_id).style.backgroundColor="salmon";
+
+        timer = setTimeout(function(event) { 
+			if(!confirm("Are you sure to add the container "+cntnrName+" to the current booking?")) {
+				event.preventDefault();
+			} else {
+				var token = "{{ csrf_token() }}";
+				var bookingId = {!! json_encode($booking->id) !!};
+				clearTimeout(timer);
+				$.ajax({
+					url: '/container_add_selected',
+					type: 'POST',
+					data: {_token:token, bookingId:bookingId, cntnrId:clicked_id},    // the _token:token is for Laravel
+					success: function(dataRetFromPHP) {
+						location.href = location.href;
+						alert("Container (id = "+clicked_id+") is added to booking (id = "+bookingId+") successfully!");
+					},
+					error: function(err) {
+						console.log(err);
+						alert(err);
+					}
+				});
+			}
+        }, 300, event);        
 	}
 
 	function getAllPrices() {
