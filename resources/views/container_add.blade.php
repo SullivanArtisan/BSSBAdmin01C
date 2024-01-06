@@ -276,6 +276,10 @@
             } else if (cntnr_name.length == 0) {
                 alert("Please enter the container's name first!");
             } else {
+                var cntnr_length = document.getElementById("cntnr_length_li").value;
+                    cntnr_length = cntnr_length === ''? document.getElementById("cntnr_length_li").placeholder : cntnr_length;
+                var cntnr_type = document.getElementById("cntnr_type_li").value;
+                    cntnr_type = cntnr_type === ''? document.getElementById("cntnr_type_li").placeholder : cntnr_type;
                 var cntnr_cost = document.getElementById("cntnr_cost").value;
                     cntnr_cost = cntnr_cost === ''? document.getElementById("cntnr_cost").placeholder : cntnr_cost;
                 var cntnr_surcharges = document.getElementById("cntnr_surcharges").value;
@@ -292,7 +296,7 @@
                 $.ajax({
                     url: '/container_add_new',
                     type: 'POST',
-                    data: {_token:token, cntnr_job_no:cntnr_job_no, cntnr_name:cntnr_name, cntnr_ssl:cntnr_ssl,	cntnr_goods_desc:cntnr_goods_desc, cntnr_cost:cntnr_cost, cntnr_surcharges:cntnr_surcharges, cntnr_discount:cntnr_discount, cntnr_tax:cntnr_tax, cntnr_total:cntnr_total, cntnr_net:cntnr_net},    // the _token:token is for Laravel
+                    data: {_token:token, cntnr_job_no:cntnr_job_no, cntnr_name:cntnr_name, cntnr_ssl:cntnr_ssl,	cntnr_goods_desc:cntnr_goods_desc, cntnr_length:cntnr_length, cntnr_type:cntnr_type, cntnr_cost:cntnr_cost, cntnr_surcharges:cntnr_surcharges, cntnr_discount:cntnr_discount, cntnr_tax:cntnr_tax, cntnr_total:cntnr_total, cntnr_net:cntnr_net},    // the _token:token is for Laravel
                     success: function(dataRetFromPHP) {
                         location.href = location.href;
                         alert("Container "+cntnr_name+" is created successfully!");
