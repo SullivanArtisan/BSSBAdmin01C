@@ -585,6 +585,14 @@ Route::get('/container_remove/{id}', function ($id) {
 
 			ContainerController::UpdateBookingStatus($booking);
 
+			// delete the related movements
+			$movements = Movement::where('mvmt_cntnr_name', $containerName)->where('mvmt_bk_id', $booking->id)->get();
+			foreach($movements as $movement) {
+				if (!$movement->delete()) {
+					Log::Info('Oops, failed to delete the related movements of container '.$containerName.' in booking '.$booking->id);
+				}
+			}
+
 			MyHelper::LogStaffActionResult(Auth::user()->id, 'Removed the container '.$containerName.' from the booking '.$oldjobName.' OK.', '');
 			return redirect()->route('op_result.container', ['id'=>$id, 'prevPage'=>"unknown", 'selJobId'=>$booking->id])->with('status', 'The container,  <span style="font-weight:bold;font-style:italic;color:blue">'.$containerName.'</span>, has been deleted successfully.');
 		} else {
