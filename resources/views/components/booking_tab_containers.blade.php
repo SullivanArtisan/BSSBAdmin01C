@@ -306,18 +306,24 @@
 			<!-- // Body Lines -->
 			<?php
 			$c_names = [];
+			$total_containers = 0;
 			?>
 			@foreach ($available_containers as $avlble_container)
 			<?php
+            $total_containers++;
 			array_push($c_names, $avlble_container->id.'_'.$avlble_container->cntnr_name);
 			?>
-			<div class="row" id="{{$avlble_container->id}}" onclick="AddThisSelectedContainer(this.id)">
-				<div class="col">{{$avlble_container->cntnr_name}}</div>
-				<div class="col">{{$avlble_container->cntnr_ssl}}</div>
-				<div class="col">{{$avlble_container->cntnr_type}}</div>
-				<div class="col">{{$avlble_container->cntnr_length}}</div>
-				<div class="col">{{$avlble_container->cntnr_max_load}}</div>
-			</div>
+				@if ($total_containers % 2)
+					<div class="row" id="{{$avlble_container->id}}" onclick="AddThisSelectedContainer(this.id)" style="background-color:Lavender; cursor: default;">
+				@else
+					<div class="row" id="{{$avlble_container->id}}" onclick="AddThisSelectedContainer(this.id)" style="background-color:PaleGreen; cursor: default;">
+				@endif
+					<div class="col">{{$avlble_container->cntnr_name}}</div>
+					<div class="col">{{$avlble_container->cntnr_ssl}}</div>
+					<div class="col">{{$avlble_container->cntnr_type}}</div>
+					<div class="col">{{$avlble_container->cntnr_length}}</div>
+					<div class="col">{{$avlble_container->cntnr_max_load}}</div>
+				</div>
 			@endforeach
 		</div>
 	</div>
