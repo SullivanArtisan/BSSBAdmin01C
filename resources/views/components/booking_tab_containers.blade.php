@@ -46,7 +46,7 @@
 			$outContents .= "Total Movements";
 		$outContents .= "</div>";
 		$outContents .= "<div class=\"col-2 align-middle\">";
-			$outContents .= "Movements";
+			$outContents .= "";
 			//$outContents .= "<button class=\"btn btn-secondary mx-3\" type=\"button\"><a href=\"".route('booking_main')."\">Process Movements</a></button>";
 		$outContents .= "</div>";
 	$outContents .= "</div>";
@@ -95,7 +95,7 @@
 				$outContents .= $container->cntnr_type;
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
-				//$outContents .= $container->cntnr_job_no;
+				$outContents .= MyHelper::GetTotalMovements($booking->id, $container->cntnr_name);
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
 				$outContents .= "<button class=\"btn btn-secondary btn-sm my-1\" type=\"button\"><a href=\"".route('movements_selected', ['cntnrId'=>$container->id])."\">Edit Movements</a></button>";

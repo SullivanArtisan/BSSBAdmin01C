@@ -8,6 +8,7 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 use App\Models\Booking;
 use App\Models\Container;
+use App\Models\Movement;
 use App\Models\StaffActions;
 
 class MyHelper
@@ -147,6 +148,11 @@ class MyHelper
 
 
 
+    // Get a container's movements number
+    public static function GetTotalMovements($booking_id, $cntnr_name) {
+        $movements = Movement::where('mvmt_bk_id', $booking_id)->where('mvmt_cntnr_name', $cntnr_name)->get();
+        return count($movements);
+    }  
 
     // Record a staff's action
     public static function LogStaffAction($staff_id, $action, $severity) {
@@ -199,7 +205,7 @@ class MyHelper
         }
     } 
 
-    // Get the numerice phone number only (no hyphen, no parantheses, no space...)
+    // Get the numeric phone number only (no hyphen, no parantheses, no space...)
     public static function GetNumericPhoneNo($inPhoneNo) {
         $len = strlen($inPhoneNo);
         $numericPhoneNo = "";
