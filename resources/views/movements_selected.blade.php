@@ -9,7 +9,6 @@
 	$cntnrId = $_GET['cntnrId'];
     $container = Container::where('id', $cntnrId)->first();
     $booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
-    $go_back_url = route('booking_selected', ['selJobId='.$booking->id]);
     if (isset($_GET['movName'])) {
         $movName = $_GET['movName'];
         $movement = Movement::where('mvmt_name', $_GET['movName'])->first();
@@ -18,6 +17,12 @@
         $movement = "";
     }
     $allow_update = 1;
+    if (isset($_GET['parentPage'])) {
+        $page_no = $_GET['parentPage'];
+        $go_back_url = route('container_main', ['page='.$page_no]);
+    } else {
+        $go_back_url = route('booking_selected', ['selJobId='.$booking->id]);
+    }
 ?>
 
 @section('goback')

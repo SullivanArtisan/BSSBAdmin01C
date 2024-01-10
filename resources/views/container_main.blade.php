@@ -58,6 +58,7 @@
         use App\Helper\MyHelper;
 
 		// Check if the page is refresed
+		$page_no = 1;
 		if (isset($_GET['sort_time'])) {
 			if ($_GET['sort_time'] != session('sort_time', '0')) {
 				session(['sort_time' => $_GET['sort_time']]);
@@ -76,6 +77,7 @@
 				} 
 			} else {
 				$sortKeyInput = session('sort_key_container', 'cntnr_name');
+				$page_no = $_GET['page'];
 			}
 		}
 			
@@ -141,7 +143,7 @@
 					}
 				}
 			$outContents .= "</div>";
-			$outContents .= "<div class=\"col-2\">";
+			$outContents .= "<div class=\"col-1\">";
 				$sortParms = "?sort_key_container=cntnr_job_no&sort_time=".time();
 				$outContents .= "<a href=\"container_main".$sortParms."\">";
 				$outContents .= "Booking";
@@ -155,7 +157,7 @@
 					}
 				}
 			$outContents .= "</div>";
-			$outContents .= "<div class=\"col-2 mt-1\">";
+			$outContents .= "<div class=\"col-1 mt-1\">";
 				$sortParms = "?sort_key_container=cntnr_length&sort_time=".time();
 				$outContents .= "<a href=\"container_main".$sortParms."\">";
 				$outContents .= "Length";
@@ -182,6 +184,9 @@
 						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
 					}
 				}
+			$outContents .= "</div>";
+			$outContents .= "<div class=\"col-2 mt-1\">";
+				$outContents .= "";
 			$outContents .= "</div>";
 		$outContents .= "</div><hr class=\"m-2\"/>";
 		{{echo $outContents;}}
@@ -219,7 +224,7 @@
                     $outContents .= $container->cntnr_status;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
-                $outContents .= "<div class=\"col-2\">";
+                $outContents .= "<div class=\"col-1\">";
                     if ($container->cntnr_job_no == MyHelper::CntnrNewlyCreated()) {
                         $outContents .= "<a href=\"container_selected?cntnrId=".$container->id."\">";
                     } else {
@@ -229,7 +234,7 @@
                     $outContents .= $container->cntnr_job_no;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
-                $outContents .= "<div class=\"col-2\">";
+                $outContents .= "<div class=\"col-1\">";
                     if ($container->cntnr_job_no == MyHelper::CntnrNewlyCreated()) {
                         $outContents .= "<a href=\"container_selected?cntnrId=".$container->id."\">";
                     } else {
@@ -248,6 +253,11 @@
                     }
                     $outContents .= $container->cntnr_ssl;
 					$outContents .= "</a>";
+				$outContents .= "</div>";
+                $outContents .= "<div class=\"col-2\">";
+                    if ($container->cntnr_job_no != MyHelper::CntnrNewlyCreated()) {
+						$outContents .= "<button class=\"btn btn-secondary btn-sm my-1\" type=\"button\"><a href=\"".route('movements_selected', ['cntnrId'=>$container->id, 'parentPage'=>$page_no])."\">Edit Movements</a></button>";
+                    }
 				$outContents .= "</div>";
 			$outContents .= "</div><hr class=\"m-1\"/>";
 			{{ 					
