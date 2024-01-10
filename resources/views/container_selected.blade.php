@@ -28,10 +28,20 @@
 @section('goback')
     <?php
         if ($booking == null) {     // Enter this page by selecting a container in the container_main page
-            $toThisLink = "<a class=\"text-primary\" href=\"".route('container_main')."\" style=\"margin-right: 10px;\">Back</a>";
+            if (!isset($_GET['parentPage'])) {
+                $toThisLink = "<a class=\"text-primary\" href=\"".route('container_main')."\" style=\"margin-right: 10px;\">Back</a>";
+            } else {
+                $parentPage = $_GET['parentPage'];
+                $toThisLink = "<a class=\"text-primary\" href=\"".route('container_main', ['page'=>$parentPage])."\" style=\"margin-right: 10px;\">Back</a>";
+            }
         } else {                    // Enter this page by selecting a container in the booking_main page's respective booking's containers tab
             if (!isset($_GET['prevPage'])) {
-                $toThisLink = "<a class=\"text-primary\" href=\"".route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id])."\" style=\"margin-right: 10px;\">Back</a>";
+                if (isset($_GET['parentPage'])) {
+                    $parentPage = $_GET['parentPage'];
+                    $toThisLink = "<a class=\"text-primary\" href=\"".route('container_main', ['page'=>$parentPage])."\" style=\"margin-right: 10px;\">Back</a>";
+                } else {
+                    $toThisLink = "<a class=\"text-primary\" href=\"".route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id])."\" style=\"margin-right: 10px;\">Back</a>";
+                }
             } else {
                 $toThisLink = "<a class=\"text-primary\" href=\"".route($prevPage, ['selJobId'=>$_GET['selJobId']])."\" style=\"margin-right: 10px;\">Back</a>";
             }
@@ -304,10 +314,20 @@
 									<button class="btn btn-warning mx-4" type="submit">Update</button>
                                     <?php
                                         if ($booking == null) {
-                                            $toThisLink = "<button class=\"btn btn-secondary mx-3\" type=\"button\"><a href=\"".route('container_main')."\">Cancel</a></button>";
+                                            if (!isset($_GET['parentPage'])) {
+                                                $toThisLink = "<button class=\"btn btn-secondary mx-3\" type=\"button\"><a href=\"".route('container_main')."\">Cancel</a></button>";
+                                            } else {
+                                                $parentPage = $_GET['parentPage'];
+                                                $toThisLink = "<button class=\"btn btn-secondary mx-3\" type=\"button\"><a href=\"".route('container_main', ['page'=>$parentPage])."\">Cancel</a></button>";
+                                            }
                                         } else {
                                             if (!isset($_GET['prevPage'])) {
-                                                $toThisLink = "<button class=\"btn btn-secondary mx-3\" type=\"button\"><a href=\"".route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id])."\">Cancel</a></button>";
+                                                if (isset($_GET['parentPage'])) {
+                                                    $parentPage = $_GET['parentPage'];
+                                                    $toThisLink = "<button class=\"btn btn-secondary mx-3\" type=\"button\"><a href=\"".route('container_main', ['page'=>$parentPage])."\">Cancel</a></button>";
+                                                } else {
+                                                    $toThisLink = "<button class=\"btn btn-secondary mx-3\" type=\"button\"><a href=\"".route('booking_add', ['bookingTab'=>'containerinfo-tab', 'id'=>$booking->id])."\">Cancel</a></button>";
+                                                }
                                             } else {
                                                 $toThisLink = "<button class=\"btn btn-secondary mx-3\" type=\"button\"><a href=\"".route($_GET['prevPage'], ['selJobId'=>$_GET['selJobId']])."\">Cancel</a></button>";
                                             }

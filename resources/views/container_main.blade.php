@@ -196,60 +196,60 @@
             $outContents = "<div class=\"row\">";
                 $outContents .= "<div class=\"col-2\">";
                     if ($container->cntnr_job_no == MyHelper::CntnrNewlyCreated()) {
-                        $outContents .= "<a href=\"container_selected?cntnrId=".$container->id."\">";
+                        $outContents .= "<a href=\"container_selected?cntnrId=".$container->id."&parentPage=".$page_no."\">";
                     } else {
                         $booking = \App\Models\Booking::where('bk_job_no', $container->cntnr_job_no)->first();
-                        $outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
+                        $outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'parentPage='.$page_no])."\">";
                     }
 					$outContents .= $container->cntnr_name;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-2\">";
                     if ($container->cntnr_job_no == MyHelper::CntnrNewlyCreated()) {
-                        $outContents .= "<a href=\"container_selected?cntnrId=".$container->id."\">";
+                        $outContents .= "<a href=\"container_selected?cntnrId=".$container->id."&parentPage=".$page_no."\">";
                     } else {
                         $booking = \App\Models\Booking::where('bk_job_no', $container->cntnr_job_no)->first();
-                        $outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
+                        $outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'parentPage='.$page_no])."\">";
                     }
                     $outContents .= $container->cntnr_type;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-2\">";
                     if ($container->cntnr_job_no == MyHelper::CntnrNewlyCreated()) {
-                        $outContents .= "<a href=\"container_selected?cntnrId=".$container->id."\">";
+                        $outContents .= "<a href=\"container_selected?cntnrId=".$container->id."&parentPage=".$page_no."\">";
                     } else {
                         $booking = \App\Models\Booking::where('bk_job_no', $container->cntnr_job_no)->first();
-                        $outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
+                        $outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'parentPage='.$page_no])."\">";
                     }
                     $outContents .= $container->cntnr_status;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-1\">";
                     if ($container->cntnr_job_no == MyHelper::CntnrNewlyCreated()) {
-                        $outContents .= "<a href=\"container_selected?cntnrId=".$container->id."\">";
+                        $outContents .= "<a href=\"container_selected?cntnrId=".$container->id."&parentPage=".$page_no."\">";
                     } else {
                         $booking = \App\Models\Booking::where('bk_job_no', $container->cntnr_job_no)->first();
-                        $outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
+                        $outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'parentPage='.$page_no])."\">";
                     }
                     $outContents .= $container->cntnr_job_no;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-1\">";
                     if ($container->cntnr_job_no == MyHelper::CntnrNewlyCreated()) {
-                        $outContents .= "<a href=\"container_selected?cntnrId=".$container->id."\">";
+                        $outContents .= "<a href=\"container_selected?cntnrId=".$container->id."&parentPage=".$page_no."\">";
                     } else {
                         $booking = \App\Models\Booking::where('bk_job_no', $container->cntnr_job_no)->first();
-                        $outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
+                        $outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'parentPage='.$page_no])."\">";
                     }
                     $outContents .= $container->cntnr_length;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 				$outContents .= "<div class=\"col-2\">";
                     if ($container->cntnr_job_no == MyHelper::CntnrNewlyCreated()) {
-                        $outContents .= "<a href=\"container_selected?cntnrId=".$container->id."\">";
+                        $outContents .= "<a href=\"container_selected?cntnrId=".$container->id."&parentPage=".$page_no."\">";
                     } else {
                         $booking = \App\Models\Booking::where('bk_job_no', $container->cntnr_job_no)->first();
-                        $outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
+                        $outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'parentPage='.$page_no])."\">";
                     }
                     $outContents .= $container->cntnr_ssl;
 					$outContents .= "</a>";
