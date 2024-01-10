@@ -99,7 +99,11 @@
 						@csrf
 						<div class="row mx-2">
 							<div class="col-2"><label class="col-form-label">Container Name:&nbsp;</label><span class="text-danger">*</span></div>
-							<div class="col-4"><input class="form-control mt-1" type="text" name="cntnr_name" value="{{$container->cntnr_name}}"></div>
+                            @if ($booking == null)
+							<div class="col-4"><input class="form-control mt-1" type="text" name="cntnr_name" value="{{$container->cntnr_name}}"></input></div>
+                            @else
+							<div class="col-4"><input class="form-control mt-1" readonly type="text" name="cntnr_name" value="{{$container->cntnr_name}}"></input></div>
+                            @endif
 							<div class="col-2"><label class="col-form-label">Goods' Desc.:&nbsp;</label></div>
                             <div class="col-4">
                                 <input list="cntnr_goods_desc" name="cntnr_goods_desc" id="cntnrGoodsDescInput" class="form-control mt-1" value="{{$container->cntnr_goods_desc}}">
@@ -114,12 +118,17 @@
 						<div class="row mx-2">
 							<div class="col-2"><label class="col-form-label">Container Length:&nbsp;</label></div>
                             <div class="col-4">
-                                <input list="cntnr_length" name="cntnr_length" id="cntnrLengthInput" class="form-control mt-1" value="{{$container->cntnr_length}}">
-                                <datalist id="cntnr_length">
-                                @foreach (MyHelper::$allContainerLengths as $length)
-                                    <option value="{{$length}}">
-                                @endforeach
-                                </datalist>
+                                @if ($booking == null)
+                                    <input list="cntnr_length" name="cntnr_length" id="cntnrLengthInput" class="form-control mt-1" value="{{$container->cntnr_length}}">
+                                    <datalist id="cntnr_length">
+                                    @foreach (MyHelper::$allContainerLengths as $length)
+                                        <option value="{{$length}}">
+                                    @endforeach
+                                    </datalist>
+                                @else
+                                    <input class="form-control mt-1" readonly type="text" name="cntnr_length" id="cntnrLengthInput" value="{{$container->cntnr_length}}">
+                                @endif
+                                </input>
                             </div>
                             <div class="col-2"><label class="col-form-label">Drop Only:&nbsp;</label></div>
                             <div class="col-4">
@@ -157,12 +166,16 @@
                             </div>
                             <div class="col-2"><label class="col-form-label">Type:&nbsp;</label></div>
                             <div class="col-4">
-                                <input list="cntnr_type" name="cntnr_type" id="cntnr_type_li" class="form-control mt-1" value="{{$container->cntnr_type}}">
+                                @if ($booking == null)
+                                    <input list="cntnr_type" name="cntnr_type" id="cntnr_type_li" class="form-control mt-1" value="{{$container->cntnr_type}}">
                                     <datalist id="cntnr_type">
                                         @foreach (MyHelper::$allContainerTypes as $type)
                                             <option value="{{$type}}">
                                         @endforeach
                                     </datalist>
+                                @else
+                                    <input class="form-control mt-1" readonly type="text" name="cntnr_type" id="cntnr_type_li" value="{{$container->cntnr_type}}">
+                                @endif
                                 </input>
                             </div>
                         </div>
@@ -220,14 +233,19 @@
                         <div class="row mx-2">
                             <div class="col-2"><label class="col-form-label">Steamship Line:&nbsp;</label><span class="text-danger">*</span></div>
                             <div class="col-4">
-                                <input list="cntnr_ssl" name="cntnr_ssl" id="cntnr_ssl_li" class="form-control mt-1 my-text-height" value="{{$container->cntnr_ssl}}">
-                                <datalist id="cntnr_ssl">
-                                <?php
-                                    foreach ($ssls as $ssl) {
-                                        echo "<option value=\"".$ssl->ssl_name."\">";
-                                    }
-                                ?>
-                                </datalist></input>
+                                @if ($booking == null)
+                                    <input list="cntnr_ssl" name="cntnr_ssl" id="cntnr_ssl_li" class="form-control mt-1 my-text-height" value="{{$container->cntnr_ssl}}">
+                                    <datalist id="cntnr_ssl">
+                                    <?php
+                                        foreach ($ssls as $ssl) {
+                                            echo "<option value=\"".$ssl->ssl_name."\">";
+                                        }
+                                    ?>
+                                    </datalist></input>
+                                @else
+                                    <input class="form-control mt-1" readonly type="text" name="cntnr_ssl" id="cntnr_ssl_li" value="{{$container->cntnr_ssl}}">
+                                @endif
+                                </input>
                             </div>
                             <div class="col-2"><label class="col-form-label">Chassis:&nbsp;</label></div>
                             <div class="col-4">
