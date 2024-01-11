@@ -27,14 +27,14 @@
 
 @section('goback')
     <?php
-        if ($booking == null) {     // Enter this page by selecting a container in the container_main page
+        if ($booking == null) {     // Enter this page by selecting a non-used container in the container_main page
             if (!isset($_GET['parentPage'])) {
                 $toThisLink = "<a class=\"text-primary\" href=\"".route('container_main')."\" style=\"margin-right: 10px;\">Back</a>";
             } else {
                 $parentPage = $_GET['parentPage'];
                 $toThisLink = "<a class=\"text-primary\" href=\"".route('container_main', ['page'=>$parentPage])."\" style=\"margin-right: 10px;\">Back</a>";
             }
-        } else {                    // Enter this page by selecting a container in the booking_main page's respective booking's containers tab
+        } else {                    // Enter this page by selecting a being-used container in the container_main page or a container in the booking_main page's respective booking's containers tab
             if (!isset($_GET['prevPage'])) {
                 if (isset($_GET['parentPage'])) {
                     $parentPage = $_GET['parentPage'];
@@ -82,7 +82,11 @@
 				<div class="col ml-5">
                     @if ($booking)
 					<button class="btn btn-danger" type="button"><a href="{{route('container_remove', ['id'=>$id])}}" onclick="return myRemovalConfirmation();">Remove</a></button>
-					<button class="btn btn-primary ml-4" type="button"><a href="{{route('container_charges_main', ['cntnrId'=>$id, 'cntnrJobNo'=>$container->cntnr_job_no, 'prevPage'=>'booking_selected', 'selJobId'=>$booking->id])}}">Edit Surcharges</a></button>
+                        @if (!isset($_GET['parentPage'])) 
+					    <button class="btn btn-primary ml-4" type="button"><a href="{{route('container_charges_main', ['cntnrId'=>$id, 'cntnrJobNo'=>$container->cntnr_job_no, 'prevPage'=>'booking_selected', 'selJobId'=>$booking->id])}}">Edit Surcharges</a></button>
+                        @else
+					    <button class="btn btn-primary ml-4" type="button"><a href="container_charges_main?cntnrId={{$id}}&cntnrJobNo={{$container->cntnr_job_no}}&parentPage={{$parentPage}}&selJobId={{$booking->id}}">Edit Surcharges</a></button>
+                        @endif
                     @else
 					<button class="btn btn-danger" type="button"><a href="{{route('container_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>
                     @endif

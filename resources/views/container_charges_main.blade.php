@@ -9,6 +9,7 @@
 	}
 
     $surcharges_count = 0;
+
     if (isset($_GET['selJobId'])) {		// Enter this page from booking_selected.blade
         $booking = \App\Models\Booking::where('id', $_GET['selJobId'])->first();
         $container = \App\Models\Container::where('id', $_GET['cntnrId'])->where('cntnr_status', '<>', 'deleted')->first();
@@ -43,11 +44,16 @@
         }
 
         $refreshUrlWithoutSurchargeId = route('container_charges_main', ['cntnrId'=>$container->id, 'cntnrJobNo'=>$container->cntnr_job_no, 'prevPage'=>'booking_selected', 'selJobId'=>$booking->id]);
+        if (!isset($_GET['parentPage'])) {
+            $outContents = "<a class=\"text-primary\" href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\" style=\"margin-right: 10px;\">Back</a>";
+        } else {
+            $outContents = "<a class=\"text-primary\" href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'parentPage='.$_GET['parentPage']])."\" style=\"margin-right: 10px;\">Back</a>";
+        }
     } else {
         $id = '';
         $cntnr_job_no = "";
     }
-    $outContents = "<a class=\"text-primary\" href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\" style=\"margin-right: 10px;\">Back</a>";
+
     echo $outContents;
 ?>
 @show
