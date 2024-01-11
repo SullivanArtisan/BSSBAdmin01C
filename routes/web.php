@@ -572,6 +572,7 @@ Route::get('/container_remove/{id}', function ($id) {
 	$booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
 	$container->cntnr_job_no = MyHelper::CntnrNewlyCreated();
 	$container->cntnr_status = MyHelper::CntnrCreatedStaus();
+	$container->cntnr_cost = $container->cntnr_surcharges = $container->cntnr_discount = $container->cntnr_total = $container->cntnr_net = $container->cntnr_paid = 0;
 	$res = $container->save();
 					
 	if(!$res) {
@@ -589,7 +590,15 @@ Route::get('/container_remove/{id}', function ($id) {
 			$movements = Movement::where('mvmt_cntnr_name', $containerName)->where('mvmt_bk_id', $booking->id)->get();
 			foreach($movements as $movement) {
 				if (!$movement->delete()) {
-					Log::Info('Oops, failed to delete the related movements of container '.$containerName.' in booking '.$booking->id);
+					Log::Info('Oops, failed to delete the related movement of container '.$containerName.' in booking '.$booking->id);
+				}
+			}
+
+			// delete the related surcharges
+			$surcharges = ContainerSurcharge::where('cntnrsurchrg_cntnr_id', $id)->where('cntnrsurchrg_job_no', $booking->bk_job_no)->get();
+			foreach($surcharges as $surcharge) {
+				if (!$surcharge->delete()) {
+					Log::Info('Oops, failed to delete the related surcharge of container '.$containerName.' in booking '.$booking->id);
 				}
 			}
 
