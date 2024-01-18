@@ -110,11 +110,8 @@ class ContainerController extends Controller
 		}
     }
  
-    public function addSelected(Request $request)
-    {
-		$booking    = Booking::where('id', $request->bookingId)->first();
-		$container  = Container::where('id', $request->cntnrId)->first();
-
+    // Body of adding a container to a booking
+    function DoAddingContainer($booking, $container) {
         MyHelper::LogStaffAction(Auth::user()->id, 'Attempted to add the existing container '.$container->cntnr_name.' for job '.$booking->bk_job_no, '');
 		$container->cntnr_job_no        = $booking->bk_job_no;
 		$container->cntnr_cstm_account_name = $booking->bk_cstm_account_name;
@@ -140,6 +137,24 @@ class ContainerController extends Controller
             MyHelper::LogStaffActionResult(Auth::user()->id, 'Added the existing container '.$container->cntnr_name.' for job '.$booking->bk_job_no.' OK', '');
 		}
     }
+ 
+    public function addSelected(Request $request)
+    {
+		$booking    = Booking::where('id', $request->bookingId)->first();
+		$container  = Container::where('id', $request->cntnrId)->first();
+
+        $this->DoAddingContainer($booking, $container);
+    }
+ 
+    // Interface of adding a container to a booking
+    public static function AddContainerToBooking($booking_name, $cntnr_id) {
+        $booking = Booking::where('bk_job_no', $booking_name)->first();
+        $container = Container::where('id', $cntnr_id)->first();
+
+        $selfObj = new ContainerController;
+        
+        $selfObj->DoAddingContainer($booking, $container);
+    } 
 
     public function update(Request $request)
     {

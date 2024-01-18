@@ -720,6 +720,14 @@ Route::post('/container_surcharge_delete', function (Request $request) {
 	}
 })->middleware(['auth'])->name('container_surcharge_delete');
 
+Route::get('/ContainerAddedToBooking', function () {
+	$cntnr_id 	  = $_GET['cntnrId'];
+	$booking_name = $_GET['bkName'];
+	ContainerController::AddContainerToBooking($booking_name, $cntnr_id);
+	$booking = Booking::where('bk_job_no', $booking_name)->first();
+	return redirect()->route('container_selected', ['cntnrId='.$cntnr_id, 'cntnrJobNo='.$booking_name, 'prevPage=booking_selected', 'selJobId='.$booking->id]);
+})->middleware(['auth'])->name('ContainerAddedToBooking');
+
 //////////////////////////////// For Movements ////////////////////////////////
 Route::get('/movements_selected', function () {
     return view('movements_selected');

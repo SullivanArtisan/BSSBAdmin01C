@@ -8,6 +8,20 @@
 @extends('layouts.home_page_base')
 <style>
 .my-text-height {height:75%;}
+::-webkit-input-placeholder {
+  color: white !important;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: white !important;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: white !important;
+}
+:-ms-input-placeholder {
+  color: white !important;
+}
 </style>
 
 <?php
@@ -88,7 +102,22 @@
 					    <button class="btn btn-primary ml-4" type="button"><a href="container_charges_main?cntnrId={{$id}}&cntnrJobNo={{$container->cntnr_job_no}}&parentPage={{$parentPage}}&selJobId={{$booking->id}}">Edit Surcharges</a></button>
                         @endif
                     @else
-					<button class="btn btn-danger" type="button"><a href="{{route('container_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>
+                    <div class="row">
+                        <div class="col-2">
+                            <button class="btn btn-danger" type="button"><a href="{{route('container_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>
+                        </div>
+                        <div class="col-10">
+                            <?php
+                            $available_bookings = Booking::where('bk_status', MyHelper::BkCreatedStaus())->orwhere('bk_status', 'LIKE', '%Sent%')->get();
+                            ?>
+                            <input list="avail_bks" type='text' oninput='AddToThisBooking()' class="bg-success border-primary border-4 form-control" name="avail_bks" id="availBksInput" placeholder="Add it to a Booking">
+                                <datalist id="avail_bks">
+                                    @foreach ($available_bookings as $available_bk)
+                                    <option value="{{ $available_bk->bk_job_no  }}">
+                                    @endforeach
+                                </datalist>
+                        </div>
+                    </div>
                     @endif
                 </div>
 			</div>
@@ -391,6 +420,14 @@
 			}
 
             getNewPrices();
+
+            function AddToThisBooking() {
+                var selBooking = document.getElementById("availBksInput").value;
+                if (confirm("Are you sure to add this container to the booking "+selBooking+"?")) {
+                    url = './ContainerAddedToBooking?cntnrId='+{!!json_encode($id)!!}+'&bkName='+selBooking;
+                    window.location = url;
+                }
+            }
         </script>
 	@endsection
 }
