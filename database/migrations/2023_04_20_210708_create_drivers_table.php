@@ -49,7 +49,7 @@ class CreateDriversTable extends Migration
 			$table->string('dvr_unavailability_comments', 127);
 			$table->string('dvr_paye_no', 31);
 			$table->string('dvr_type', 15);
-			$table->boolean('dvr_harbourlink_fuel_card');
+			$table->boolean('dvr_pkcs_fuel_card');
 			$table->date('dvr_birth_date');
 			$table->date('dvr_license_exp_date');
 			$table->string('dvr_license_no', 15);

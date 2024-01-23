@@ -216,13 +216,13 @@
             <option value="Subhauler">
             </datalist>
 		</div>
-		<div class="col"><label class="col-form-label">HarbourLink Fuel Card:&nbsp;</label></div>
+		<div class="col"><label class="col-form-label">PKCS Fuel Card:&nbsp;</label></div>
 		<div class="col">
 			<?php
-				$tagHead = "<input style=\"margin-top:3%\" type=\"checkbox\" id=\"dvr_harbourlink_fuel_card\" name=\"dvr_harbourlink_fuel_card\" ";
+				$tagHead = "<input style=\"margin-top:3%\" type=\"checkbox\" id=\"dvr_pkcs_fuel_card\" name=\"dvr_pkcs_fuel_card\" ";
 				$tagTail = ">";
 				if(isset($dbTable)) {
-					if($dbTable->dvr_harbourlink_fuel_card) {
+					if($dbTable->dvr_pkcs_fuel_card) {
 						echo $tagHead."checked".$tagTail;
 					} else {
 						echo $tagHead.$tagTail;

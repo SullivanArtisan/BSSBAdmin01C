@@ -13,11 +13,11 @@
     <div class="container py-4 py-xl-5" style="background: linear-gradient(#70c950, white), var(--bs-teal);">
         <div class="row gy-4 gy-md-0" style="height: 250px;">
             <div class="col-md-6" style="height: 250px;">
-                <div style="height: 250px;"><img class="rounded img-fluid w-100 fit-cover" style="max-height: 100%;max-width: 100%;" src="assets/img/HarbourLink.jpg"></div>
+                <div style="height: 250px;"><img class="rounded img-fluid w-100 fit-cover" style="max-height: 100%;max-width: 100%;" src="assets/img/pkcs.png"></div>
             </div>
             <div class="col-md-6 d-md-flex align-items-md-center" style="height: 250px;">
                 <div style="max-width: 350px;margin-left: 65px;height: 250px;">
-                    <h2 class="text-uppercase fw-bold" style="width: 355px;height: 40.172px;margin-bottom: 0px;">Harbourlink</h2>
+                    <h2 class="text-uppercase fw-bold" style="width: 355px;height: 40.172px;margin-bottom: 0px;">PKCS</h2>
                     <h2 class="text-uppercase fw-bold" style="width: 355px;height: 40px;margin-bottom: 0;">COntrol &amp;</h2>
                     <h2 class="text-uppercase fw-bold" style="width: 355px;height: 40px;margin-bottom: 0;">management</h2>
                     <h2 class="text-uppercase fw-bold" style="width: 355px;height: 40px;margin-bottom: 0;">system</h2>

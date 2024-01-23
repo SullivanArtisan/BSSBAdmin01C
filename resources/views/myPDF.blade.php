@@ -23,7 +23,7 @@
 <body>
     <h1>{{ $title }}</h1>
     <p>{{ $date }}</p>
-    <div><img class="rounded" style="max-width:100%; height:auto" src="assets/img/HarbourLink.jpg"></div>
+    <div><img class="rounded" style="max-width:100%; height:auto" src="assets/img/pkcs.png"></div>
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
     quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo

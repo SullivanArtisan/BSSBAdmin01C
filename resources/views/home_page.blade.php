@@ -2,7 +2,7 @@
 @section('function_page')
     <div class="card mx-2 mt-3" style="background-color: #A9DFBF;">
         <div class="card-body">
-            <h3 class="card-title text-primary">Hi, <span style="font-family: 'Times New Roman';font-weight: bold;font-style: italic;">{{Auth::user()->name}}</span>, welcome to HarbourLink's Home!</h4>
+            <h3 class="card-title text-primary">Hi, <span style="font-family: 'Times New Roman';font-weight: bold;font-style: italic;">{{Auth::user()->name}}</span>, welcome to PKCS Home!</h4>
             <!--
             <p class="card-text">The functions in this group are good for H/L control options</p>
             -->
@@ -25,7 +25,7 @@
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;"><a href="{{route('booking_add')}}">Enter New Job</a></button></div>
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;"><a href="{{route('dispatch_main')}}">Dispatch</button></div>
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;"><a href="{{route('booking_main')}}">Bookings</a></button></div>
-                                    <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;"><a href="{{route('container_main')}}">Containers</button></div>
+                                    <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;"><a href="{{route('container_main')}}">Containers</a></button></div>
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;">Chassis</button></div>
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;">Power Units</button></div>
                                     <div><button class="btn btn-outline-secondary btn-block" type="button" style="margin: 6px;">Predispatch Screen</button></div>

@@ -88,13 +88,13 @@ function InsertThisMovement($sel_mvmt_op, $job_id, $cntnr_id, $mvmt_id, $max_mov
 			$mvmt_cmpny_city = "";
 		}  else if (str_contains(strtolower($sel_mvmt_op), 'hlcs')) {
 			$mvmt_cmpny_name = "HARBOUR LINK";
-			$mvmt_type1 = "Harbourlink Drop";
-			$mvmt_type2 = "Harbourlink Pickup";
+			$mvmt_type1 = "PKCS Drop";
+			$mvmt_type2 = "PKCS Pickup";
 			$mvmt_cmpny_city = "DELTA";
 		}  else if (str_contains(strtolower($sel_mvmt_op), 'chassis yard')) {
 			$mvmt_cmpny_name = "CHASSIS YARD";
-			$mvmt_type1 = "Harbourlink Drop";
-			$mvmt_type2 = "Harbourlink Pickup";
+			$mvmt_type1 = "PKCS Drop";
+			$mvmt_type2 = "PKCS Pickup";
 			$mvmt_cmpny_city = "DELTA";
 		}  else if (str_contains(strtolower($sel_mvmt_op), 'dead run')) {
 			$mvmt_cmpny_name = "";

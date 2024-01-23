@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>HarbourLink Control/Management System</title>
+    <title>PKCS Control/Management System</title>
 
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -35,7 +35,7 @@
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3 style="font-family: Georgia; color:LightCyan">HarbourLink</h3>
+                <h3 style="font-family: Georgia; color:LightCyan">Port Kells Container Services</h3>
                 <h6 style="font-family: Georgia; color:LightCyan"><?php echo date("m/d/Y l");?></h6>
             </div>
 
@@ -131,7 +131,7 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<div class="col-md-6">
-							<div><img class="rounded" style="max-width:100%; height:auto" src="assets/img/HarbourLink.jpg"></div>
+							<div><img class="rounded" style="max-width:100%; height:auto" src="assets/img/pkcs.png"></div>
 						</div>
                         <ul class="nav navbar-nav ml-auto">
 							@yield('goback')

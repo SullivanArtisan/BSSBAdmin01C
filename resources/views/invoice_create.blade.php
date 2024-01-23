@@ -55,7 +55,7 @@ $total      = 0;
                     <p>From: {{ $job_no }}</p>
                 </div>
                 <div class="row">
-                    <img class="rounded" style="max-width:100%; height:auto" src="assets/img/HarbourLink.jpg">
+                    <img class="rounded" style="max-width:100%; height:auto" src="assets/img/pkcs.png">
                 </div>
             </div>
             <div>
@@ -68,7 +68,7 @@ $total      = 0;
                 <th style="border: 0px;width: 50%; !important">To: </th>
             </tr>
             <tr style="background-color: #ffffff; !important">
-                <td style="border: 0px;width: 50%; !important"><img class="rounded" style="max-width:100%; height:auto" src="assets/img/HarbourLink.jpg"></td>
+                <td style="border: 0px;width: 50%; !important"><img class="rounded" style="max-width:100%; height:auto" src="assets/img/pkcs.png"></td>
                 <td style="border: 0px;width: 50%; !important">{{ $customer->cstm_account_name }}<br/>{{ $customer->cstm_address }}<br/>{{ $customer->cstm_city }}, {{ $customer->cstm_province}}<br/>{{$customer->cstm_postcode}}<br/>{{$customer->cstm_contact_email1}}</td>
             </tr>
         </div>

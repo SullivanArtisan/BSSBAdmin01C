@@ -101,7 +101,7 @@ class UserController extends Controller
 						$emailBody = array('name'=>$request->name, 'status'=>'Your account has been created successfully with temporary password: '.$request->password.'. Please change it ASAP!');
 						$toAddr = $request->email;
 						Mail::send(['text'=>'mail_ok_notice'], $emailBody, function($message) use($toAddr) {
-							$message->to($toAddr, 'HarbourLink Administration')->subject('Congratulations!!');
+							$message->to($toAddr, 'PKCS Administration')->subject('Congratulations!!');
 						});
 					}
 					return redirect()->route('op_result.user')->with('status', 'The new user,  <span style="font-weight:bold;font-style:italic;color:blue">'.$targetUser[0]->name.'</span>, has been inserted successfully.');

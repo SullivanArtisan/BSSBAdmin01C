@@ -21,7 +21,7 @@ class MyHelper
 
     // All Movement Types
     static $allMovementTypes = ["Container Pickup", "Container Drop", "Chassis Pickup", "Chassis Drop", "Port Pickup", "Port Drop",
-                                 "Customer Pickup", "Customer Drop", "Other Pickup", "Other Drop", "Live Pickup", "Live Drop", "HarbourLink Pickup", "HarbourLink Drop", 
+                                 "Customer Pickup", "Customer Drop", "Other Pickup", "Other Drop", "Live Pickup", "Live Drop", "PKCS Pickup", "PKCS Drop", 
                                  "Empty Pickup", "Empty Drop", "Bobtail Pickup", "Bobtail Drop", "Cancelled Leg", "Dead Run", "Street Turn"];
 
     // All Container Types

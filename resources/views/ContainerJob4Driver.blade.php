@@ -41,8 +41,8 @@ use App\Http\Controllers\ContainerController;
         }
     }
 
-    // The purpose of using the 'container_completed' table is to simulate Harbourlink's 3rd-party-software-company,
-    // who provides the communication-bridge-function between Harbourlink's DB server and all drivers' cell-phone application.
+    // The purpose of using the 'container_completed' table is to simulate PKCS's 3rd-party-software-company,
+    // who provides the communication-bridge-function between PKCS's DB server and all drivers' cell-phone application.
     if (isset($_GET['complete'])) {
         if ($containerCompleted == null) {
             if ($container->cntnr_status != MyHelper::CntnrCompletedStaus()) {
@@ -73,7 +73,7 @@ use App\Http\Controllers\ContainerController;
     <div class="container text-dark">
         <div>
             <div class="my-2">
-                <div><img class="rounded" style="max-width:100%; height:auto" src="assets/img/HarbourLink.jpg"></div>
+                <div><img class="rounded" style="max-width:100%; height:auto" src="assets/img/pkcs.png"></div>
             </div>
         </div>
         <div>

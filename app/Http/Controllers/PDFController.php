@@ -11,7 +11,7 @@ class PDFController extends Controller
 {
     public function generatePDF () {
         $data = [
-            'title' => 'Welcome to HarbourLink',
+            'title' => 'Welcome to Port Kells Container Services',
             'date' => date('m/d/Y')
         ];
 

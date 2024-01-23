@@ -69,10 +69,10 @@ class DriverController extends Controller
 		$driver->dvr_unavailability_comments    = $request->dvr_unavailability_comments;
 		$driver->dvr_paye_no                    = $request->dvr_paye_no;
 		$driver->dvr_type = $request->dvr_type;
-		if ($request->dvr_harbourlink_fuel_card == 'on') {
-			$driver->dvr_harbourlink_fuel_card = 1;
+		if ($request->dvr_pkcs_fuel_card == 'on') {
+			$driver->dvr_pkcs_fuel_card = 1;
 		} else {
-			$driver->dvr_harbourlink_fuel_card  = 0;
+			$driver->dvr_pkcs_fuel_card  = 0;
 		}
 		$driver->dvr_birth_date                 = $request->dvr_birth_date;
 		$driver->dvr_license_exp_date           = $request->dvr_license_exp_date;
@@ -237,10 +237,10 @@ class DriverController extends Controller
 		$driver->dvr_unavailability_comments    = $request->dvr_unavailability_comments;
 		$driver->dvr_paye_no                    = $request->dvr_paye_no;
 		$driver->dvr_type                       = $request->dvr_type;
-		if ($request->dvr_harbourlink_fuel_card == 'on') {
-			$driver->dvr_harbourlink_fuel_card = 1;
+		if ($request->dvr_pkcs_fuel_card == 'on') {
+			$driver->dvr_pkcs_fuel_card = 1;
 		} else {
-			$driver->dvr_harbourlink_fuel_card = 0;
+			$driver->dvr_pkcs_fuel_card = 0;
 		}
 		$driver->dvr_birth_date             = $request->dvr_birth_date;
 		$driver->dvr_license_exp_date       = $request->dvr_license_exp_date;
