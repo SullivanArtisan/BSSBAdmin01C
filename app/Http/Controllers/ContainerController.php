@@ -80,8 +80,8 @@ class ContainerController extends Controller
 		$container->cntnr_type          = $request->cntnr_type == ''? 'Shipping' : $request->cntnr_type;
 		$container->cntnr_cost          = $request->cntnr_cost;
 		$container->cntnr_surcharges    = $request->cntnr_surcharges;
-		$container->cntnr_discount      = $request->cntnr_discount;
-		$container->cntnr_tax           = $request->cntnr_tax;
+		$container->cntnr_discount      = $request->cntnr_discount / 100;
+		$container->cntnr_tax           = $request->cntnr_tax / 100;
 		$container->cntnr_total         = $request->cntnr_total;
 		$container->cntnr_net           = $request->cntnr_net;
 		$container->cntnr_ssl           = $request->cntnr_ssl;
@@ -196,8 +196,8 @@ class ContainerController extends Controller
 		$container->cntnr_empty_return_trmnl= $request->cntnr_empty_return_trmnl;
 		$container->cntnr_cost              = $request->cntnr_cost;
 		$container->cntnr_surcharges        = $request->cntnr_surcharges;
-		$container->cntnr_discount          = $request->cntnr_discount;
-		$container->cntnr_tax               = $request->cntnr_tax;
+		$container->cntnr_discount          = $request->cntnr_discount / 100;
+		$container->cntnr_tax               = $request->cntnr_tax / 100;
 		$container->cntnr_total             = $request->cntnr_total;
 		$container->cntnr_net               = $request->cntnr_net;
 		$container->cntnr_ssl               = $request->cntnr_ssl;

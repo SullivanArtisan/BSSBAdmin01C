@@ -186,13 +186,13 @@
                         </div>
                     </div>
                     <div class="row mx-2">
-                        <div class="col-3"><label class="col-form-label">Rate:&nbsp;</label></div>
+                        <div class="col-3"><label class="col-form-label">Rate:&nbsp;($)</label></div>
                         <div class="col-9">
                             <input class="form-control mt-1 my-text-height" type="number" step="0.01" id="chrg_rate" name="chrg_rate" value="{{isset($selSurcharge)?$selSurcharge->cntnrsurchrg_rate:''}}" onchange="updateCharge()">
                         </div>
                     </div>
                     <div class="row mx-2">
-                        <div class="col-3"><label class="col-form-label">Charge:&nbsp;</label></div>
+                        <div class="col-3"><label class="col-form-label">Charge:&nbsp;($)</label></div>
                         <div class="col-5">
                             <input class="form-control mt-1 my-text-height" type="number" step="0.01" id="chrg_charge" readonly name="chrg_charge" value="{{isset($selSurcharge)?$selSurcharge->cntnrsurchrg_charge:''}}">
                         </div>

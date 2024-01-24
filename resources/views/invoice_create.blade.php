@@ -92,7 +92,7 @@ $total      = 0;
             <tr>
                 <td>{{ $container->cntnr_cost }}</td>
                 <td>{{ $container->cntnr_surcharges }}</td>
-                <td>{{ $container->cntnr_discount }}</td>
+                <td>{{ $container->cntnr_discount * 100 }}%</td>
                 <?php
                     $s_tax = ($container->cntnr_tax * 100).'%'; 
                     $temp_subtotal = $container->cntnr_total;
@@ -116,7 +116,7 @@ $total      = 0;
             <th style="border: 1px solid #ffffff; !important"></th>
         </tr>
         <tr style="background-color: #ffffff;" !important>
-            <td style="border: 1px solid #ffffff; !important">Subtotal:</td>
+            <td style="border: 1px solid #ffffff; !important">Subtotal: ($)</td>
             <td style="border: 1px solid #ffffff; text-align: right; !important">${{ sprintf('%0.2f', $subtotal) }}</td>
         </tr>
         <tr>
@@ -124,7 +124,7 @@ $total      = 0;
             <td style="border: 1px solid #ffffff; text-align: right; !important">${{ sprintf('%0.2f', $s_tax) }}</td>
         </tr>
         <tr style="background-color: #ffffff;" !important>
-            <td style="border: 1px solid #ffffff; !important">Total:</td>
+            <td style="border: 1px solid #ffffff; !important">Total: ($)</td>
             <td style="border: 1px solid #ffffff; text-align: right; !important">${{ sprintf('%0.2f', $total) }}</td>
         </tr>
     </table>

@@ -114,6 +114,10 @@
 	echo $outContents;
 	?>
 
+<?php
+$c_names = [];
+$total_containers = 0;
+?>
 @if (!isset($booking) || (isset($booking) && (!strstr($booking->bk_status, MyHelper::BkCompletedStaus()))))
 	<div class="row mt-5 mb-2 h5">
 		<div class="ml-1 col-2"><label>Add a Container by:</label></div>
@@ -205,31 +209,31 @@
 				<div class="col-5"><input type="hidden" class="form-control mt-1 my-text-height" type="text"></div>
 			</div>
 			<div class="row">
-				<div class="col-2"><label class="col-form-label">Cost:&nbsp;</label></div>
+				<div class="col-2"><label class="col-form-label">Cost:&nbsp;($)</label></div>
 				<div class="col-4">
 					<input class="form-control mt-1" type="number" step="0.01" id="cntnr_cost" name="cntnr_cost" placeholder="0.0" onchange="getNewPrices()">
 				</div>
-				<div class="col-2"><label class="col-form-label">Surcharges:&nbsp;</label></div>
+				<div class="col-2"><label class="col-form-label">Surcharges:&nbsp;($)</label></div>
 				<div class="col-4">
 					<input class="form-control mt-1" readonly type="number" step="0.01" id="cntnr_surcharges" name="cntnr_surcharges" placeholder="0.0">
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-2"><label class="col-form-label">Discount:&nbsp;</label></div>
+				<div class="col-2"><label class="col-form-label">Discount:&nbsp;(%)</label></div>
 				<div class="col-4">
-					<input class="form-control mt-1" type="number" step="0.01" id="cntnr_discount" name="cntnr_discount" placeholder="0.0" onchange="getNewPrices()">
+					<input class="form-control mt-1" type="number" step="1" id="cntnr_discount" name="cntnr_discount" placeholder="0" onchange="getNewPrices()">
 				</div>
-				<div class="col-2"><label class="col-form-label">Tax:&nbsp;</label></div>
+				<div class="col-2"><label class="col-form-label">Tax:&nbsp;(%)</label></div>
 				<div class="col-4">
-					<input class="form-control mt-1" type="number" step="0.01" id="cntnr_tax" name="cntnr_tax" placeholder="0.12" onchange="getNewPrices()">
+					<input class="form-control mt-1" type="number" step="1" id="cntnr_tax" name="cntnr_tax" placeholder="12" onchange="getNewPrices()">
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-2"><label class="col-form-label">Total:&nbsp;</label></div>
+				<div class="col-2"><label class="col-form-label">Total:&nbsp;($)</label></div>
 				<div class="col-4">
 					<input class="form-control mt-1" readonly type="number" step="0.01" id="cntnr_total" name="cntnr_total" placeholder="0.0">
 				</div>
-				<div class="col-2"><label class="col-form-label">Net:&nbsp;</label></div>
+				<div class="col-2"><label class="col-form-label">Net:&nbsp;($)</label></div>
 				<div class="col-4">
 					<input class="form-control mt-1" readonly type="number" step="0.01" id="cntnr_net" name="cntnr_net" placeholder="0.0">
 				</div>
@@ -304,10 +308,6 @@
 			</div>
 		
 			<!-- // Body Lines -->
-			<?php
-			$c_names = [];
-			$total_containers = 0;
-			?>
 			@foreach ($available_containers as $avlble_container)
 			<?php
             $total_containers++;
@@ -325,6 +325,11 @@
 					<div class="col">{{$avlble_container->cntnr_max_load}}</div>
 				</div>
 			@endforeach
+			<?php
+			if ($total_containers == 0) {
+				$c_names[0] = '0_0';
+			}
+			?>
 		</div>
 	</div>
 @endif
@@ -358,38 +363,45 @@
 	function AddThisSelectedContainer(clicked_id) {
 		let cNames = {!! json_encode($c_names) !!};
 		let cntnrName = '';
+		let emptyCList = false;
 		for (let idx=0; idx<cNames.length; idx++) {
+			if (cNames[idx] == '0_0') {
+				emptyCList = true;
+			}
 			let cntnrNameArray = cNames[idx].split("_");
 			if (cntnrNameArray[0] == clicked_id) {
 				cntnrName = cntnrNameArray[1];
 			}
 			document.getElementById(cntnrNameArray[0]).style.backgroundColor="white";
 		}
-		let oldBgColor = document.getElementById(clicked_id).style.backgroundColor;
-		document.getElementById(clicked_id).style.backgroundColor="salmon";
 
-        timer = setTimeout(function(event) { 
-			if(!confirm("Are you sure to add the container "+cntnrName+" to the current booking?")) {
-				event.preventDefault();
-			} else {
-				var token = "{{ csrf_token() }}";
-				var bookingId = {!! json_encode($booking->id) !!};
-				clearTimeout(timer);
-				$.ajax({
-					url: '/container_add_selected',
-					type: 'POST',
-					data: {_token:token, bookingId:bookingId, cntnrId:clicked_id},    // the _token:token is for Laravel
-					success: function(dataRetFromPHP) {
-						location.href = location.href;
-						alert("Container (id = "+clicked_id+") is added to booking (id = "+bookingId+") successfully!");
-					},
-					error: function(err) {
-						console.log(err);
-						alert(err);
-					}
-				});
-			}
-        }, 300, event);        
+		if (!emptyCList) {
+			let oldBgColor = document.getElementById(clicked_id).style.backgroundColor;
+			document.getElementById(clicked_id).style.backgroundColor="salmon";
+
+			timer = setTimeout(function(event) { 
+				if(!confirm("Are you sure to add the container "+cntnrName+" to the current booking?")) {
+					event.preventDefault();
+				} else {
+					var token = "{{ csrf_token() }}";
+					var bookingId = {!! json_encode($booking->id) !!};
+					clearTimeout(timer);
+					$.ajax({
+						url: '/container_add_selected',
+						type: 'POST',
+						data: {_token:token, bookingId:bookingId, cntnrId:clicked_id},    // the _token:token is for Laravel
+						success: function(dataRetFromPHP) {
+							location.href = location.href;
+							alert("Container (id = "+clicked_id+") is added to booking (id = "+bookingId+") successfully!");
+						},
+						error: function(err) {
+							console.log(err);
+							alert(err);
+						}
+					});
+				}
+			}, 300, event);        
+		}
 	}
 
 	function getAllPrices() {
@@ -398,9 +410,9 @@
 		cntnr_surcharges = document.getElementById("cntnr_surcharges").value;
 		cntnr_surcharges = cntnr_surcharges === ''? document.getElementById("cntnr_surcharges").placeholder : cntnr_surcharges;
 		cntnr_discount = document.getElementById("cntnr_discount").value;
-		cntnr_discount = cntnr_discount === ''? document.getElementById("cntnr_discount").placeholder: cntnr_discount;
+		cntnr_discount = cntnr_discount === ''? document.getElementById("cntnr_discount").placeholder/100: cntnr_discount/100;
 		cntnr_tax = document.getElementById("cntnr_tax").value;
-		cntnr_tax = cntnr_tax === ''? document.getElementById("cntnr_tax").placeholder : cntnr_tax;
+		cntnr_tax = cntnr_tax === ''? document.getElementById("cntnr_tax").placeholder/100 : cntnr_tax/100;
 	}
 
 	function getNewTotal() {
@@ -410,7 +422,8 @@
 
 	function getNewNet() {
 		getNewTotal();
-		cntnr_net = ((cntnr_total* 10) / 10) - ((cntnr_discount* 10) / 10);
+		temp_total = ((cntnr_total* 10) / 10);
+        cntnr_net = temp_total - (temp_total * ((cntnr_discount* 10) / 10));
 	}
 	
 	$(document).ready(function() {

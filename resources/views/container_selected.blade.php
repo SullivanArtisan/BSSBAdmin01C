@@ -244,31 +244,31 @@
                             <div class="col-5"><input type="hidden" class="form-control mt-1" type="text"></div>
                         </div>
                         <div class="row mx-2">
-                            <div class="col-2"><label class="col-form-label">Cost:&nbsp;</label></div>
+                            <div class="col-2"><label class="col-form-label">Cost:&nbsp;($)</label></div>
                             <div class="col-4">
                                 <input class="form-control mt-1" type="number" step="0.01" id="cntnr_cost" name="cntnr_cost" value="{{$container->cntnr_cost}}" onchange="getNewPrices()">
                             </div>
-                            <div class="col-2"><label class="col-form-label">Surcharges:&nbsp;</label></div>
+                            <div class="col-2"><label class="col-form-label">Surcharges:&nbsp;($)</label></div>
                             <div class="col-4">
                                 <input class="form-control mt-1" readonly type="number" step="0.01" id="cntnr_surcharges" name="cntnr_surcharges" value="{{$container->cntnr_surcharges}}" onchange="getNewPrices()">
                             </div>
                         </div>
                         <div class="row mx-2">
-                            <div class="col-2"><label class="col-form-label">Discount:&nbsp;</label></div>
+                            <div class="col-2"><label class="col-form-label">Discount:&nbsp;(%)</label></div>
                             <div class="col-4">
-                                <input class="form-control mt-1" type="number" step="0.01" id="cntnr_discount" name="cntnr_discount" value="{{$container->cntnr_discount}}" onchange="getNewPrices()">
+                                <input class="form-control mt-1" type="number" step="1" id="cntnr_discount" name="cntnr_discount" value="{{$container->cntnr_discount * 100}}" onchange="getNewPrices()">
                             </div>
-                            <div class="col-2"><label class="col-form-label">Tax:&nbsp;</label></div>
+                            <div class="col-2"><label class="col-form-label">Tax:&nbsp;(%)</label></div>
                             <div class="col-4">
-                                <input class="form-control mt-1" readonly type="number" step="0.01" id="cntnr_tax" name="cntnr_tax" value="{{$container->cntnr_tax}}" onchange="getNewPrices()">
+                                <input class="form-control mt-1" readonly type="number" step="1" id="cntnr_tax" name="cntnr_tax" value="{{$container->cntnr_tax * 100}}" onchange="getNewPrices()">
                             </div>
                         </div>
                         <div class="row mx-2">
-                            <div class="col-2"><label class="col-form-label">Total:&nbsp;</label></div>
+                            <div class="col-2"><label class="col-form-label">Total:&nbsp;($)</label></div>
                             <div class="col-4">
                                 <input class="form-control mt-1" readonly type="number" step="0.01" id="cntnr_total" name="cntnr_total" value="{{$container->cntnr_total}}">
                             </div>
-                            <div class="col-2"><label class="col-form-label">Net:&nbsp;</label></div>
+                            <div class="col-2"><label class="col-form-label">Net:&nbsp;($)</label></div>
                             <div class="col-4">
                                 <input class="form-control mt-1" readonly type="number" step="0.01" id="cntnr_net" name="cntnr_net" value="{{$container->cntnr_net}}">
                             </div>
@@ -387,8 +387,8 @@
             function getAllPrices() {
 				cntnr_cost = document.getElementById("cntnr_cost").value;
 				cntnr_surcharges = document.getElementById("cntnr_surcharges").value;
-				cntnr_discount = document.getElementById("cntnr_discount").value;
-				cntnr_tax = document.getElementById("cntnr_tax").value;
+				cntnr_discount = document.getElementById("cntnr_discount").value/100;
+				cntnr_tax = document.getElementById("cntnr_tax").value/100;
 				cntnr_total = document.getElementById("cntnr_total").value;
 				cntnr_net = document.getElementById("cntnr_net").value;
             }
@@ -400,7 +400,8 @@
 
             function getNewNet() {
                 getNewTotal();
-                cntnr_net = ((cntnr_total* 10) / 10) - ((cntnr_discount* 10) / 10);
+                temp_total = ((cntnr_total* 10) / 10);
+                cntnr_net = temp_total - (temp_total * ((cntnr_discount* 10) / 10));
             }
 
 			function myConfirmation() {
