@@ -2,7 +2,7 @@
 @section('function_page')
     <div class="card mx-2 mt-3" style="background-color: #A9DFBF;">
         <div class="card-body">
-            <h3 class="card-title text-primary">Hi, <span style="font-family: 'Times New Roman';font-weight: bold;font-style: italic;">{{Auth::user()->name}}</span>, welcome to PKCS Home!</h4>
+            <h3 class="card-title text-primary text-center">Hi, <span style="font-family: 'Times New Roman';font-weight: bold;font-style: italic;">{{Auth::user()->name}}</span>, welcome to PKCS Home!</h4>
             <!--
             <p class="card-text">The functions in this group are good for H/L control options</p>
             -->
@@ -17,6 +17,16 @@
             </thead>
             <tbody>
                 <tr>
+                    <div class="row mt-4">
+                        <div class="col-3">
+                        </div>
+                        <div class="col-6">
+                            <img src="assets/img/seafreightservices.webp" />
+                        </div>
+                        <div class="col-3">
+                        </div>
+                    </div>
+                    <!--
                     <td class="w-25">
                         <div class="card">
                             <div class="card-body">
@@ -61,6 +71,7 @@
                         </div>
                     </td>
                     <td></td>
+                    -->
                 </tr>
             </tbody>
         </table>

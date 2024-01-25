@@ -43,6 +43,7 @@
 				<div class="ml-2 mb-3">
 					<a href="{{route('home_page')}}"><span style='font-size:25px;'>&#127968;</span>&nbsp&nbspHome</a>
 				</div>
+                <!--
                 <li class="active">
                     <a href="#controlSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Control</a>
                     <ul class="collapse list-unstyled" id="controlSubmenu">
@@ -54,37 +55,38 @@
                         <li> <a href="#">View By Job Number</a> </li>
                     </ul>
                 </li>
+                -->
                 <li>
-                    <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Administration</a>
+                    <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">All Data</a>
                     <ul class="collapse list-unstyled" id="adminSubmenu">
                         <li> <a href="{{route('customer_main')}}">Customer File</a> </li>
                         <li> <a href="#driverFileSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Driver File</a> </li>
 							<ul class="collapse list-unstyled mx-4" id="driverFileSubmenu">
 							  <li><a href="{{route('driver_main')}}">All Drivers</a></li>
-							  <li><a href="#">Driver Deductions</a></li>
 							  <li><a href="{{route('driver_pay_prices_main')}}">Driver Pay Rates</a></li>
-							  <li><a href="#">Subhauler Pay Rates</a></li>
 							</ul>						
-                        <li> <a href="{{route('generate_pdf')}}">Invoicing</a> </li>
-                        <li> <a href="#">Driver Pay</a> </li>
                         <li> <a href="{{route('ssl_main')}}">Steamship Line DB</a> </li>
                         <li> <a href="#addressSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Address DB</a> </li>
 							<ul class="collapse list-unstyled mx-4" id="addressSubmenu">
 							  <li><a href="{{route('terminal_main')}}">Terminals</a></li>
 							  <li><a href="{{route('company_main')}}">Company Addresses</a></li>
-							  <li><a href="#">Container Depots</a></li>
-							  <li><a href="#">Custom Locations</a></li>
 							</ul>						
                         <li> <a href="{{route('system_user_main')}}">System Users</a> </li>
                         <li> <a href="{{route('zone_main')}}">Zones</a> </li>
                         <li> <a href="{{route('power_unit_main')}}">Power Units</a> </li>
-                        <li> <a href="#">Accessorial Charges</a> </li>
                         <li> <a href="{{route('chassis_main')}}">Chassis List</a> </li>
-                        <li> <a href="#">Reports</a> </li>
-                        <li> <a href="#">Security Levels</a> </li>
-                        <li> <a href="#">System Settings</a> </li>
                     </ul>
                 </li>
+                <li>
+                    <a href="#tcefSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Frequent Operations</a>
+                    <ul class="collapse list-unstyled" id="tcefSubmenu">
+                        <li> <a href="{{route('booking_add')}}">Enter New Job</a> </li>
+                        <li> <a href="{{route('booking_main')}}">Bookings</a> </li>
+                        <li> <a href="{{route('container_main')}}">Containers</a> </li>
+                        <li> <a href="{{route('dispatch_main')}}">Dispatch</a> </li>
+                    </ul>
+                </li>
+                <!--
                 <li>
                     <a href="#tcefSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">TCEF</a>
                     <ul class="collapse list-unstyled" id="tcefSubmenu">
@@ -99,6 +101,7 @@
                         <li> <a href="#">Import Payments File</a> </li>
                     </ul>
                 </li>
+                -->
             </ul>
 
 			<!--

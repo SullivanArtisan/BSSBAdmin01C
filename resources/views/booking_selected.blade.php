@@ -128,7 +128,7 @@ use App\Models\Booking;
 					}
 				}
 
-				if (document.getElementById("btn_save").innerHTML == 'Back') {
+				if (document.getElementById("btn_save").innerHTML == 'Previous') {
 					event.preventDefault();
 					location.reload();
 				}
@@ -139,7 +139,7 @@ use App\Models\Booking;
 					document.getElementById("btn_save").innerHTML = 'Save';
 				} else {
 					document.getElementById("btn_save").className = 'btn btn-dark mx-4';
-					document.getElementById("btn_save").innerHTML = 'Back';
+					document.getElementById("btn_save").innerHTML = 'Previous';
 				}
 			}
 		</script>
