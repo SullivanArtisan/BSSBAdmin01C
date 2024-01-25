@@ -78,7 +78,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#tcefSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Frequent Operations</a>
+                    <a href="#tcefSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Main Operations</a>
                     <ul class="collapse list-unstyled" id="tcefSubmenu">
                         <li> <a href="{{route('booking_add')}}">Enter New Job</a> </li>
                         <li> <a href="{{route('booking_main')}}">Bookings</a> </li>

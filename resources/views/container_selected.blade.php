@@ -108,7 +108,7 @@
                         </div>
                         <div class="col-10">
                             <?php
-                            $available_bookings = Booking::where('bk_status', MyHelper::BkCreatedStaus())->orwhere('bk_status', 'LIKE', '%Sent%')->get();
+                            $available_bookings = Booking::where('bk_status', MyHelper::BkCreatedStaus())->orwhere('bk_status', 'LIKE', '%sent%')->get();
                             ?>
                             <input list="avail_bks" type='text' oninput='AddToThisBooking()' class="bg-success border-primary border-4 form-control" name="avail_bks" id="availBksInput" placeholder="Add it to a Booking">
                                 <datalist id="avail_bks">

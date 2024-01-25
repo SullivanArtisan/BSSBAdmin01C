@@ -14,11 +14,17 @@ use App\Models\Booking;
 
 <?php
 	$id = $_GET['selJobId'];
+	$ok_to_save = false;
 	if ($id) {
 		$booking = Booking::where('id', $id)->first();
 		// $cstmDispatch = CstmDispatch::where('cstm_account_no', $customer->cstm_account_no)->first();
 		// $cstmInvoice = CstmInvoice::where('cstm_account_no', $customer->cstm_account_no)->first();
 		// $cstmAllOther = CstmAllOther::where('cstm_account_no', $customer->cstm_account_no)->first();
+		if ($booking) {
+			if ($booking->bk_status == MyHelper::BkCreatedStaus() || ($booking->bk_status == '0/'.$booking->bk_total_containers.' sent')) {
+				$ok_to_save = true;
+			}
+		}
 	}
 ?>
 	
@@ -71,27 +77,31 @@ use App\Models\Booking;
 					@csrf
 					<ul class="nav nav-tabs" id="myTab" role="tablist">
 						<li class="nav-item">
-							<a class="nav-link active " id="bookingdetail-tab" data-toggle="tab" href="#bookingdetail" role="tab" aria-controls="bookingdetail" aria-selected="true" onclick="MarkSelectedTab(1)">Booking Details</a>
+							<a class="nav-link active" id="containerinfo-tab" data-toggle="tab" href="#containerinfo" role="tab" aria-controls="containerinfo" aria-selected="false" onclick="MarkSelectedTab(1)">Container Details</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="containerinfo-tab" data-toggle="tab" href="#containerinfo" role="tab" aria-controls="containerinfo" aria-selected="false" onclick="MarkSelectedTab(2)">Container Details</a>
+							<a class="nav-link" id="bookingdetail-tab" data-toggle="tab" href="#bookingdetail" role="tab" aria-controls="bookingdetail" aria-selected="true" onclick="MarkSelectedTab(2)">Booking Details</a>
 						</li>
 					</ul>
 
 					<div class="tab-content" id="myTabContent">
-						<div class="tab-pane fade show active" id="bookingdetail" role="tabpanel" aria-labelledby="bookingdetail-tab">
-							@include('components.booking_tab_details');
+						<div class="tab-pane fade show active" id="containerinfo" role="tabpanel" aria-labelledby="containerinfo-tab">
+							@include('components.booking_tab_containers')
 						</div>
 
-						<div class="tab-pane fade" id="containerinfo" role="tabpanel" aria-labelledby="containerinfo-tab">
-							@include('components.booking_tab_containers')
+						<div class="tab-pane fade" id="bookingdetail" role="tabpanel" aria-labelledby="bookingdetail-tab">
+							@include('components.booking_tab_details')
 						</div>
 					</div>
 					<div class="row my-3">
 						<div class="w-25"></div>
 						<div class="col">
 							<div class="row">
+								@if ($ok_to_save == true)
 								<button class="btn btn-warning mx-4" type="submit" id="btn_save" onclick="return CheckMatchedZones();">Save</button>
+								@else
+								<button class="btn btn-dark mx-4" type="submit" id="btn_save" disabled>Save</button>
+								@endif
 								<!--
 								<button class="btn btn-secondary mx-3" type="button"><a href="{{route('home_page')}}">Cancel</a></button>
 								-->
@@ -103,6 +113,7 @@ use App\Models\Booking;
 			</div>
 		</div>
 		<script>
+			document.getElementById("btn_save").style.visibility = "hidden";
 		</script>
 		
 		<script>
@@ -128,18 +139,20 @@ use App\Models\Booking;
 					}
 				}
 
-				if (document.getElementById("btn_save").innerHTML == 'Previous') {
-					event.preventDefault();
-					location.reload();
-				}
+				// if (document.getElementById("btn_save").innerHTML == 'Previous') {
+				// 	event.preventDefault();
+				// 	location.reload();
+				// }
 			}
 
 			function MarkSelectedTab(tab_sel) {
 				if (tab_sel == 1) {
-					document.getElementById("btn_save").innerHTML = 'Save';
+					// document.getElementById("btn_save").innerHTML = 'Save';
+					document.getElementById("btn_save").style.visibility = "hidden";
 				} else {
-					document.getElementById("btn_save").className = 'btn btn-dark mx-4';
-					document.getElementById("btn_save").innerHTML = 'Previous';
+					// document.getElementById("btn_save").className = 'btn btn-dark mx-4';
+					// document.getElementById("btn_save").innerHTML = 'Previous';
+					document.getElementById("btn_save").style.visibility = "visible";
 				}
 			}
 		</script>

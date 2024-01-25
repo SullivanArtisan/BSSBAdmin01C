@@ -37,7 +37,7 @@ class ContainerController extends Controller
         } else*/ if ($completed_cntnrs > 0) { 
             $booking->bk_status = $completed_cntnrs."/".$total_cntnrs." ".MyHelper::BkCompletedStaus();
         } else if ($sent_cntnrs < $total_cntnrs) { 
-            $booking->bk_status = $sent_cntnrs."/".$total_cntnrs." Sent";
+            $booking->bk_status = $sent_cntnrs."/".$total_cntnrs." sent";
         } else if ($sent_cntnrs == $total_cntnrs) {
             $booking->bk_status = "0/".$total_cntnrs." ".MyHelper::BkCompletedStaus();
         } else {

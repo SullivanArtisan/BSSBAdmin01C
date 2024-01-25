@@ -98,7 +98,7 @@
 				$outContents .= MyHelper::GetTotalMovements($booking->id, $container->cntnr_name).' <span class="text-info">( $'.$container->cntnr_net.')</span>';
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
-				$outContents .= "<button class=\"btn btn-secondary btn-sm my-1\" type=\"button\"><a href=\"".route('movements_selected', ['cntnrId'=>$container->id])."\">Edit Movements</a></button>";
+				$outContents .= "<button class=\"btn btn-success btn-sm my-1\" type=\"button\"><a href=\"".route('movements_selected', ['cntnrId'=>$container->id])."\">Get Ready!</a></button>";
 			$outContents .= "</div>";
 			$outContents .= "</div>";
 			echo $outContents;
