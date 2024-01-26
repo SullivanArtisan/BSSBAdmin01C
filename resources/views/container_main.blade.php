@@ -256,7 +256,7 @@
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-2\">";
                     if ($container->cntnr_job_no != MyHelper::CntnrNewlyCreated()) {
-						$outContents .= "<button class=\"btn btn-secondary btn-sm my-1\" type=\"button\"><a href=\"".route('movements_selected', ['cntnrId'=>$container->id, 'parentPage'=>$page_no])."\">Edit Movements</a></button>";
+						$outContents .= "<button class=\"btn btn-success btn-sm my-1\" type=\"button\"><a href=\"".route('movements_selected', ['cntnrId'=>$container->id, 'parentPage'=>$page_no])."\">Get Ready!</a></button>";
                     }
 				$outContents .= "</div>";
 			$outContents .= "</div><hr class=\"m-1\"/>";

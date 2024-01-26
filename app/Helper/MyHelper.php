@@ -31,7 +31,7 @@ class MyHelper
     static $allContainerLengths = ["10", "20", "40", "Other"];
 
     // The Invoice's Send Timing
-    static $invoiceSendTiming = "all_containers_ready_to_be_dispatched";  // possible values: "all_containers_ready_to_be_dispatched" or "all_containers_completed"
+    static $invoiceSendTiming = "all_containers_completed";  // possible values: "all_containers_dispatched" or "all_containers_completed"
 
     // The Invoice's Payment Waiting Peroid
     static $invPaymentWaitingPeriod = 30;  // days

@@ -57,7 +57,7 @@
                 </li>
                 -->
                 <li>
-                    <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">All Data</a>
+                    <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">All Data...</a>
                     <ul class="collapse list-unstyled" id="adminSubmenu">
                         <li> <a href="{{route('customer_main')}}">Customer File</a> </li>
                         <li> <a href="#driverFileSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Driver File</a> </li>
@@ -78,11 +78,11 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#tcefSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Main Operations</a>
+                    <a href="#tcefSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Main Operations...</a>
                     <ul class="collapse list-unstyled" id="tcefSubmenu">
                         <li> <a href="{{route('booking_add')}}">Enter New Job</a> </li>
-                        <li> <a href="{{route('booking_main')}}">Bookings</a> </li>
-                        <li> <a href="{{route('container_main')}}">Containers</a> </li>
+                        <li> <a href="{{route('booking_main')}}">All Bookings</a> </li>
+                        <li> <a href="{{route('container_main')}}">All Containers</a> </li>
                         <li> <a href="{{route('dispatch_main')}}">Dispatch</a> </li>
                     </ul>
                 </li>

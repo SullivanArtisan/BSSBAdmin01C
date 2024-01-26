@@ -14,15 +14,15 @@
 		$page_from_booking_selected = false;
 		$booking_id = 0;
 		$booking_status = 'deleted';
-		$ready_to_be_dispatched_status = '0/? completed';
-		$completed_status = '?/? completed';
+		$status_all_dispatched = '0/? completed';
+		$status_completed = '?/? completed';
 		$invoice = null;
 	} else {	// User entered this page by clicking any existing booking in Bookings
 		$page_from_booking_selected = true;
 		$booking_id = $booking->id;
 		$booking_status = $booking->bk_status;
-		$ready_to_be_dispatched_status = '0/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus();
-		$completed_status = $booking->bk_total_containers.'/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus();
+		$status_all_dispatched = '0/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus();
+		$status_completed = $booking->bk_total_containers.'/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus();
 		$invoice = App\Models\Invoice::where('inv_job_no', $booking->bk_job_no)->first();
 	}
 	$invoice_existing = 0;
@@ -546,8 +546,8 @@
 		bookId = {!! json_encode($booking_id) !!};
 		bookStatus = {!! json_encode($booking_status) !!};
 		invoicingConfig = {!! json_encode($invoicing_config) !!};
-		readyToBeDispatchedStatus = {!! json_encode($ready_to_be_dispatched_status) !!};
-		completedStatus = {!! json_encode($completed_status) !!};
+		statusAllDispatched = {!! json_encode($status_all_dispatched) !!};
+		statusCompleted = {!! json_encode($status_completed) !!};
 		invoiceExisting = {!! json_encode($invoice_existing) !!};
 		invoiceClosed   = {!! json_encode($invoice_closed) !!};
 		invoiceCancelled= {!! json_encode($invoice_cancelled) !!};
@@ -556,7 +556,7 @@
 			event.preventDefault();
 			var token = "{{ csrf_token() }}";
 
-			if (bookStatus != completedStatus) {
+			if (bookStatus != statusCompleted) {
 				alert("You cannot pay off this booking now.");
 			} else {
 				$.ajax({
@@ -578,13 +578,13 @@
 		function SendInvoice() {
 			event.preventDefault();
 
-			if (invoicingConfig == 'all_containers_completed') {
-				if (bookStatus != completedStatus) {
+			if (invoicingConfig == 'all_containers_completed') {	// Default config : all_containers_completed
+				if (bookStatus != statusCompleted) {
 					alert("\r\nSorry!!\r\nYou cannot send this booking's invoice to the customer now.");
 					return;
 				}
-			} else {	// Default config: all_containers_ready_to_be_dispatched
-				if (bookStatus != readyToBeDispatchedStatus) {
+			} else {	// all_containers_dispatched
+				if (bookStatus != statusAllDispatched) {
 					alert("\r\nSorry!!\r\nYou cannot send this booking's invoice to the customer now.");
 					return;
 				}
