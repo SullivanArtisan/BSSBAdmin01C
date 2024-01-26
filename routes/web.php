@@ -435,7 +435,6 @@ Route::post('/booking_pay_off', function (Request $request) {
 })->middleware(['auth'])->name('booking_pay_off');
 
 Route::post('/send_invoice_to_customer', function (Request $request) {
-	Log::Info('-------- booking_id = '.$_POST['booking_id']);
 	$booking = Booking::where('id', $_POST['booking_id'])->first();
 	$containers = Container::where('cntnr_job_no', $booking->bk_job_no)->get();
 	$net_price  = 0;
@@ -446,13 +445,20 @@ Route::post('/send_invoice_to_customer', function (Request $request) {
 	}
 	MyHelper::LogStaffAction(Auth::user()->id, 'To send invoice of booking '.$booking->bk_job_no.'.', '');
 
+	$just_resend_email = false;
 	$current_seconds = time();
 	$due_date_seconds = $current_seconds + MyHelper::$invPaymentWaitingPeriod * 24 * 60 * 60;
 	$invoice = Invoice::where('inv_job_no', $booking->bk_job_no)->first();
 	if ($invoice && $invoice->inv_status != 'deleted' && $invoice->inv_status != MyHelper::InvoiceCancelledStaus()) {
 		MyHelper::LogStaffActionResult(Auth::user()->id, 'Invoice '.$invoice->inv_serial_no.' already existed. Just send it to the customer again.', '');
 		$res = true;
+		$just_resend_email = true;
 	} else { 
+		$booking->bk_status = MyHelper::BkInvoicedStaus();
+		if (!$booking->save()) {
+			Log::Info('Oops, something to change bk_status to invoiced for booking '.$booking->bk_job_no);
+		}
+
 		$invoice = new Invoice;
 		$invoice->inv_serial_no   	= date("Y-m-", $current_seconds).$booking->bk_job_no;
 		$invoice->inv_job_no      	= $booking->bk_job_no;
@@ -467,7 +473,11 @@ Route::post('/send_invoice_to_customer', function (Request $request) {
 		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to create invoice record: '.$invoice->inv_serial_no.' for booking '.$booking->bk_job_no.'.', '');
 	} else {
 		$invoice_file_name = $invoice->inv_serial_no.'.pdf';
-		$result = PDFController::sendInvoice($booking, $invoice_file_name);
+		if ($just_resend_email) {
+			$result = true;
+		} else {
+			$result = PDFController::sendInvoice($booking, $invoice_file_name);
+		}
 
 		if (!$result) {
 			MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to create a invoice PDF file '.$invoice_file_name.' for booking '.$booking->bk_job_no.'.', '');

@@ -15,6 +15,11 @@
     <link rel="stylesheet" href="css/style2.css">
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <style>
+        .menulistitem {
+            color: Khaki;
+        }
+    </style>
 
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -35,13 +40,13 @@
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3 style="font-family: Georgia; color:LightCyan">Port Kells Container Services</h3>
+                <h3 style="font-family: Georgia; color:Gold">Port Kells Container Services</h3>
                 <h6 style="font-family: Georgia; color:LightCyan"><?php echo date("m/d/Y l");?></h6>
             </div>
 
             <ul class="list-unstyled components">
 				<div class="ml-2 mb-3">
-					<a href="{{route('home_page')}}"><span style='font-size:25px;'>&#127968;</span>&nbsp&nbspHome</a>
+					<a href="{{route('home_page')}}"><span style='font-size:30px;'>&#127968;</span><span style='font-weight:bold;'>&nbsp&nbspHome</span></a>
 				</div>
                 <!--
                 <li class="active">
@@ -57,33 +62,33 @@
                 </li>
                 -->
                 <li>
-                    <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">All Data...</a>
+                    <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="font-weight:bold;color:Purple">All Data...</a>
                     <ul class="collapse list-unstyled" id="adminSubmenu">
-                        <li> <a href="{{route('customer_main')}}">Customer File</a> </li>
-                        <li> <a href="#driverFileSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Driver File</a> </li>
+                        <li class="menulistitem"> <a href="{{route('customer_main')}}">Customer File</a> </li>
+                        <li class="menulistitem"> <a href="#driverFileSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Driver File</a> </li>
 							<ul class="collapse list-unstyled mx-4" id="driverFileSubmenu">
-							  <li><a href="{{route('driver_main')}}">All Drivers</a></li>
-							  <li><a href="{{route('driver_pay_prices_main')}}">Driver Pay Rates</a></li>
+							  <li class="menulistitem"><a href="{{route('driver_main')}}">All Drivers</a></li>
+							  <li class="menulistitem"><a href="{{route('driver_pay_prices_main')}}">Driver Pay Rates</a></li>
 							</ul>						
-                        <li> <a href="{{route('ssl_main')}}">Steamship Line DB</a> </li>
-                        <li> <a href="#addressSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Address DB</a> </li>
-							<ul class="collapse list-unstyled mx-4" id="addressSubmenu">
-							  <li><a href="{{route('terminal_main')}}">Terminals</a></li>
-							  <li><a href="{{route('company_main')}}">Company Addresses</a></li>
+                        <li class="menulistitem"> <a href="{{route('ssl_main')}}">Steamship Line DB</a> </li>
+                        <li class="menulistitem"> <a href="#addressSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Address DB</a> </li>
+							<ul class="menulistitem collapse list-unstyled mx-4" id="addressSubmenu">
+							  <li class="menulistitem"><a href="{{route('terminal_main')}}">Terminals</a></li>
+							  <li class="menulistitem"><a href="{{route('company_main')}}">Company Addresses</a></li>
 							</ul>						
-                        <li> <a href="{{route('system_user_main')}}">System Users</a> </li>
-                        <li> <a href="{{route('zone_main')}}">Zones</a> </li>
-                        <li> <a href="{{route('power_unit_main')}}">Power Units</a> </li>
-                        <li> <a href="{{route('chassis_main')}}">Chassis List</a> </li>
+                        <li class="menulistitem"> <a href="{{route('system_user_main')}}">System Users</a> </li>
+                        <li class="menulistitem"> <a href="{{route('zone_main')}}">Zones</a> </li>
+                        <li class="menulistitem"> <a href="{{route('power_unit_main')}}">Power Units</a> </li>
+                        <li class="menulistitem"> <a href="{{route('chassis_main')}}">Chassis List</a> </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#tcefSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Main Operations...</a>
+                    <a href="#tcefSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="font-weight:bold;color:Purple">Main Operations...</a>
                     <ul class="collapse list-unstyled" id="tcefSubmenu">
-                        <li> <a href="{{route('booking_add')}}">Enter New Job</a> </li>
-                        <li> <a href="{{route('booking_main')}}">All Bookings</a> </li>
-                        <li> <a href="{{route('container_main')}}">All Containers</a> </li>
-                        <li> <a href="{{route('dispatch_main')}}">Dispatch</a> </li>
+                        <li class="menulistitem"> <a href="{{route('booking_add')}}">Enter New Job</a> </li>
+                        <li class="menulistitem"> <a href="{{route('booking_main')}}">All Bookings</a> </li>
+                        <li class="menulistitem"> <a href="{{route('container_main')}}">All Containers</a> </li>
+                        <li class="menulistitem"> <a href="{{route('dispatch_main')}}">Dispatch</a> </li>
                     </ul>
                 </li>
                 <!--

@@ -590,9 +590,20 @@
 				}
 			}
 
-			if (invoiceExisting == 1 && invoiceClosed == 1) {
-				alert("\r\nOops!!\r\nYou cannot send this booking's invoice again.");
+			let sendIt = false;
+			if (invoiceExisting == 1) {
+				if (invoiceCancelled == 1 || invoiceClosed == 1) {
+					alert("\r\nOops!!\r\nYou cannot send this booking's invoice again.");
+				} else {
+					if(confirm("The invoice has been sent before. Do you still want to send it?")) {
+						sendIt = true;
+					}
+				}
 			} else {
+				sendIt = true;
+			}
+
+			if (sendIt) {
 				var token = "{{ csrf_token() }}";
 				$.ajax({
 					url: '/send_invoice_to_customer',

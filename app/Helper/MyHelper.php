@@ -74,6 +74,11 @@ class MyHelper
         return "completed";
     }  
 
+    // Get the 'invoiced' booking status
+    public static function BkInvoicedStaus() {
+        return "invoiced";
+    }  
+
     // Get the 'fully_paid' booking status
     public static function BkFullyPaidStaus() {
         return "fully_paid";
