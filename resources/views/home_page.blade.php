@@ -2,7 +2,7 @@
 @section('function_page')
     <div class="card mx-2 mt-3" style="background-color: #A9DFBF;">
         <div class="card-body">
-            <h3 class="card-title text-primary text-center">Hi, <span style="font-family: 'Times New Roman';font-weight: bold;font-style: italic;">{{Auth::user()->name}}</span>, welcome to PKCS Home!</h4>
+            <h3 class="card-title text-primary text-center">Hi, <span style="font-family: 'Times New Roman';font-weight: bold;font-style: italic;">{{Auth::user()->name}}</span>, welcome to the <span style="font-weight: bold">Home of Port Kells Container Services!</span></h4>
             <!--
             <p class="card-text">The functions in this group are good for H/L control options</p>
             -->

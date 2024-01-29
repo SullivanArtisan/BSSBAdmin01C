@@ -10,6 +10,7 @@
 	}
 
 	$invoicing_config = MyHelper::$invoiceSendTiming;
+	$status_invoiced = MyHelper::BkInvoicedStaus();
 	if (!strstr($_SERVER['REQUEST_URI'], 'booking_selected')) {		// User entered this page by clicking the Add button in Bookings
 		$page_from_booking_selected = false;
 		$booking_id = 0;
@@ -548,6 +549,7 @@
 		invoicingConfig = {!! json_encode($invoicing_config) !!};
 		statusAllDispatched = {!! json_encode($status_all_dispatched) !!};
 		statusCompleted = {!! json_encode($status_completed) !!};
+		statusInvoiced = {!! json_encode($status_invoiced) !!};
 		invoiceExisting = {!! json_encode($invoice_existing) !!};
 		invoiceClosed   = {!! json_encode($invoice_closed) !!};
 		invoiceCancelled= {!! json_encode($invoice_cancelled) !!};
@@ -556,7 +558,7 @@
 			event.preventDefault();
 			var token = "{{ csrf_token() }}";
 
-			if (bookStatus != statusCompleted) {
+			if (bookStatus != statusInvoiced) {
 				alert("You cannot pay off this booking now.");
 			} else {
 				$.ajax({
@@ -579,12 +581,12 @@
 			event.preventDefault();
 
 			if (invoicingConfig == 'all_containers_completed') {	// Default config : all_containers_completed
-				if (bookStatus != statusCompleted) {
+				if (bookStatus != statusCompleted && bookStatus != statusInvoiced) {
 					alert("\r\nSorry!!\r\nYou cannot send this booking's invoice to the customer now.");
 					return;
 				}
 			} else {	// all_containers_dispatched
-				if (bookStatus != statusAllDispatched) {
+				if (bookStatus != statusAllDispatched && bookStatus != statusInvoiced) {
 					alert("\r\nSorry!!\r\nYou cannot send this booking's invoice to the customer now.");
 					return;
 				}
@@ -595,7 +597,7 @@
 				if (invoiceCancelled == 1 || invoiceClosed == 1) {
 					alert("\r\nOops!!\r\nYou cannot send this booking's invoice again.");
 				} else {
-					if(confirm("The invoice has been sent before. Do you still want to send it?")) {
+					if(confirm("The invoice has been sent before. Do you want to send it again?")) {
 						sendIt = true;
 					}
 				}
