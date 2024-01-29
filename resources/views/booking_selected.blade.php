@@ -15,6 +15,11 @@ use App\Models\Booking;
 <?php
 	$id = $_GET['selJobId'];
 	$ok_to_save = false;
+	$status_all_dispatched = '0/? completed';
+	$invoicing_config = MyHelper::$invoiceSendTiming;
+	$invoice_existing 	= 0;
+	$invoice_closed 	= 0;
+	$invoice_cancelled	= 0;
 	if ($id) {
 		$booking = Booking::where('id', $id)->first();
 		// $cstmDispatch = CstmDispatch::where('cstm_account_no', $customer->cstm_account_no)->first();
@@ -23,6 +28,16 @@ use App\Models\Booking;
 		if ($booking) {
 			if ($booking->bk_status == MyHelper::BkCreatedStaus() || ($booking->bk_status == '0/'.$booking->bk_total_containers.' sent')) {
 				$ok_to_save = true;
+			}
+			$status_all_dispatched = '0/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus();
+			$invoice = App\Models\Invoice::where('inv_job_no', $booking->bk_job_no)->first();
+			if ($invoice != null) {
+				$invoice_existing = 1;
+				if ($invoice->inv_status == MyHelper::InvoiceClosedStaus()) {
+					$invoice_closed   = 1;
+				} else if ($invoice->inv_status == MyHelper::InvoiceCancelledStaus()) {
+					$invoice_cancelled   = 1;
+				}
 			}
 		}
 	}
@@ -59,6 +74,12 @@ use App\Models\Booking;
 				</div>
 				<div class="col-1 my-auto ml-5">
 					<button class="btn btn-danger me-2" type="button"><a href="{{route('booking_delete', ['id'=>$id])}}" onclick="return myConfirmation();">Delete</a></button>
+				</div>
+				<div class="col-1 my-auto">
+					<button class="btn btn-success mt-1" onclick="return SendInvoice();">Send Invoice</button>
+				</div>
+				<div class="col-3 my-auto ml-2">
+					<button class="btn btn-warning mt-1" onclick="return PayOffThisBooking();">Pay Off This Booking</button>
 				</div>
 			</div>
 		</div>
@@ -153,6 +174,86 @@ use App\Models\Booking;
 					// document.getElementById("btn_save").className = 'btn btn-dark mx-4';
 					// document.getElementById("btn_save").innerHTML = 'Previous';
 					document.getElementById("btn_save").style.visibility = "visible";
+				}
+			}
+
+
+			invoicingConfig = {!! json_encode($invoicing_config) !!};
+			bookId = {!! json_encode($booking->id) !!};
+			bookStatus = {!! json_encode($booking->bk_status) !!};
+			statusCompleted = {!! json_encode($booking->bk_total_containers.'/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus()) !!};
+			statusInvoiced = {!! json_encode(MyHelper::BkInvoicedStaus()) !!};
+			statusAllDispatched = {!! json_encode($status_all_dispatched) !!};
+			invoiceExisting = {!! json_encode($invoice_existing) !!};
+			invoiceCancelled = {!! json_encode($invoice_cancelled) !!};
+			invoiceClosed 	 = {!! json_encode($invoice_closed) !!};
+
+			function SendInvoice() {
+				event.preventDefault();
+
+				if (invoicingConfig == 'all_containers_completed') {	// Default config : all_containers_completed
+					if (bookStatus != statusCompleted && bookStatus != statusInvoiced) {
+						alert("\r\nSorry!!\r\nYou cannot send this booking's invoice to the customer now.");
+						return;
+					}
+				} else {	// all_containers_dispatched
+					if (bookStatus != statusAllDispatched && bookStatus != statusInvoiced) {
+						alert("\r\nSorry!!\r\nYou cannot send this booking's invoice to the customer now.");
+						return;
+					}
+				}
+
+				let sendIt = false;
+				if (invoiceExisting == 1) {
+					if (invoiceCancelled == 1 || invoiceClosed == 1) {
+						alert("\r\nOops!!\r\nYou cannot send this booking's invoice again.");
+					} else {
+						if(confirm("The invoice has been sent before. Do you want to send it again?")) {
+							sendIt = true;
+						}
+					}
+				} else {
+					sendIt = true;
+				}
+
+				if (sendIt) {
+					var token = "{{ csrf_token() }}";
+					$.ajax({
+						url: '/send_invoice_to_customer',
+						type: 'POST',
+						data: {_token:token, booking_id:bookId},    // the _token:token is for Laravel
+						success: function(dataRetFromPHP) {
+							location.href = location.href;
+							alert("The invoice of this booking has been sent to the customer successfully!");
+						},
+						error: function(err) {
+							console.log(err);
+							alert(err);
+						}
+					});
+				}
+			}
+
+			function PayOffThisBooking() {
+				event.preventDefault();
+				var token = "{{ csrf_token() }}";
+
+				if (bookStatus != statusInvoiced) {
+					alert("You cannot pay off this booking now.");
+				} else {
+					$.ajax({
+						url: '/booking_pay_off',
+						type: 'POST',
+						data: {_token:token, booking_id:bookId},    // the _token:token is for Laravel
+						success: function(dataRetFromPHP) {
+							location.href = location.href;
+							alert("This booking is paid off successfully!");
+						},
+						error: function(err) {
+							console.log(err);
+							alert(err);
+						}
+					});
 				}
 			}
 		</script>
