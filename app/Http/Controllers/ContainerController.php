@@ -37,7 +37,7 @@ class ContainerController extends Controller
         } else*/ if ($completed_cntnrs > 0) {                                                           // any container of a booking is completed by the driver
             $booking->bk_status = $completed_cntnrs."/".$total_cntnrs." ".MyHelper::BkCompletedStaus();     // then the bk_status = 'x/y completed'.
         } else if ($sent_cntnrs < $total_cntnrs) {                                      // a booking's bk_total_containers > the ones in dispatched queue
-            $booking->bk_status = $sent_cntnrs."/".$total_cntnrs." sent";                   // then the bk_status = 'x/y sent'.
+            $booking->bk_status = $sent_cntnrs."/".$total_cntnrs." ".MyHelper::BkSentStaus();               // then the bk_status = 'x/y sent'.
         } else if ($sent_cntnrs == $total_cntnrs) {                                     // a booking's bk_total_containers = the ones in dispatched queue + the ones already dispatched
             $booking->bk_status = "0/".$total_cntnrs." ".MyHelper::BkCompletedStaus();      // then the bk_status = '0/y completed'.
         } else {

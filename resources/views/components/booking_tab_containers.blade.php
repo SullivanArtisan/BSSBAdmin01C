@@ -98,7 +98,14 @@
 				$outContents .= MyHelper::GetTotalMovements($booking->id, $container->cntnr_name).' <span class="text-info">( $'.$container->cntnr_net.')</span>';
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
-				$outContents .= "<button class=\"btn btn-success btn-sm my-1\" type=\"button\"><a href=\"".route('movements_selected', ['cntnrId'=>$container->id])."\">Get Ready!</a></button>";
+				if ($container->cntnr_status == MyHelper::CntnrSentStaus() || $container->cntnr_status == MyHelper::CntnrCompletedStaus()) {
+					$btn_title = 'View Movements';
+					$btn_color = 'btn-info';
+				} else {
+					$btn_title = 'Get Ready!';
+					$btn_color = 'btn-success';
+				}
+				$outContents .= "<button class=\"btn btn-sm my-1 ".$btn_color."\" type=\"button\"><a href=\"".route('movements_selected', ['cntnrId'=>$container->id])."\">".$btn_title."</a></button>";
 			$outContents .= "</div>";
 			$outContents .= "</div>";
 			echo $outContents;
@@ -118,7 +125,7 @@
 $c_names = [];
 $total_containers = 0;
 ?>
-@if (!isset($booking) || (isset($booking) && (!strstr($booking->bk_status, MyHelper::BkCompletedStaus()))))
+@if (!isset($booking) || (isset($booking) && (!strstr($booking->bk_status, MyHelper::BkCompletedStaus()))) || (isset($booking) && (strstr($booking->bk_status, MyHelper::BkCompletedStaus())) && $booking->bk_total_containers == 0))
 	<div class="row mt-5 mb-2 h5">
 		<div class="ml-1 col-2"><label>Add a Container by:</label></div>
 		<div class="ml-1 col-2"><input type="radio" name="ContainerAddWays" id="rdoCreateContainer" onclick="RadioCreateClicked()" value="create" class="text-lg" checked> Creating a New One</input></div>

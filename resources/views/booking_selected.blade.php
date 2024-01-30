@@ -26,7 +26,7 @@ use App\Models\Booking;
 		// $cstmInvoice = CstmInvoice::where('cstm_account_no', $customer->cstm_account_no)->first();
 		// $cstmAllOther = CstmAllOther::where('cstm_account_no', $customer->cstm_account_no)->first();
 		if ($booking) {
-			if ($booking->bk_status == MyHelper::BkCreatedStaus() || ($booking->bk_status == '0/'.$booking->bk_total_containers.' sent')) {
+			if ($booking->bk_status == MyHelper::BkCreatedStaus() || ($booking->bk_status == '0/'.$booking->bk_total_containers.' '.MyHelper::BkSentStaus())) {
 				$ok_to_save = true;
 			}
 			$status_all_dispatched = '0/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus();

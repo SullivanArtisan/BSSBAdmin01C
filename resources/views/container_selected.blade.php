@@ -25,9 +25,13 @@
 </style>
 
 <?php
+    $status_completed = false;
 	$id = $_GET['cntnrId'];
 	if ($id) {
 		$container = Container::where('id', $id)->first();
+        if ($container->cntnr_status == MyHelper::CntnrCompletedStaus()) {
+            $status_completed = true;
+        }
 		$booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
     }
 
@@ -88,7 +92,7 @@
 			<div class="row m-4">
 				<div>
                     @if ($booking)
-					<h2 class="text-muted pl-2">{{$container->cntnr_job_no}}'s Container: {{$container->cntnr_name}} (Status: {{$container->cntnr_status}})</h2>
+					<h2 class="text-muted pl-2"><a href="{{route('booking_selected', ['selJobId'=>$booking->id])}}"><span class="text-primary">{{$container->cntnr_job_no}}</span></a>'s Container: {{$container->cntnr_name}} (Status: {{$container->cntnr_status}})</h2>
                     @else
 					<h2 class="text-muted pl-2">New Container: {{$container->cntnr_name}} (Status: {{$container->cntnr_status}})</h2>
                     @endif
@@ -410,8 +414,15 @@
 			}
 
 			function myRemovalConfirmation() {
-				if(!confirm("Are you sure to remove this container from the booking?"))
-				event.preventDefault();
+                var statusCompleted = {!! json_encode($status_completed) !!};
+                
+                if (true == statusCompleted) {
+                    alert("Sorry, this container is completed, so you cannot remove it from its booking!");
+                    event.preventDefault();
+                } else {
+                    if(!confirm("Are you sure to remove this container from the booking?"))
+				        event.preventDefault();
+                }
 			}
 
 			function getNewPrices() {

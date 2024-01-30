@@ -65,11 +65,16 @@ class MyHelper
 
     //============================================== for bookings status =============================================
     // Get the 'created' booking status
-    public static function BkCreatedStaus() {
-        return "bk_created";
+    public static function BkCreatedStaus() {       // a booking is just created and contains no container
+        return "created";
     }  
 
-    // Get the 'completed' booking status
+    // Get the 'sent' booking status                // if more than 1 container is joined to this booking and none of them is put in the dispatch queue (or dispatched), then '0/x sent'
+    public static function BkSentStaus() {
+        return "sent";
+    }  
+
+    // Get the 'completed' booking status           // once all joined containers of this booking are "Ready to Dispatch", then '0/x completed' and no more container is allowed to be joined
     public static function BkCompletedStaus() {
         return "completed";
     }  
