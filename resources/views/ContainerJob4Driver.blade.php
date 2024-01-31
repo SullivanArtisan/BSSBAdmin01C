@@ -211,7 +211,7 @@ use App\Http\Controllers\ContainerController;
                 window.location = url;
             }
         } else {
-            alert('Sorry, you cannot send a note now as this job has been completed!');
+            alert('\r\nSorry!!\r\nYou cannot send a note now as this job has been completed.');
         }
     }
 </script>

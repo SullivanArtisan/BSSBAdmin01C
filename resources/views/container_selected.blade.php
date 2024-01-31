@@ -46,6 +46,7 @@
 @section('goback')
     <?php
         if ($booking == null) {     // Enter this page by selecting a non-used container in the container_main page
+            $ok_to_edit_surcharge = 1;
             if (!isset($_GET['parentPage'])) {
                 $toThisLink = "<a class=\"text-primary\" href=\"".route('container_main')."\" style=\"margin-right: 10px;\">Back</a>";
             } else {
@@ -62,6 +63,12 @@
                 }
             } else {
                 $toThisLink = "<a class=\"text-primary\" href=\"".route($prevPage, ['selJobId'=>$_GET['selJobId']])."\" style=\"margin-right: 10px;\">Back</a>";
+            }
+
+            if ($booking->bk_status == MyHelper::BkInvoicedStaus() || $booking->bk_status == MyHelper::BkFullyPaidStaus() || $booking->bk_status == MyHelper::BkPartialyPaidStaus()) {
+                $ok_to_edit_surcharge = 0;
+            } else {
+                $ok_to_edit_surcharge = 1;
             }
         }
         echo $toThisLink;
@@ -101,9 +108,9 @@
                     @if ($booking)
 					<button class="btn btn-danger" type="button"><a href="{{route('container_remove', ['id'=>$id])}}" onclick="return myRemovalConfirmation();">Remove</a></button>
                         @if (!isset($_GET['parentPage'])) 
-					    <button class="btn btn-primary ml-4" type="button"><a href="{{route('container_charges_main', ['cntnrId'=>$id, 'cntnrJobNo'=>$container->cntnr_job_no, 'prevPage'=>'booking_selected', 'selJobId'=>$booking->id])}}">Edit Surcharges</a></button>
+					    <button class="btn btn-primary ml-4" type="button"><a href="{{route('container_charges_main', ['cntnrId'=>$id, 'cntnrJobNo'=>$container->cntnr_job_no, 'prevPage'=>'booking_selected', 'selJobId'=>$booking->id])}}" onclick="return surchargeConfirmation();">Edit Surcharges</a></button>
                         @else
-					    <button class="btn btn-primary ml-4" type="button"><a href="container_charges_main?cntnrId={{$id}}&cntnrJobNo={{$container->cntnr_job_no}}&parentPage={{$parentPage}}&selJobId={{$booking->id}}">Edit Surcharges</a></button>
+					    <button class="btn btn-primary ml-4" type="button"><a href="container_charges_main?cntnrId={{$id}}&cntnrJobNo={{$container->cntnr_job_no}}&parentPage={{$parentPage}}&selJobId={{$booking->id}}" onclick="return surchargeConfirmation();">Edit Surcharges</a></button>
                         @endif
                     @else
                     <div class="row">
@@ -413,11 +420,20 @@
 				event.preventDefault();
 			}
 
+			function surchargeConfirmation() {
+				let okToEditSurcharge  = {!! json_encode($ok_to_edit_surcharge) !!};
+
+				if (0 == okToEditSurcharge) {
+					event.preventDefault();
+					alert("\r\nSorry!!\r\nYou cannot edit the surcharges now.");
+				}
+			}
+
 			function myRemovalConfirmation() {
                 var statusCompleted = {!! json_encode($status_completed) !!};
                 
                 if (true == statusCompleted) {
-                    alert("Sorry, this container is completed, so you cannot remove it from its booking!");
+                    alert("\r\nSorry!!\r\nThis container is completed, so you cannot remove it from its booking.");
                     event.preventDefault();
                 } else {
                     if(!confirm("Are you sure to remove this container from the booking?"))
