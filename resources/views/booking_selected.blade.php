@@ -20,14 +20,20 @@ use App\Models\Booking;
 	$invoice_existing 	= 0;
 	$invoice_closed 	= 0;
 	$invoice_cancelled	= 0;
+	$can_delete_booking = 1;
+	$bk_total_containers= 0;
 	if ($id) {
 		$booking = Booking::where('id', $id)->first();
 		// $cstmDispatch = CstmDispatch::where('cstm_account_no', $customer->cstm_account_no)->first();
 		// $cstmInvoice = CstmInvoice::where('cstm_account_no', $customer->cstm_account_no)->first();
 		// $cstmAllOther = CstmAllOther::where('cstm_account_no', $customer->cstm_account_no)->first();
 		if ($booking) {
+			$bk_total_containers = $booking->bk_total_containers;
 			if ($booking->bk_status == MyHelper::BkCreatedStaus() || ($booking->bk_status == '0/'.$booking->bk_total_containers.' '.MyHelper::BkSentStaus())) {
 				$ok_to_save = true;
+			}
+			if (strstr($booking->bk_status, MyHelper::BkCompletedStaus()) || $booking->bk_status == MyHelper::BkInvoicedStaus() || $booking->bk_status == MyHelper::BkFullyPaidStaus() || $booking->bk_status == MyHelper::BkPartialyPaidStaus()) {
+				$can_delete_booking = 0;
 			}
 			$status_all_dispatched = '0/'.$booking->bk_total_containers.' '.MyHelper::BkCompletedStaus();
 			$invoice = App\Models\Invoice::where('inv_job_no', $booking->bk_job_no)->first();
@@ -139,8 +145,21 @@ use App\Models\Booking;
 		
 		<script>
 			function myConfirmation() {
-				if(!confirm("Are you sure to delete this booking job?"))
-				event.preventDefault();
+				let canDeleteBooking  = {!! json_encode($can_delete_booking) !!};
+				let bkTotalContainers = {!! json_encode($bk_total_containers) !!};
+
+				if (1 == canDeleteBooking) {
+					if (0 < bkTotalContainers) {
+						event.preventDefault();
+						alert("Please remove all the joined containers of this booking before you delete it!");
+					} else {
+						if(!confirm("Are you sure to delete this booking job?"))
+							event.preventDefault();
+					}
+				} else {
+					event.preventDefault();
+					alert("\r\nSorry!!\r\nThis booking cannot be deleted now.");
+				}
 			}
 
 			function CheckMatchedZones() {
@@ -239,7 +258,7 @@ use App\Models\Booking;
 				var token = "{{ csrf_token() }}";
 
 				if (bookStatus != statusInvoiced) {
-					alert("You cannot pay off this booking now.");
+					alert("\r\nSorry!!\r\nYou cannot pay off this booking now.");
 				} else {
 					$.ajax({
 						url: '/booking_pay_off',
