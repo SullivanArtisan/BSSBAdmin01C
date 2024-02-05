@@ -7,16 +7,29 @@
 		$booking_tab = '';
 	}
 
+	$use_ccntnr_table = false;
 	$ssls = \App\Models\SteamShipLine::all();
 	$available_containers = [];
 	if (isset($_GET['id'])) {				// Enter this page from booking_add.blade
 		$id = $_GET['id'];
 		$booking = \App\Models\Booking::where('id', $id)->first();
-		$containers = \App\Models\Container::where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->orderBy('cntnr_name', 'asc')->get();
+		if ($booking->bk_status == MyHelper::BkFullyPaidStaus()) {
+			$use_ccntnr_table = true;
+			$containers = \App\Models\container_completed::where('ccntnr_job_id', $booking->id)->where('ccntnr_status', '<>', 'deleted')->orderBy('ccntnr_name', 'asc')->get();
+		} else {
+			$use_ccntnr_table = false;
+			$containers = \App\Models\Container::where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->orderBy('cntnr_name', 'asc')->get();
+		}
 		$cntnr_job_no = $booking->bk_job_no;
 	} else {
 		if (isset($_GET['selJobId'])) {		// Enter this page from booking_selected.blade
-			$containers 			= \App\Models\Container::where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->orderBy('cntnr_name', 'asc')->get();
+			if ($booking->bk_status == MyHelper::BkFullyPaidStaus()) {
+				$use_ccntnr_table = true;
+				$containers = \App\Models\container_completed::where('ccntnr_job_id', $booking->id)->where('ccntnr_status', '<>', 'deleted')->orderBy('ccntnr_name', 'asc')->get();
+			} else {
+				$use_ccntnr_table = false;
+				$containers 		= \App\Models\Container::where('cntnr_job_no', $booking->bk_job_no)->where('cntnr_status', '<>', 'deleted')->orderBy('cntnr_name', 'asc')->get();
+			}
 			$available_containers 	= \App\Models\Container::where('cntnr_job_no', MyHelper::CntnrNewlyCreated())->where('cntnr_status', '<>', 'deleted')->orderBy('cntnr_name', 'asc')->get();
 			$cntnr_job_no 			= $booking->bk_job_no;
 		} else {
@@ -53,12 +66,10 @@
 	echo $outContents;
 
 	// Body Lines
-	$selected_container	 = "";
 	$selected_containers = array();
 	$listed_containers = 0;
 	if (sizeof($containers) > 0) {
 		foreach ($containers as $container) {
-			$selected_container = $container->id;
 			$listed_containers++;
 			if ($listed_containers % 2) {
 				$outContents = "<div class=\"row\" style=\"background-color:Lavender\">";
@@ -67,45 +78,95 @@
 			}
 			$outContents .= "<div class=\"col-2\">";
 				if (!isset($_GET['selJobId'])) {
-					$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no])."\">";
+					if(!$use_ccntnr_table) {
+						$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no])."\">";
+					} else {
+						$outContents .= "<a href=\"".route('container_completed_selected', ['cntnrId='.$container->ccntnr_id, 'cntnrJobNo='.$booking->bk_job_no])."\">";
+					}
 				} else {
-					$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
+					if(!$use_ccntnr_table) {
+						$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
+					} else {
+						$outContents .= "<a href=\"".route('container_completed_selected', ['cntnrId='.$container->ccntnr_id, 'cntnrJobNo='.$booking->bk_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
+					}
 				}
-				$outContents .= $container->cntnr_name;
-				$outContents .= "</a>";
+				if(!$use_ccntnr_table) {
+					$outContents .= $container->cntnr_name;
+				} else {
+					$outContents .= $container->ccntnr_name;
+				}
+			$outContents .= "</a>";
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-3\">";
 				if (!isset($_GET['selJobId'])) {
-					$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no])."\">";
+					if(!$use_ccntnr_table) {
+						$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no])."\">";
+					} else {
+						$outContents .= "<a href=\"".route('container_completed_selected', ['cntnrId='.$container->ccntnr_id, 'cntnrJobNo='.$booking->bk_job_no])."\">";
+					}
 				} else {
-					$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
+					if(!$use_ccntnr_table) {
+						$outContents .= "<a href=\"".route('container_selected', ['cntnrId='.$container->id, 'cntnrJobNo='.$container->cntnr_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
+					} else {
+						$outContents .= "<a href=\"".route('container_completed_selected', ['cntnrId='.$container->ccntnr_id, 'cntnrJobNo='.$booking->bk_job_no, 'prevPage=booking_selected', 'selJobId='.$booking->id])."\">";
+					}
 				}
-				if (($container->cntnr_status == MyHelper::CntnrDispatchedStaus()) && (strlen($container->cntnr_dvr_no) > 0)) {
-					$driver = \App\Models\Driver::where('dvr_no', $container->cntnr_dvr_no)->first();
-					$outContents .= $container->cntnr_status.' : <span class="text-info">'.$driver->dvr_name.'</span>';
+				if(!$use_ccntnr_table) {
+					if (($container->cntnr_status == MyHelper::CntnrDispatchedStaus()) && (strlen($container->cntnr_dvr_no) > 0)) {
+						$driver = \App\Models\Driver::where('dvr_no', $container->cntnr_dvr_no)->first();
+						$outContents .= $container->cntnr_status.' : <span class="text-info">'.$driver->dvr_name.'</span>';
+					} else {
+						$outContents .= $container->cntnr_status;
+					}
 				} else {
-					$outContents .= $container->cntnr_status;
+					if (($container->ccntnr_status == MyHelper::CntnrDispatchedStaus()) && (strlen($container->ccntnr_dvr_no) > 0)) {
+						$driver = \App\Models\Driver::where('dvr_no', $container->ccntnr_dvr_no)->first();
+						$outContents .= $container->ccntnr_status.' : <span class="text-info">'.$driver->dvr_name.'</span>';
+					} else {
+						$outContents .= $container->ccntnr_status;
+					}
 				}
-				$outContents .= "</a>";
+			$outContents .= "</a>";
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-1\">";
-				$outContents .= $container->cntnr_length;
+				if(!$use_ccntnr_table) {
+					$outContents .= $container->cntnr_length;
+				} else {
+					$outContents .= $container->ccntnr_length;
+				}
+		$outContents .= "</div>";
+			$outContents .= "<div class=\"col-2\">";
+				if(!$use_ccntnr_table) {
+					$outContents .= $container->cntnr_type;
+				} else {
+					$outContents .= $container->ccntnr_type;
+				}
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
-				$outContents .= $container->cntnr_type;
+				if(!$use_ccntnr_table) {
+					$outContents .= MyHelper::GetTotalMovements($booking->id, $container->cntnr_name).' <span class="text-info">( $'.$container->cntnr_net.')</span>';
+				} else {
+					$outContents .= MyHelper::GetTotalMovements($booking->id, $container->ccntnr_name).' <span class="text-info">( $'.$container->ccntnr_net.')</span>';
+				}
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-2\">";
-				$outContents .= MyHelper::GetTotalMovements($booking->id, $container->cntnr_name).' <span class="text-info">( $'.$container->cntnr_net.')</span>';
-			$outContents .= "</div>";
-			$outContents .= "<div class=\"col-2\">";
-				if ($container->cntnr_status == MyHelper::CntnrSentStaus() || $container->cntnr_status == MyHelper::CntnrCompletedStaus()) {
+				if(!$use_ccntnr_table) {
+					$temp_status = $container->cntnr_status;
+					$param_name= 'cntnrId';
+					$targetCntnrId = $container->id;
+				} else {
+					$temp_status = $container->ccntnr_status;
+					$param_name= 'ccntnrId';
+					$targetCntnrId = $container->ccntnr_id;
+				}
+				if ($temp_status == MyHelper::CntnrSentStaus() || $temp_status == MyHelper::CntnrCompletedStaus()) {
 					$btn_title = 'View Movements';
 					$btn_color = 'btn-info';
 				} else {
 					$btn_title = 'Get Ready!';
 					$btn_color = 'btn-success';
 				}
-				$outContents .= "<button class=\"btn btn-sm my-1 ".$btn_color."\" type=\"button\"><a href=\"".route('movements_selected', ['cntnrId'=>$container->id])."\">".$btn_title."</a></button>";
+			$outContents .= "<button class=\"btn btn-sm my-1 ".$btn_color."\" type=\"button\"><a href=\"".route('movements_selected', [$param_name=>$targetCntnrId])."\">".$btn_title."</a></button>";
 			$outContents .= "</div>";
 			$outContents .= "</div>";
 			echo $outContents;
@@ -124,8 +185,11 @@
 <?php
 $c_names = [];
 $total_containers = 0;
+$bkStatus = $booking->bk_status;
 ?>
-@if (!isset($booking) || (isset($booking) && (!strstr($booking->bk_status, MyHelper::BkCompletedStaus()))) || (isset($booking) && (strstr($booking->bk_status, MyHelper::BkCompletedStaus())) && $booking->bk_total_containers == 0))
+@if (!isset($booking) || 
+	(isset($booking) && (strstr($bkStatus, MyHelper::BkCompletedStaus())) && $booking->bk_total_containers == 0) || 
+	(isset($booking) && (!strstr($bkStatus, MyHelper::BkCompletedStaus())) && (!strstr($bkStatus, MyHelper::BkInvoicedStaus())) && (!strstr($bkStatus, MyHelper::BkFullyPaidStaus()))))
 	<div class="row mt-5 mb-2 h5">
 		<div class="ml-1 col-2"><label>Add a Container by:</label></div>
 		<div class="ml-1 col-2"><input type="radio" name="ContainerAddWays" id="rdoCreateContainer" onclick="RadioCreateClicked()" value="create" class="text-lg" checked> Creating a New One</input></div>

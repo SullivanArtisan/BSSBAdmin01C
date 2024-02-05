@@ -13,13 +13,13 @@ class DriverController extends Controller
     {
 		$validated = $request->validate([
 			'dvr_pwr_unit_no_1' => 'required',
-			'dvr_no'            => 'required',
+			'dvr_no'            => 'required|unique:drivers',
 			'dvr_name'          => 'required',
 			'dvr_email'         => 'required',
 			'dvr_start_date'    => 'required',
 			'dvr_type'          => 'required',
-			'dvr_license_no'    => 'required',
-			'dvr_sin'           => 'required',
+			'dvr_license_no'    => 'required|unique:drivers',
+			'dvr_sin'           => 'required|unique:drivers',
 		]);
 		
 		$driver = new Driver;
@@ -177,13 +177,13 @@ class DriverController extends Controller
     {
 		$validated = $request->validate([
 			'dvr_pwr_unit_no_1' => 'required',
-			'dvr_no'            => 'required',
+			'dvr_no'            => 'required|unique:drivers',
 			'dvr_name'          => 'required',
 			'dvr_email'         => 'required',
 			'dvr_start_date'    => 'required',
 			'dvr_type'          => 'required',
-			'dvr_license_no'    => 'required',
-			'dvr_sin'           => 'required',
+			'dvr_license_no'    => 'required|unique:drivers',
+			'dvr_sin'           => 'required|unique:drivers',
 		]);
 		
 		//$gf_facility = \App\Models\GeofenceFacility::where('facility_name', $request->trmnl_geofence_facility)->first();

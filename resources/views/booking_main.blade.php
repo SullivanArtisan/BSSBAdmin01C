@@ -132,23 +132,6 @@
 				}
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-1\">";
-				$sortParms = "?sort_key_booking=bk_cstm_account_no&sort_time=".time();
-				$outContents .= "<a href=\"booking_main".$sortParms."\">";
-				$outContents .= "Acc No";
-				if ($sortKeyInput != 'bk_cstm_account_no') {
-					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
-				} else {
-					if ($sort_icon == 'asc') {
-						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
-					} else {
-						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
-					}
-				}
-			$outContents .= "</div>";
-			$outContents .= "<div class=\"col-3\">";
-				$outContents .= "Customer";
-			$outContents .= "</div>";
-			$outContents .= "<div class=\"col-1\">";
 				$sortParms = "?sort_key_booking=bk_job_type&sort_time=".time();
 				$outContents .= "<a href=\"booking_main".$sortParms."\">";
 				$outContents .= "Job Type";
@@ -161,12 +144,6 @@
 						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
 					}
 				}
-			$outContents .= "</div>";
-			$outContents .= "<div class=\"col-2\">";
-				$outContents .= "Start";
-			$outContents .= "</div>";
-			$outContents .= "<div class=\"col-2\">";
-				$outContents .= "Finish";
 			$outContents .= "</div>";
 			$outContents .= "<div class=\"col-1 mt-1\">";
 				$sortParms = "?sort_key_booking=bk_total_containers&sort_time=".time();
@@ -181,6 +158,29 @@
 						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
 					}
 				}
+			$outContents .= "</div>";
+			$outContents .= "<div class=\"col-3\">";
+				$outContents .= "Customer";
+			$outContents .= "</div>";
+			$outContents .= "<div class=\"col-1\">";
+				$sortParms = "?sort_key_booking=bk_cstm_account_no&sort_time=".time();
+				$outContents .= "<a href=\"booking_main".$sortParms."\">";
+				$outContents .= "Acc No";
+				if ($sortKeyInput != 'bk_cstm_account_no') {
+					$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-dash-square\"></a></i>";
+				} else {
+					if ($sort_icon == 'asc') {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-up-square\"></a></i>";
+					} else {
+						$outContents .= "<span class=\"ml-2\"></span><i class=\"bi bi-caret-down-square\"></a></i>";
+					}
+				}
+			$outContents .= "</div>";
+			$outContents .= "<div class=\"col-2\">";
+				$outContents .= "Start";
+			$outContents .= "</div>";
+			$outContents .= "<div class=\"col-2\">";
+				$outContents .= "Finish";
 			$outContents .= "</div>";
 		$outContents .= "</div><hr class=\"m-2\"/>";
 		{{echo $outContents;}}
@@ -206,7 +206,16 @@
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-1\">";
 					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
-					$outContents .= $booking->bk_cstm_account_no;
+					$outContents .= $booking->bk_job_type;
+					$outContents .= "</a>";
+				$outContents .= "</div>";
+				$outContents .= "<div class=\"col-1\">";
+					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
+					if ($booking->bk_total_containers == null) {
+						$outContents .= "<small>0</small>";
+					} else {
+						$outContents .= "<small>".$booking->bk_total_containers."</small>";
+					}
 					$outContents .= "</a>";
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-3\">";
@@ -216,7 +225,7 @@
 				$outContents .= "</div>";
                 $outContents .= "<div class=\"col-1\">";
 					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
-					$outContents .= $booking->bk_job_type;
+					$outContents .= $booking->bk_cstm_account_no;
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 				$outContents .= "<div class=\"col-2\">";
@@ -227,15 +236,6 @@
 				$outContents .= "<div class=\"col-2\">";
 					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
 					$outContents .= $cmpny_finish;
-					$outContents .= "</a>";
-				$outContents .= "</div>";
-				$outContents .= "<div class=\"col-1\">";
-					$outContents .= "<a href=\"booking_selected?selJobId=$booking->id\">";
-					if ($booking->bk_total_containers == null) {
-						$outContents .= "<small>0</small>";
-					} else {
-						$outContents .= "<small>".$booking->bk_total_containers."</small>";
-					}
 					$outContents .= "</a>";
 				$outContents .= "</div>";
 			$outContents .= "</div><hr class=\"m-1\"/>";

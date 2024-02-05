@@ -105,6 +105,7 @@ function InsertThisMovement($sel_mvmt_op, $job_id, $cntnr_id, $mvmt_id, $max_mov
 
 		$movement = new Movement;
 		$movement->mvmt_bk_id    = $job_id;
+		$movement->mvmt_cntnr_id    = $cntnr_id;
 		$movement->mvmt_cntnr_name  = $container->cntnr_name;
 		$movement->mvmt_name        = $mvmt_name1;
 		$movement->mvmt_order       = $mvmt_order1;
@@ -115,6 +116,7 @@ function InsertThisMovement($sel_mvmt_op, $job_id, $cntnr_id, $mvmt_id, $max_mov
 
 		$movement = new Movement;
 		$movement->mvmt_bk_id    = $job_id;
+		$movement->mvmt_cntnr_id    = $cntnr_id;
 		$movement->mvmt_cntnr_name  = $container->cntnr_name;
 		$movement->mvmt_name        = $mvmt_name2;
 		$movement->mvmt_order       = $mvmt_order2;
@@ -420,15 +422,50 @@ Route::post('/booking_pay_off', function (Request $request) {
 	$res = $booking->save();
 					
 	if(!$res) {
-		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to pay off booking '.$booking->bk_job_no.'.', '');
+		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to pay off booking '.$booking->bk_job_no.' as bk_status cannot be updated.', '');
 	} else {
-		MyHelper::LogStaffActionResult(Auth::user()->id, 'Paid off booking '.$booking->bk_job_no.' OK.', '');
-
 		$containers = Container::where('cntnr_job_no', $booking->bk_job_no)->get();
 		foreach ($containers as $container) {
-			if ($container->cntnr_status != 'MyHelper::CntnrCompletedStaus()') {
-				$container->cntnr_paid = $container->cntnr_net;
-				$container->save();
+			if ($container->cntnr_status == MyHelper::CntnrCompletedStaus()) {
+				$paid_price = $container->cntnr_net;
+				$res = ContainerController::ResetContainer($container);
+
+				if(!$res) {
+					MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to pay off booking '.$booking->bk_job_no.' as container cannot be reset.', '');
+				} else {
+					$completed_cntnr = container_completed::where('ccntnr_id', $container->id)->where('ccntnr_job_id', $booking->id)->first();
+
+					if ($completed_cntnr) {
+						$completed_cntnr->ccntnr_status	= $container->cntnr_status;
+						$completed_cntnr->ccntnr_paid 	= $paid_price;
+						$res = $completed_cntnr->save();
+
+						if(!$res) {
+							MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to pay off booking '.$booking->bk_job_no.' as ccntnr_paid cannot be updated.', '');
+						} else {
+
+							$invoice = Invoice::where('ccntnr_id', $container->id)->where('inv_job_no', $booking->bk_job_no)->first();
+
+							if ($invoice) {
+								$invoice->inv_paid = $paid_price;
+								$invoice->inv_status = MyHelper::InvoiceClosedStaus();
+								$res = $invoice->save();
+		
+								if(!$res) {
+									MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to pay off booking '.$booking->bk_job_no.' as inv_status cannot be updated.', '');
+								} else {
+									MyHelper::LogStaffActionResult(Auth::user()->id, 'Paid off booking '.$booking->bk_job_no.' OK.', '');
+								}
+							} else {
+								MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to pay off booking '.$booking->bk_job_no.' as the invoice cannot be accessed.', '');
+							}
+						}
+					} else {
+						MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to pay off booking '.$booking->bk_job_no.' as the completed_container cannot be accessed.', '');
+					}
+				}
+			} else {
+				Log::Info('Weird! The container '.$container->id.' status should be completed, but it\'s not!');
 			}
 		}
 	}
@@ -543,6 +580,10 @@ Route::get('container_selected', function (Request $request) {
     return view('container_selected');
 })->middleware(['auth'])->name('container_selected');
 
+Route::get('container_completed_selected', function (Request $request) {
+    return view('container_completed_selected');
+})->middleware(['auth'])->name('container_completed_selected');
+
 Route::get('container_to_dispatch/{cntnrId}', function ($cntnrId) {
 	$container = Container::where('id', $cntnrId)->first();
 	$booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
@@ -580,10 +621,7 @@ Route::get('/container_remove/{id}', function ($id) {
 	$oldjobName = $container->cntnr_job_no;
 	MyHelper::LogStaffAction(Auth::user()->id, 'To remove the container '.$containerName.' from the booking '.$oldjobName.'.', '');
 	$booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
-	$container->cntnr_job_no = MyHelper::CntnrNewlyCreated();
-	$container->cntnr_status = MyHelper::CntnrCreatedStaus();
-	$container->cntnr_cost = $container->cntnr_surcharges = $container->cntnr_discount = $container->cntnr_total = $container->cntnr_net = $container->cntnr_paid = 0;
-	$res = $container->save();
+	$res = ContainerController::ResetContainer($container);
 					
 	if(!$res) {
 		MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to remove the container '.$containerName.' from the booking '.$oldjobName.'.', '');

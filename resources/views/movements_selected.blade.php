@@ -4,11 +4,25 @@
 <?php
     use App\Models\Booking;
     use App\Models\Container;
+    use App\Models\container_completed;
     use App\Models\Movement;
 
-	$cntnrId = $_GET['cntnrId'];
-    $container = Container::where('id', $cntnrId)->first();
-    $booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
+    if (isset($_GET['cntnrId'])) {
+        $cntnrId = $_GET['cntnrId'];
+        $container = Container::where('id', $cntnrId)->first();
+        $booking = Booking::where('bk_job_no', $container->cntnr_job_no)->first();
+        $container_id       = $container->id;
+        $container_name     = $container->cntnr_name;
+        $container_status   = $container->cntnr_status;
+    } else if (isset($_GET['ccntnrId'])) {
+        $cntnrId = $_GET['ccntnrId'];
+        $container = container_completed::where('ccntnr_id', $cntnrId)->first();
+        $booking = Booking::where('id', $container->ccntnr_job_id)->first();
+        $container_id       = $container->ccntnr_id;
+        $container_name     = $container->ccntnr_name;
+        $container_status   = $container->ccntnr_status;
+    }
+
     if (isset($_GET['movName'])) {
         $movName = $_GET['movName'];
         $movement = Movement::where('mvmt_name', $_GET['movName'])->first();
@@ -16,7 +30,9 @@
         $movName = "";
         $movement = "";
     }
+
     $allow_update = 1;
+
     if (isset($_GET['parentPage'])) {
         $page_no = $_GET['parentPage'];
         $go_back_url = route('container_main', ['page='.$page_no]);
@@ -34,25 +50,25 @@
         <div class="row m-4">
             <div class="row">
                 <div class="col-11">
-				    <h2 class="text-muted pl-2">Movements of Container <span class="text-primary font-italic">{{$container->cntnr_name}}</span> in Job <span class="text-primary font-italic">{{$container->cntnr_job_no}}</span></h2>
+				    <h2 class="text-muted pl-2">Movements of Container <span class="text-primary font-italic">{{$container_name}}</span> in Job <span class="text-primary font-italic">{{$booking->bk_job_no}}</span></h2>
                 </div>
                 <div class="col-1">
-                    @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
-                    <button class="btn btn-primary my-1 type=button"><a href="{{route('container_to_dispatch', ['cntnrId'=>$container->id])}}" onclick="return myConfirmation();">Ready to Dispatch</a></button>
+                    @if ($container_status == MyHelper::CntnrCreatedStaus())
+                    <button class="btn btn-primary my-1 type=button"><a href="{{route('container_to_dispatch', ['cntnrId'=>$container_id])}}" onclick="return myConfirmation();">Ready to Dispatch</a></button>
                     @else
-                    <button class="btn btn-info my-1 type=button disabled">Container Status: <span class="text-dark">{{$container->cntnr_status}}</span></button>
+                    <button class="btn btn-info my-1 type=button disabled">Container Status: <span class="text-dark">{{$container_status}}</span></button>
                     @endif
                 </div>
             </div>
             <div>
-                @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                @if ($container_status == MyHelper::CntnrCreatedStaus())
                <p class="text-muted pl-2">To insert/delete movement(s), right click on a specific movement and choose the desired option.</p>
                @endif
             </div>
         </div>
     </div>
 	<?php
-		$movs = Movement::where('mvmt_cntnr_name', $container->cntnr_name)->where('mvmt_bk_id', $booking->id)->orderBy('mvmt_order')->get();
+		$movs = Movement::where('mvmt_cntnr_name', $container_name)->where('mvmt_bk_id', $booking->id)->orderBy('mvmt_order')->get();
 		
 		// Title Line
 		$outContents = "<div class=\"container mw-100\">";
@@ -96,14 +112,14 @@
             }
 
             if ($total_movs % 2) {
-                if ($container->cntnr_status == MyHelper::CntnrCreatedStaus()) {
+                if ($container_status == MyHelper::CntnrCreatedStaus()) {
                     $outContents = "<div class=\"row my-2\" id=\"".$mov->mvmt_name."\" name=\"".$mov->mvmt_name."\" onclick=\"selectThisMov(this)\" oncontextmenu=\"doMenuItemOnThisMovement(this)\" style=\"background-color:Lavender; cursor: alias;\">";
                 } else {
                     $allow_update = 0;
                     $outContents = "<div class=\"row my-2\" id=\"".$mov->mvmt_name."\" name=\"".$mov->mvmt_name."\" onclick=\"selectThisMov(this)\" style=\"background-color:Lavender;\">";
                 }               
             } else {
-                if ($container->cntnr_status == MyHelper::CntnrCreatedStaus()) {
+                if ($container_status == MyHelper::CntnrCreatedStaus()) {
                     $outContents = "<div class=\"row my-2\" id=\"".$mov->mvmt_name."\" name=\"".$mov->mvmt_name."\" onclick=\"selectThisMov(this)\" oncontextmenu=\"doMenuItemOnThisMovement(this)\" style=\"background-color:PaleGreen; cursor: alias;\">";
                 } else {
                     $outContents = "<div class=\"row my-2\" id=\"".$mov->mvmt_name."\" name=\"".$mov->mvmt_name."\" onclick=\"selectThisMov(this)\" style=\"background-color:PaleGreen;\">";
@@ -146,7 +162,7 @@
                 <div class="row">
                     <div class="col-2"><label class="col-form-label">Work Date:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=date id=mvmt_operation_date name=mvmt_operation_date value="{{isset($movement)?$movement->mvmt_operation_date:''}}">
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=date id=mvmt_operation_date name=mvmt_operation_date value="{{isset($movement)?$movement->mvmt_operation_date:''}}">
@@ -154,7 +170,7 @@
                     </div>
                     <div class="col-2"><label class="col-form-label">Work Time:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=time id=mvmt_operation_time_since name=mvmt_operation_time_since value="{{isset($movement)?$movement->mvmt_operation_time_since:''}}">
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=time id=mvmt_operation_time_since name=mvmt_operation_time_since value="{{isset($movement)?$movement->mvmt_operation_time_since:''}}">
@@ -164,7 +180,7 @@
                 <div class="row">
                     <div class="col-2"><label class="col-form-label">Reservation No:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=text id=mvmt_reserv_no name=mvmt_reserv_no value="{{isset($movement)?$movement->mvmt_reserv_no:''}}">
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=text id=mvmt_reserv_no name=mvmt_reserv_no value="{{isset($movement)?$movement->mvmt_reserv_no:''}}">
@@ -173,7 +189,7 @@
                     <div class="col-2"><label class="col-form-label">OPS Code:&nbsp;</label></div>
                     <div class="col-4">
                         <?php
-                        if ($container->cntnr_status == MyHelper::CntnrCreatedStaus()) {
+                        if ($container_status == MyHelper::CntnrCreatedStaus()) {
                             $tagHead = "<input list=\"mvmt_ops_code\" name=\"mvmt_ops_code\" id=\"bkopscodeinput\" class=\"form-control mt-1 my-text-height\" ";
                         } else {
                             $tagHead = "<input readonly list=\"mvmt_ops_code\" name=\"mvmt_ops_code\" id=\"bkopscodeinput\" class=\"form-control mt-1 my-text-height\" ";
@@ -196,7 +212,7 @@
                 <div class="row">
                     <div class="col-2"><label class="col-form-label">Company:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_name name=mvmt_cmpny_name value="{{isset($movement)?$movement->mvmt_cmpny_name:''}}">
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=text id=mvmt_cmpny_name name=mvmt_cmpny_name value="{{isset($movement)?$movement->mvmt_cmpny_name:''}}">
@@ -204,7 +220,7 @@
                     </div>
                     <div class="col-2"><label class="col-form-label">Address:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_address_1 name=mvmt_cmpny_address_1 value="{{isset($movement)?$movement->mvmt_cmpny_address_1:''}}">
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=text id=mvmt_cmpny_address_1 name=mvmt_cmpny_address_1 value="{{isset($movement)?$movement->mvmt_cmpny_address_1:''}}">
@@ -214,7 +230,7 @@
                 <div class="row">
                     <div class="col-2"><label class="col-form-label">City:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_city name=mvmt_cmpny_city value="{{isset($movement)?$movement->mvmt_cmpny_city:''}}">
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=text id=mvmt_cmpny_city name=mvmt_cmpny_city value="{{isset($movement)?$movement->mvmt_cmpny_city:''}}">
@@ -222,7 +238,7 @@
                     </div>
                     <div class="col-2"><label class="col-form-label">Province:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_province name=mvmt_cmpny_province value="{{isset($movement)?$movement->mvmt_cmpny_province:''}}">
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=text id=mvmt_cmpny_province name=mvmt_cmpny_province value="{{isset($movement)?$movement->mvmt_cmpny_province:''}}">
@@ -232,7 +248,7 @@
                 <div class="row">
                     <div class="col-2"><label class="col-form-label">Post Code:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_postcode name=mvmt_cmpny_postcode value="{{isset($movement)?$movement->mvmt_cmpny_postcode:''}}">
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=text id=mvmt_cmpny_postcode name=mvmt_cmpny_postcode value="{{isset($movement)?$movement->mvmt_cmpny_postcode:''}}">
@@ -240,7 +256,7 @@
                     </div>
                     <div class="col-2"><label class="col-form-label">Country:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_country name=mvmt_cmpny_country value="{{isset($movement)?$movement->mvmt_cmpny_country:''}}">
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=text id=mvmt_cmpny_country name=mvmt_cmpny_country value="{{isset($movement)?$movement->mvmt_cmpny_country:''}}">
@@ -250,7 +266,7 @@
                 <div class="row">
                     <div class="col-2"><label class="col-form-label">Movement Type:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=text id=mvmt_type name=mvmt_type value="{{isset($movement)?$movement->mvmt_type:''}}">
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=text id=mvmt_type name=mvmt_type value="{{isset($movement)?$movement->mvmt_type:''}}">
@@ -258,7 +274,7 @@
                     </div>
                     <div class="col-2"><label class="col-form-label">Contact:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_contact name=mvmt_cmpny_contact value="{{isset($movement)?$movement->mvmt_cmpny_contact:''}}">
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=text id=mvmt_cmpny_contact name=mvmt_cmpny_contact value="{{isset($movement)?$movement->mvmt_cmpny_contact:''}}">
@@ -268,7 +284,7 @@
                 <div class="row">
                     <div class="col-2"><label class="col-form-label">Telephone:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_tel name=mvmt_cmpny_tel value="{{isset($movement)?$movement->mvmt_cmpny_tel:''}}">
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=text id=mvmt_cmpny_tel name=mvmt_cmpny_tel value="{{isset($movement)?$movement->mvmt_cmpny_tel:''}}">
@@ -276,7 +292,7 @@
                     </div>
                     <div class="col-2"><label class="col-form-label">Email:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_email name=mvmt_cmpny_email value="{{isset($movement)?$movement->mvmt_cmpny_email:''}}">
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=text id=mvmt_cmpny_email name=mvmt_cmpny_email value="{{isset($movement)?$movement->mvmt_cmpny_email:''}}">
@@ -286,7 +302,7 @@
                 <div class="row">
                     <div class="col-2"><label class="col-form-label">Description:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_desc name=mvmt_cmpny_desc value="{{isset($movement)?$movement->mvmt_cmpny_desc:''}}">
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=text id=mvmt_cmpny_desc name=mvmt_cmpny_desc value="{{isset($movement)?$movement->mvmt_cmpny_desc:''}}">
@@ -294,7 +310,7 @@
                     </div>
                     <div class="col-2"><label class="col-form-label">Zone:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_zone name=mvmt_cmpny_zone value="{{isset($movement)?$movement->mvmt_cmpny_zone:''}}">
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=text id=mvmt_cmpny_zone name=mvmt_cmpny_zone value="{{isset($movement)?$movement->mvmt_cmpny_zone:''}}">
@@ -304,13 +320,13 @@
                 <div class="row">
                     <div class="col-2"><label class="col-form-label">Driver:&nbsp;</label></div>
                     <div class="col-4">
-                        @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                        @if ($container_status == MyHelper::CntnrCreatedStaus())
                         <input class=form-control mt-1 my-text-height type=text id=mvmt_cmpny_dvr_no name=mvmt_cmpny_dvr_no>
                         @else
                         <input class=form-control readonly mt-1 my-text-height type=text id=mvmt_cmpny_dvr_no name=mvmt_cmpny_dvr_no>
                         @endif
                     </div>
-                    @if ($container->cntnr_status == MyHelper::CntnrCreatedStaus())
+                    @if ($container_status == MyHelper::CntnrCreatedStaus())
                     <div class="col-1"><button class="btn btn-warning my-1 type=button" type="submit">Update</button></div>
                     <div class="col-1"><button class="btn btn-secondary my-1 type=button" onclick="GoBack(event)">Cancel</button></div>
                     @endif
