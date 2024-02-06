@@ -46,7 +46,7 @@
 
             <ul class="list-unstyled components">
 				<div class="ml-2 mb-3">
-					<a href="{{route('home_page')}}"><span style='font-size:30px;'>&#127968;</span><span style='font-weight:bold;'>&nbsp&nbspHome</span></a>
+					<a href="{{route('home_page')}}"><span style='font-size:30px;'>&#127968;</span><span style='font-weight:bold; color:Gold'>&nbsp&nbspHome</span></a>
 				</div>
                 <!--
                 <li class="active">
@@ -61,6 +61,15 @@
                     </ul>
                 </li>
                 -->
+                <li>
+                    <a href="#tcefSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="font-weight:bold;color:Purple">Main Functions...</a>
+                    <ul class="collapse list-unstyled" id="tcefSubmenu">
+                        <li class="menulistitem"> <a href="{{route('booking_add')}}">Enter New Job</a> </li>
+                        <li class="menulistitem"> <a href="{{route('booking_main')}}">All Bookings</a> </li>
+                        <li class="menulistitem"> <a href="{{route('container_main')}}">All Containers</a> </li>
+                        <li class="menulistitem"> <a href="{{route('dispatch_main')}}">Dispatch</a> </li>
+                    </ul>
+                </li>
                 <li>
                     <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="font-weight:bold;color:Purple">All Data...</a>
                     <ul class="collapse list-unstyled" id="adminSubmenu">
@@ -80,15 +89,6 @@
                         <li class="menulistitem"> <a href="{{route('zone_main')}}">Zones</a> </li>
                         <li class="menulistitem"> <a href="{{route('power_unit_main')}}">Power Units</a> </li>
                         <li class="menulistitem"> <a href="{{route('chassis_main')}}">Chassis List</a> </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#tcefSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="font-weight:bold;color:Purple">Main Operations...</a>
-                    <ul class="collapse list-unstyled" id="tcefSubmenu">
-                        <li class="menulistitem"> <a href="{{route('booking_add')}}">Enter New Job</a> </li>
-                        <li class="menulistitem"> <a href="{{route('booking_main')}}">All Bookings</a> </li>
-                        <li class="menulistitem"> <a href="{{route('container_main')}}">All Containers</a> </li>
-                        <li class="menulistitem"> <a href="{{route('dispatch_main')}}">Dispatch</a> </li>
                     </ul>
                 </li>
                 <!--

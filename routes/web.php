@@ -444,7 +444,7 @@ Route::post('/booking_pay_off', function (Request $request) {
 							MyHelper::LogStaffActionResult(Auth::user()->id, 'Failed to pay off booking '.$booking->bk_job_no.' as ccntnr_paid cannot be updated.', '');
 						} else {
 
-							$invoice = Invoice::where('ccntnr_id', $container->id)->where('inv_job_no', $booking->bk_job_no)->first();
+							$invoice = Invoice::where('inv_job_no', $booking->bk_job_no)->first();
 
 							if ($invoice) {
 								$invoice->inv_paid = $paid_price;

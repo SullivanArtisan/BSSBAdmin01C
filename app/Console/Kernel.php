@@ -37,6 +37,7 @@ class Kernel extends ConsoleKernel
 				$booking = Booking::where('id', $done_container->ccntnr_job_id)->first();
 				ContainerController::UpdateBookingStatus($booking);
 
+				$done_container->ccntnr_status   = $container->cntnr_status;
 				$done_container->ccntnr_received = 'Y';
 				$done_container->save();
 			}

@@ -17,6 +17,8 @@ class ContainerController extends Controller
     public static function ResetContainer($container) {
         $container->cntnr_status = MyHelper::CntnrCreatedStaus();
         $container->cntnr_job_no = MyHelper::CntnrNewlyCreated();
+        $container->cntnr_dvr_no = '';
+        $container->cntnr_pwr_unit_no_1 = $container->cntnr_pwr_unit_no_2 = '';
         $container->cntnr_cost = $container->cntnr_surcharges = $container->cntnr_discount = $container->cntnr_total = $container->cntnr_net = $container->cntnr_paid = 0;
         return($container->save());
     }

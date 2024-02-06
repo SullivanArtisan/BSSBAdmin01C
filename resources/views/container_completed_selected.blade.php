@@ -324,7 +324,7 @@
 							<div class="w-25"></div>
 							<div class="col">
 								<div class="row">
-									<button class="btn btn-warning mx-4" type="submit">Update</button>
+									<button class="btn btn-warning mx-4" type="submit" onclick="return BlockIt();">Update</button>
                                     <?php
                                         if ($booking == null) {
                                             if (!isset($_GET['parentPage'])) {
@@ -357,6 +357,10 @@
 		</div>
 	
         <script>
+			function BlockIt() {
+				event.preventDefault();
+				alert("\r\nSorry!!\r\nYou cannot update this container now.");
+            }
         </script>
 	@endsection
 }
