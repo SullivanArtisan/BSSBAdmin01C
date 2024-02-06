@@ -663,6 +663,10 @@ Route::get('/container_charges_main', function () {
     return view('container_charges_main');
 })->middleware(['auth'])->name('container_charges_main');
 
+Route::get('/container_completed_charges_main', function () {
+    return view('container_completed_charges_main');
+})->middleware(['auth'])->name('container_completed_charges_main');
+
 Route::post('/container_surcharge_add', function (Request $request) {
 	$container = Container::where('id', $_POST['cntnrsurchrg_cntnr_id'])->first();
 	MyHelper::LogStaffAction(Auth::user()->id, 'To add a surcharge of $'.$_POST['cntnrsurchrg_charge'].' for container '.$container->cntnr_name.'.', '');

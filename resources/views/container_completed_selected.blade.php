@@ -99,6 +99,13 @@
                     @endif
 				</div>
 				<div class="col ml-5">
+                    @if ($booking)
+                        @if (!isset($_GET['parentPage'])) 
+					    <button class="btn btn-primary ml-4" type="button"><a href="{{route('container_completed_charges_main', ['cntnrId'=>$id, 'cntnrJobNo'=>$container->cntnr_job_no, 'prevPage'=>'booking_selected', 'selJobId'=>$booking->id])}}">View Surcharges</a></button>
+                        @else
+					    <button class="btn btn-primary ml-4" type="button"><a href="container_completed_charges_main?cntnrId={{$id}}&cntnrJobNo={{$container->cntnr_job_no}}&parentPage={{$parentPage}}&selJobId={{$booking->id}}">View Surcharges</a></button>
+                        @endif
+                    @endif
                 </div>
 			</div>
 		</div>
