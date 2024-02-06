@@ -122,6 +122,7 @@
                 if ($container_status == MyHelper::CntnrCreatedStaus()) {
                     $outContents = "<div class=\"row my-2\" id=\"".$mov->mvmt_name."\" name=\"".$mov->mvmt_name."\" onclick=\"selectThisMov(this)\" oncontextmenu=\"doMenuItemOnThisMovement(this)\" style=\"background-color:PaleGreen; cursor: alias;\">";
                 } else {
+                    $allow_update = 0;
                     $outContents = "<div class=\"row my-2\" id=\"".$mov->mvmt_name."\" name=\"".$mov->mvmt_name."\" onclick=\"selectThisMov(this)\" style=\"background-color:PaleGreen;\">";
                 }               
             }
@@ -498,7 +499,11 @@
         prevTextColorForLeft = el.style.color;
         el.style.color = "Orange";
         document.getElementById('sel_mov').innerHTML = 'Movement Details: (for ' + el.id + ')';
-        location.href = '/movements_selected?cntnrId='+{!!json_encode($cntnrId)!!}+'&movName='+el.id;
+        if (allowUpdate) {
+            location.href = '/movements_selected?cntnrId='+{!!json_encode($cntnrId)!!}+'&movName='+el.id;
+        } else {
+            location.href = '/movements_selected?ccntnrId='+{!!json_encode($cntnrId)!!}+'&movName='+el.id;
+        }
     }
 
     function doMenuItemOnThisMovement(el) {     // for right-click at a movement row

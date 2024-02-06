@@ -436,7 +436,7 @@ Route::post('/booking_pay_off', function (Request $request) {
 					$completed_cntnr = container_completed::where('ccntnr_id', $container->id)->where('ccntnr_job_id', $booking->id)->first();
 
 					if ($completed_cntnr) {
-						$completed_cntnr->ccntnr_status	= $container->cntnr_status;
+						$completed_cntnr->ccntnr_status	= MyHelper::CntnrCompletedStaus();
 						$completed_cntnr->ccntnr_paid 	= $paid_price;
 						$res = $completed_cntnr->save();
 
