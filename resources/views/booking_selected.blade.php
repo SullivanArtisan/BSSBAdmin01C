@@ -85,7 +85,11 @@ use App\Models\Booking;
 					<button class="btn btn-success mt-1" onclick="return SendInvoice();">Send Invoice</button>
 				</div>
 				<div class="col-3 my-auto ml-2">
+					@if ($booking && $booking->bk_status != MyHelper::BkFullyPaidStaus())
 					<button class="btn btn-warning mt-1" onclick="return PayOffThisBooking();">Pay Off This Booking</button>
+					@else
+					<button class="btn btn-info mt-1" data-toggle="modal" data-target="#exampleModal">View Invoice</button>
+					@endif
 				</div>
 			</div>
 		</div>
@@ -139,6 +143,32 @@ use App\Models\Booking;
 				</form>
 			</div>
 		</div>
+
+		<?php
+			$inv_file_name = $booking->bk_inv_serial_no.'.pdf';
+		?>
+		<div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Booking {{$booking->bk_job_no}}'s Invoice</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="PDF">
+						<object data={{$inv_file_name}} type="application/pdf" width="750" height="600">
+						</object>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+				</div>
+			</div>
+		</div>
+
 		<script>
 			document.getElementById("btn_save").style.visibility = "hidden";
 		</script>

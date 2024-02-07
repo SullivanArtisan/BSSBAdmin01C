@@ -491,13 +491,15 @@ Route::post('/send_invoice_to_customer', function (Request $request) {
 		$res = true;
 		$just_resend_email = true;
 	} else { 
-		$booking->bk_status = MyHelper::BkInvoicedStaus();
+		$inv_serial_no = date("Y-m-d-", $current_seconds).$booking->bk_job_no;
+		$booking->bk_status 		= MyHelper::BkInvoicedStaus();
+		$booking->bk_inv_serial_no	= $inv_serial_no;
 		if (!$booking->save()) {
 			Log::Info('Oops, something to change bk_status to invoiced for booking '.$booking->bk_job_no);
 		}
 
 		$invoice = new Invoice;
-		$invoice->inv_serial_no   	= date("Y-m-", $current_seconds).$booking->bk_job_no;
+		$invoice->inv_serial_no   	= $inv_serial_no;
 		$invoice->inv_job_no      	= $booking->bk_job_no;
 		$invoice->inv_total    		= $net_price;
 		$invoice->inv_status       	= MyHelper::InvoiceIssuedStaus();
