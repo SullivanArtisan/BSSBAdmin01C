@@ -67,6 +67,7 @@
                         <li class="menulistitem"> <a href="{{route('booking_add')}}">Enter New Job</a> </li>
                         <li class="menulistitem"> <a href="{{route('booking_main')}}">All Bookings</a> </li>
                         <li class="menulistitem"> <a href="{{route('container_main')}}">All Containers</a> </li>
+                        <li class="menulistitem"> <a href="{{route('invoice_main')}}">All Invoices</a> </li>
                         <li class="menulistitem"> <a href="{{route('dispatch_main')}}">Dispatch</a> </li>
                     </ul>
                 </li>

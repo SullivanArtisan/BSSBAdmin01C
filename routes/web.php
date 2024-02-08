@@ -537,6 +537,15 @@ Route::post('/send_invoice_to_customer', function (Request $request) {
 	}
 })->middleware(['auth'])->name('send_invoice_to_customer');
 
+//////////////////////////////// For Invoice ////////////////////////////////
+Route::get('/invoice_main', function () {
+	return view('invoice_main');
+	})->middleware(['auth'])->name('invoice_main');
+
+Route::get('/invoice_selected', function () {
+	return view('invoice_selected');
+	})->middleware(['auth'])->name('invoice_selected');
+
 //////////////////////////////// For Dispatch ////////////////////////////////
 Route::get('/dispatch_main', function () {
 	return view('dispatch_main');
